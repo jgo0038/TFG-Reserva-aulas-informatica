@@ -1,0 +1,1 @@
+Carpeta que contendrá las img.
