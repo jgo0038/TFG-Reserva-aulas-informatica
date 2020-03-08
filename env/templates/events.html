@@ -1,0 +1,20 @@
+{% block content %}
+<h1>Eventos</h1>
+<table class="table" cellspacing="20">
+  <tr>
+    <th>Tema</th>
+    <th>Fecha inicio</th>
+    <th>Fecha fin</th>
+  </tr>
+
+  {% for event in dictEvents %}
+    <tr>
+      <td>{{ event['subject'] }}</td>
+      <td>{{ event['start']['dateTime'] }} </td>
+      <td>{{ event['end']['dateTime'] }} </td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

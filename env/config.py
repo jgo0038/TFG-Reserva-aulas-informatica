@@ -18,4 +18,6 @@ scopes = ['openid',
            'Mail.Read',
            'profile',
            'email',
-           'offline_access']
+           'offline_access',
+           'Calendars.Read',
+           'calendars.readwrite']

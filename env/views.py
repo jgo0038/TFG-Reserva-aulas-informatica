@@ -5,9 +5,11 @@ from oauth_helpers import (
     datetime_from_timestamp,
     get_oauth_token,
     get_jwt_from_id_token,
-    sign_in_url
-)
-
+    sign_in_url,
+    get_events,
+    refresh_oauth_token
+    )
+import json
 
 @app.route('/')
 def hello_world():
@@ -16,7 +18,6 @@ def hello_world():
 
 @app.route('/connect/get_token/')
 def connect_o365_token():
-
     code = flask.request.args.get('code')
     print('code: '+code)
     if not code:
@@ -24,17 +25,8 @@ def connect_o365_token():
         return flask.Response(status=400)
 
     token = get_oauth_token(code)
-    
-    print('TOKEN')
-    print(token.keys())
-    print(token.values())
 
     jwt = get_jwt_from_id_token(token['id_token']) #JSON Web Token
-
-    print('JWT')
-
-    print(jwt.keys())
-    print(jwt.values())
 
     oauth_token = O365OAuthToken.query.filter(O365OAuthToken.user_email == jwt['email']).first()
 
@@ -61,13 +53,24 @@ def connect_o365_token():
     
     #db.session.commit()
 
-    
     flask.session['user_email'] = oauth_token.user_email
     flask.session['access_token'] = oauth_token.access_token
-    
+    flask.session['refresh_token'] = oauth_token.refresh_token
     return flask.redirect('/')
 
+@app.route('/events')
+def events():
+    acc_token = flask.session['access_token']
+    if not acc_token:
+        return flask.redirect('/')
+    else:
+        events = get_events(acc_token)
+        context = { 'events': events['value'] } #Obtener solo los eventos    
+        eventosExistentes = context['events']
+        json1_data = json.dumps(eventosExistentes) #Transformar los datos del JSON en un dict
+        print(json1_data)
 
+        return flask.render_template('events.html', dictEvents = eventosExistentes)
 
 if __name__ == '__main__':
     db.init_app(app)
