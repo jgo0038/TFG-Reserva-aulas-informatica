@@ -115,3 +115,52 @@ def get_events(access_token):
         return r.json()
     else:
         return "{0}: {1}".format(r.status_code, r.text)
+
+
+def get_calendars(access_token):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    get_calendar_url = graph_endpoint.format('/me/calendars')    #Ruta para obtener info de los eventos
+
+    r = make_api_call('GET', get_calendar_url, access_token)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
+
+
+def create_events(access_token, calendario, subject, start, end):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    create_events_url = graph_endpoint.format('/me/calendars/') + calendario + '/events'   #Ruta para crear los eventos en el calendario especificado
+    
+
+    print('PARAMS')
+    print(create_events_url)
+    print(subject)
+    print(start)
+
+    parameters = {'Subject': '{}'.format(subject),
+                    'Start': 
+                      {
+                          'DateTime': '{}'.format(start),
+                          'TimeZone': 'W. Europe Standard Time'
+                      },
+                    'End': 
+                      {
+                          'DateTime': '{}'.format(end),
+                          'TimeZone': 'W. Europe Standard Time'
+                      }                       }
+
+
+    print(parameters)
+    #param = json.dumps(parameters)
+    #print(param)
+
+    r = make_api_call('POST', create_events_url , access_token , payload = parameters )
+
+    print(r)
+    if (r.status_code == requests.codes.ok):
+            return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
+

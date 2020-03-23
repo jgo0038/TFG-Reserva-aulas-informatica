@@ -1,3 +1,4 @@
+{% extends "bootstrap/base.html" %}
 {% block content %}
 <h1>Eventos</h1>
 <table class="table" cellspacing="20">
@@ -16,5 +17,11 @@
   {% endfor %}
 </table>
 
+
+
+
+<div>
+  <button type="button" class="btn btn-warning" onclick="window.location.href='{{ last_url }}'"> Volver</button>
+</div>
 
 {% endblock %}
