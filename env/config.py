@@ -6,6 +6,7 @@ DEBUG = True
 SECRET_KEY = 'claveSecreta'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/outlook'
 
 O365_APP_ID = '0f0cdc95-e08f-4b67-9cb8-62b4350aa9a2'
 O365_APP_KEY = 'yvTRWIcnmT@nY4?zIA?=N2yc5yeIA0o_'

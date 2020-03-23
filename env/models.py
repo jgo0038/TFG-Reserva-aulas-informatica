@@ -6,7 +6,7 @@ from oauth_helpers import (
 )
 import datetime
 
-
+"""
 class O365OAuthToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     access_token = db.Column(db.String, nullable=False)
@@ -30,3 +30,22 @@ class O365OAuthToken(db.Model):
             db.session.commit()
         print(token)
         return self.access_token
+"""
+
+class user(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    access_token = db.Column(db.String, nullable=False)
+    refresh_token = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, index=True, unique=True, nullable=False)
+    expires_on = db.Column(db.DateTime, nullable=False)
+
+class eventos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    calendario = db.Column(db.String, index=True, nullable=False)
+    email = db.Column(db.String, index=True, unique=True, nullable=False)
+    inicio = db.Column(db.DateTime, nullable=False)
+    fin = db.Column(db.DateTime, nullable=False)
+    creacion = db.Column(db.DateTime, nullable=False)
+
+
+
