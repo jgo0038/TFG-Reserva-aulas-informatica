@@ -1,0 +1,59 @@
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+{% block title %}<div style="font-size: 50px;" >Tabla de eventos</div>{% endblock %}
+
+{% block content %}
+
+
+<!-- Si el diccionario de eventos esta vacio no se muestra nada -->
+  
+    <table id="tablaEventos" class="table table-striped table-bordered table-sm" cellspacing="40" overflow="auto">
+      <!-- <script type="text/javascript" src="{{ url_for('static', filename='events.js') }}"></script> -->
+      <thead>
+      <tr>
+        <th>Tema</th>
+        <th>Usuario</th>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+      </tr>
+    </thead>
+    {% if dictEvents %}
+    <tbody>
+      {% for event in dictEvents %}
+        {% if event[3] < fechaActual %}
+          <tr>
+            <td style="color : red">{{ event[0] }}</td>
+            <td style="color : red">{{ event[1] }}</td>
+            <td style="color : red">{{ event[2] }} </td>
+            <td style="color : red">{{ event[3] }} </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td style="color : green">{{ event[0] }}</td>
+            <td style="color : green">{{ event[1] }}</td>
+            <td style="color : green">{{ event[2] }} </td>
+            <td style="color : green">{{ event[3] }} </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+    {% endif %}
+    </table>
+
+<div>
+  <b>Leyenda</b><br>
+  <svg width="15" height="15">
+    <rect x="5" y="2" rx="2" ry="2" width="10" height="10"
+    style="fill:red;" />
+  </svg>   Eventos pasados<br>
+  <svg width="15" height="15">
+    <rect x="5" y="2" rx="2" ry="2" width="10" height="10"
+    style="fill:green;" />
+  </svg>   Eventos futuros<br>
+</div>
+
+<div>
+  <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('events') }}' "> Volver</button>
+</div>
+
+{% endblock %}

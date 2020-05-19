@@ -1,0 +1,50 @@
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+{% block title %}<div style="font-size: 50px;" >Eventos</div>{% endblock %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com//ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+  <!-- Formulario para elegir el grupo de calendario del que ver las aulas -->
+  <form name="selectEdif" id="selectEdif" method="POST">
+    <div>{{ formEdificio.select.label }}</div>
+    <div>{{ formEdificio.select }}</div>
+    <input type="submit" name="submitEdif" id="submitEdif" value="Mostrar aulas" class="btn btn-success" onclick="formEdificio.submit()">
+    {{ formEdificio.csrf_token }}
+  </form>
+
+  {% if edificioId %}
+  <!-- Formulario para elegir el calendario del que ver los eventos -->
+  <!-- <div id="form2" style="visibility: hidden;"> -->
+  <form name="selectAula" id="selectAula" method="POST" >
+    <div>{{ formAula.select.label }}</div>
+    <div>{{ formAula.select }}</div>
+    <input type="submit" name="submitAula" id="submitAula" value="Mostrar eventos" class="btn btn-success" onclick=formAula.submit()>
+    {{ formAula.csrf_token }}
+  </form>
+  <!-- </div> -->
+  {% endif %}
+  
+
+
+  <div>
+    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('reservar') }}'"> Crear eventos</button>
+    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
+  </div>
+
+
+
+
+  <script type="text/javascript">
+
+    function showForm2() {
+      document.getElementById("form2").style.visibility="visible";
+    }
+
+    $('#submitEdif').click(function(){
+      document.getElementById("form2").style.visibility="visible";
+    })
+
+  </script>
+
+{% endblock %}
