@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+{% block base_container_content %}
+
+<form name="seeAulas" id="seeAulas" method="POST">
+    {{ form.csrf_token }}
+    <div>{{ form.select.label }}</div>
+    <div>{{ form.select }}</div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <button type='button' id ='verAulas' onclick=form.submit()>Ver aulas</button>
+    
+</form>
+
+<table id="tablaAulas" class="table table-striped table-bordered table-sm" cellspacing="40" overflow="auto">
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='events.js') }}"></script> -->
+    <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Edificio</th>
+      <th>Tipo</th>
+      <th>Capacidad</th>
+      <th>Propietario</th>
+    </tr>
+  </thead>
+  {% if aulas %}
+  <tbody>
+    {% for aula in aulas %}
+        <tr>
+          <td>{{ aula[0] }}</td>
+          <td>{{ aula[1] }}</td>
+          <td>{{ aula[2] }} </td>
+          <td>{{ aula[3] }} </td>
+          <td>{{ aula[4] }} </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+  </table>
+
+{% endblock %}
