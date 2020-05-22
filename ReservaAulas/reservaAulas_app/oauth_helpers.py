@@ -227,3 +227,29 @@ def create_aulas(access_token, edificio, nombre):
         return r.json()
     else:
         return "{0}: {1}".format(r.status_code, r.text)
+
+    
+def upload_calendar(access_token, aulaId, nuevoNombre):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    upload_calendar_url = graph_endpoint.format('/me/calendars/')+aulaId  #Ruta para obtener informacion sobre el usuario   
+
+    payload = {"Name": nuevoNombre }
+
+    r = make_api_call('PATCH', upload_calendar_url, access_token, payload = payload)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
+
+def delete_calendar(access_token, aulaId):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    upload_calendar_url = graph_endpoint.format('/me/calendars/')+aulaId  #Ruta para obtener informacion sobre el usuario   
+
+
+    r = make_api_call('DELETE', upload_calendar_url, access_token)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)

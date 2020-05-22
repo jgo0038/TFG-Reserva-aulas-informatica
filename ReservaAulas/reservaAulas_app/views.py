@@ -14,15 +14,18 @@ from .oauth_helpers import (
     get_calendarsGroups,
     get_calendarsFromGroup,
     get_user,
-    create_aulas
+    create_aulas,
+    upload_calendar,
+    delete_calendar
     )
-from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula
+from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula, modificarAulasForm
 import json
 from flask import flash, request, redirect, url_for
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
 from reservaAulas_app.config import ADMIN_USERS
 from reservaAulas_app.odbctest import cnxn
+from reservaAulas_app.getSQLData import getCapacidades,getEdificios,getPropietarios,getTipos
 import logging
 import requests
 
@@ -606,8 +609,8 @@ def anadirAulas():
 
 @app.route('/verAulas', methods=['GET', 'POST'])
 def verAulas():
-    selectAulasForm = selectGroupCalendar(request.form)
-    
+    selectAulasForm = selectGroupCalendar()
+    modAulaForm = modificarAulasForm()
     #Añadir los grupos de calendarios (edificios) a la opcion edificio
     calendarGroups = get_calendarsGroups(flask.session['access_token'])
     valCalendarGroups = calendarGroups['value']
@@ -617,10 +620,19 @@ def verAulas():
             listaCalendarGroups.append((val['name'],val['name']))
     selectAulasForm.select.choices = listaCalendarGroups
 
+    modAulaForm.edificio.choices = getEdificios()
+    modAulaForm.tipo.choices = getTipos()
+    modAulaForm.propietario.choices = getPropietarios()
+    if flask.request.get_json():
+        data = flask.request.get_json()
+        print("DAta que nos llega:::")
+        print(data['aula'])
+        flask.session['aulaActualizar'] = data['aula']
+        return json.dumps(data)
+        # modAulaForm.nombreAula.data = data['aula']
     #Coger todas las aulas del edificio pedido en el form
     if request.method == 'POST' and selectAulasForm.validate_on_submit():
         edificio = request.form["select"]
-        print(edificio)
         cursor = cnxn.cursor()
         cursor.execute('''
             SELECT aulas.nombre, edificios.nombre, tipos.descripcion, aulas.capacidad, aulas.propietario
@@ -633,9 +645,73 @@ def verAulas():
         print(varAulas)
         cursor.close()
 
-    return flask.render_template('verAulas.html', form = selectAulasForm, aulas = varAulas)
-# if __name__ == '__main__':
-#     db.init_app(app)
-#     with app.app_context():
-#         db.create_all()
-#     app.run()
+        return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, aulas = varAulas)
+    
+    #Formulario para actualizar los datos
+    if request.method == 'POST' and modAulaForm.validate_on_submit():
+        
+        print("Aula que hemos modificado:::")
+        print(modAulaForm.capacidad)
+        aulaNueva = request.form["nombreAula"]
+        edificioNuevo = request.form["edificio"]
+        tipoNuevo = request.form["tipo"]
+        capacidadNueva = request.form["capacidad"]
+        propietarioNuevo = request.form["propietario"]
+
+        #Actualizar los datos en la BD
+        cursor = cnxn.cursor()
+        cursor.execute('''
+            UPDATE aulas
+            SET aulas.nombre = ?, aulas.edificio = ?, aulas.tipo = ?, aulas.capacidad = ?, aulas.propietario = ?
+            WHERE aulas.nombre = ?''', aulaNueva, edificioNuevo, tipoNuevo, capacidadNueva, propietarioNuevo, flask.session['aulaActualizar'])
+        cnxn.commit()
+
+        #Si se ha cambiado el nombre del aula, actualizarlo en el calendario de outlook tambien
+        if(aulaNueva != flask.session['aulaActualizar']):
+            calendars = get_calendars(flask.session['access_token']) #Reocgemos todos los calendarios
+            valores = calendars['value']  #Sacamos sus valores del diccionario recibido
+            listaCalendarios = []
+            for cal in valores:
+                listaCalendarios.append((cal['name'],cal['id']))
+            diccCalendarios = dict(listaCalendarios) #Diccionario con clave valor para sacar el id_calendar de outlook
+
+            calendarioAct = diccCalendarios.get(flask.session['aulaActualizar']) #Calendario a actualizar
+
+            upload_calendar(flask.session['access_token'], calendarioAct, aulaNueva)
+
+        
+
+        return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, cambio = True)
+
+
+    return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm)
+    
+@app.route('/eliminarAula',methods=['POST','GET'])
+def eliminarAula():
+    print("Aqui si entro a eliminar")
+    if flask.request.get_json():
+        data = flask.request.get_json()
+        print("DAta que nos llega:::")
+        print(data['aula'])
+        cursor = cnxn.cursor()
+        cursor.execute('''
+            DELETE
+            FROM aulas
+            WHERE aulas.nombre = ?''',data['aula'] )
+        cnxn.commit()
+
+        calendars = get_calendars(flask.session['access_token']) #Recogemos todos los calendarios
+        valores = calendars['value']  #Sacamos sus valores del diccionario recibido
+        listaCalendarios = []
+        for cal in valores:
+            listaCalendarios.append((cal['name'],cal['id']))
+        diccCalendarios = dict(listaCalendarios)
+        
+        calendarioBorrar = diccCalendarios.get(data['aula']) #Calendario a borrar
+
+        delete_calendar(flask.session['access_token'], calendarioBorrar)
+        return json.dumps(data)
+
+
+
+
