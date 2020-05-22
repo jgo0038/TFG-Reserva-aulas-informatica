@@ -35,3 +35,11 @@ class filterAulasForm(FlaskForm):
     capacidad = SelectField('Selecciona la capacidad del aula')
     edificio = SelectField('Selecciona el edificio')
     tipo = SelectField('Selecciona el tipo de aula')
+
+class modificarAulasForm(FlaskForm):
+    edificio = SelectField('Selecciona el edificio')
+    nombreAula = TextField('Nombre del aula')
+    tipo = SelectField('Tipo de aula')
+    capacidad = TextField('Capacidad del aula')
+    propietario = SelectField('Propietario del aula')
+    submit = SubmitField('Guardar')
