@@ -1,0 +1,261 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
+<h1>Añadir evento</h1>
+
+
+
+<form name="filterAulas" id="filterAulas" method="POST">
+    {{ form1.csrf_token }}
+    <div>{{ form1.capacidad.label }}</div>
+    <div>{{ form1.capacidad }}</div>
+    <div>{{ form1.edificio.label }}</div>
+    <div>{{ form1.edificio }}</div>
+    <div>{{ form1.tipo.label }}</div>
+    <div>{{ form1.tipo }}</div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <button type='button' id ='enviarFiltros'>Consultar</button>
+    <button type="button" onclick="window.location.href='{{ url_for('reservar') }}'">Modificar opciones</button>    
+</form>
+
+<div class="alert alert-warning col-md-4" id="errorMsg" style="display: none;"> No existen aulas con esas características. </div>
+
+
+<div id="radioTipos" style="display:none;padding:5px;">
+    <a> Selecciona el tipo de reserva </a> <br>
+    <input type="radio" name="tipoReserva" value="Simple" style="padding:5px;">Un día 
+    <input type="radio" name="tipoReserva" value="Multiple" style="padding:5px;">Días contiguos 
+    <input type="radio" name="tipoReserva" value="Periodica" style="padding:5px;">Un día por semana 
+    <button type="button" onclick="showFormReservar()"> Aplicar </button> 
+</div>
+
+
+<div id="form-hidden" style="display: none">
+    <form name="createEvent" id="createEvent" method="POST">
+        <div>{{ form.selectAula.label }}</div>
+        <div>{{ form.selectAula }}</div>
+        <div>{{ form.subject.label }}</div>
+        <div>{{ form.subject }}</div>
+            <ul>
+                {% for error in form.subject.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.teacher.label }}</div>
+        <div>{{ form.teacher }}</div>
+            <ul>
+                {% for error in form.teacher.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.startDate.label }}</div>
+        <div>{{ form.startDate }}</div>
+            <ul>
+                {% for error in form.startDate.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+        <div id="dayL" style="display:none">{{ form.day.label }}</div>
+        <div id="day" style="display:none">{{ form.day }}</div>
+
+        <div>{{ form.startTime.label }}</div>
+        <div>{{ form.startTime }}</div>
+            <ul>
+                {% for error in form.startTime.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+
+        <div>{{ form.endTime.label }}</div>
+        <div>{{ form.endTime }}</div>
+            <ul>
+                {% for error in form.endTime.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div id="endDateL" style="display:none">{{ form.endDate.label }}</div>
+        <div id="endDate" style="display:none">{{ form.endDate }}</div>
+        {% if form.errors %}
+        {{ form.errors }}
+        {% endif %}
+        <button type="button" class="btn btn-success" onclick=form.submit()> {{ form.submit.label }} </button>
+
+        {{ form.csrf_token }}
+    </form>
+</div>
+
+{%if validate == False%}
+    <div id="form-hidden" style="display: block">
+    <form name="createEvent" id="createEvent" method="POST">
+        <div>{{ form.selectAula.label }}</div>
+        <div>{{ form.selectAula }}</div>
+        <div>{{ form.subject.label }}</div>
+        <div>{{ form.subject }}</div>
+            <ul>
+                {% for error in form.subject.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.teacher.label }}</div>
+        <div>{{ form.teacher }}</div>
+            <ul>
+                {% for error in form.teacher.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.startDate.label }}</div>
+        <div>{{ form.startDate }}</div>
+            <ul>
+                {% for error in form.startDate.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div id="dayL">{{ form.day.label }}</div>
+        <div id="day">{{ form.day }}</div>
+        <div>{{ form.startTime.label }}</div>
+        <div>{{ form.startTime }}</div>
+            <ul>
+                {% for error in form.startTime.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        
+        <div>{{ form.endTime.label }}</div>
+        <div>{{ form.endTime }}</div>
+            <ul>
+                {% for error in form.endTime.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+        <div id="endDateL">{{ form.endDate.label }}</div>
+        <div id="endDate">{{ form.endDate }}</div>
+        <button type="button" class="btn btn-success" onclick=form.submit()> {{ form.submit.label }} </button>
+
+        {{ form.csrf_token }}
+    </form>
+    </div>
+{% endif %}
+
+
+
+<!-- Mensaje de creación de evento correcta o fallida -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+        {% if category == "error" %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert" style="background-color: red; width: 320px; padding: 20px; margin-top: 20px;">
+                <svg class="bi bi-exclamation-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                    <path d="M7.002 11a1 1 0 112 0 1 1 0 01-2 0zM7.1 4.995a.905.905 0 111.8 0l-.35 3.507a.552.552 0 01-1.1 0L7.1 4.995z"/>
+                </svg>
+                <button type="button"  class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>{{ message }}</strong> 
+            </div>
+        {% else %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert" style="background-color: green; width: 320px;">
+            <button type="button"  class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{ message }}</strong> 
+            </div>
+        {% endif %}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<div>
+    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('events') }}'"> Ver eventos</button>
+    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
+</div>
+
+
+{% endblock content %}
+
+<script>
+    $('#enviarFiltros').click(function() {
+      arrayValores = $('#filterAulas').serialize();
+      capacidad =  $('#capacidad').val();
+      edificio = $('#edificio').val();
+      tipo = $('#tipo').val();
+      var csrftoken = $('meta[name=csrf-token]').attr('content')
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            }
+        }
+      })
+      $.ajax({
+        type: "POST",
+        url: "/showReservar",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({capacidad: capacidad, edificio: edificio, tipo: tipo}),
+        success: function(response) {
+            $('#selectAula').empty();
+            for (var i=0; i<response.length; i++) {
+                $('#selectAula').append(
+                    $("<option></option>")
+                    .attr("value", response[i][0])
+                    .text(response[i][0]))
+            
+            }
+            $('#radioTipos').css('display', 'block');
+            $('#enviarFiltros').prop('disabled', true);
+            $('#errorMsg').css('display', 'none');
+        },
+        error: function(response){
+            $('#errorMsg').css('display', 'block');
+        }
+    });
+
+    });
+
+    function showFormReservar() {
+        $('#form-hidden').css('display', 'block');
+
+        
+        var ele = document.getElementsByName('tipoReserva'); 
+              
+        for(i = 0; i < ele.length; i++) { 
+            if(ele[i].checked) 
+                var elegido = ele[i].value; 
+        } 
+
+        
+
+        if(elegido=="Multiple"){
+            console.log(elegido)
+            document.getElementById("day").value = null;
+            $('#dayL').css('display', 'none');
+            $('#day').css('display', 'none');
+            $('#endDateL').css('display', 'block');
+            $('#endDate').css('display', 'block');
+            
+        }
+        if(elegido=="Periodica"){
+            console.log(elegido)
+            $('#dayL').css('display', 'block');
+            $('#day').css('display', 'block');
+            $('#endDateL').css('display', 'block');
+            $('#endDate').css('display', 'block');
+        }
+        if(elegido=="Simple"){
+            console.log(elegido)
+            document.getElementById("day").value = null;
+            document.getElementById("endDate").value = null;
+            $('#dayL').css('display', 'none');
+            $('#day').css('display', 'none');
+            $('#endDateL').css('display', 'none');
+            $('#endDate').css('display', 'none');
+        }
+        
+
+    };
+</script>
+
+</html>

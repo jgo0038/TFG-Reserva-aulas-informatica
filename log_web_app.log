@@ -1,0 +1,317 @@
+[|2020-05-01 12:36:01,908| - root - INFO] - 
+
+[|2020-05-01 12:36:01,909| - root - INFO] - |--------------------|
+[|2020-05-01 12:36:01,909| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:36:01,909| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:36:01,910| - root - INFO] - |--------------------|
+[|2020-05-01 12:36:01,934| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:36:28,963| - ReservaAulas.reservaAulas_app.inicio - ERROR] - Exception on / [GET]
+Traceback (most recent call last):
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1988, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1641, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1544, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1639, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1625, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\Users\X541UJ\Desktop\TFG\ReservaAulas\reservaAulas_app\views.py", line 37, in inicio
+    page = flask.requests.get('https://reservaaulas.azurewebsites.net/')
+AttributeError: module 'flask' has no attribute 'requests'
+[|2020-05-01 12:36:29,100| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:36:29] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[|2020-05-01 12:36:29,190| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:36:29] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[|2020-05-01 12:36:55,246| - root - INFO] - 
+
+[|2020-05-01 12:36:55,247| - root - INFO] - |--------------------|
+[|2020-05-01 12:36:55,248| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:36:55,248| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:36:55,248| - root - INFO] - |--------------------|
+[|2020-05-01 12:36:55,270| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:37:05,891| - ReservaAulas.reservaAulas_app.inicio - ERROR] - Exception on / [GET]
+Traceback (most recent call last):
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1988, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1641, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1544, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1639, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1625, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\Users\X541UJ\Desktop\TFG\ReservaAulas\reservaAulas_app\views.py", line 37, in inicio
+    page = flask.request.get('https://reservaaulas.azurewebsites.net/')
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\werkzeug\local.py", line 347, in __getattr__
+    return getattr(self._get_current_object(), name)
+AttributeError: 'Request' object has no attribute 'get'
+[|2020-05-01 12:37:05,914| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:37:05] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[|2020-05-01 12:37:20,145| - root - INFO] - 
+
+[|2020-05-01 12:37:20,145| - root - INFO] - |--------------------|
+[|2020-05-01 12:37:20,145| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:37:20,145| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:37:20,146| - root - INFO] - |--------------------|
+[|2020-05-01 12:37:20,163| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:37:43,420| - root - INFO] - 
+
+[|2020-05-01 12:37:43,422| - root - INFO] - |--------------------|
+[|2020-05-01 12:37:43,422| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:37:43,422| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:37:43,423| - root - INFO] - |--------------------|
+[|2020-05-01 12:37:43,443| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:37:47,006| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): reservaaulas.azurewebsites.net
+[|2020-05-01 12:38:02,542| - root - WARNING] - Fallo en la pagina: 503 - Reintento: 
+[|2020-05-01 12:38:02,729| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:02] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-01 12:38:02,760| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:02] "[37mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 200 -
+[|2020-05-01 12:38:02,760| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:02] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-01 12:38:02,776| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:02] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-01 12:38:02,776| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:02] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-01 12:38:03,216| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:03] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[|2020-05-01 12:38:17,452| - root - INFO] - 
+
+[|2020-05-01 12:38:17,453| - root - INFO] - |--------------------|
+[|2020-05-01 12:38:17,453| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:38:17,454| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:38:17,454| - root - INFO] - |--------------------|
+[|2020-05-01 12:38:17,477| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:38:41,801| - root - INFO] - 
+
+[|2020-05-01 12:38:41,802| - root - INFO] - |--------------------|
+[|2020-05-01 12:38:41,802| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 12:38:41,802| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 12:38:41,803| - root - INFO] - |--------------------|
+[|2020-05-01 12:38:41,824| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 12:38:57,999| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:57] "[32mGET /connect/get_token?code=Medb80f69-65e0-3769-e5d6-e0d33c4f364a HTTP/1.1[0m" 308 -
+[|2020-05-01 12:38:58,037| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): login.microsoftonline.com
+[|2020-05-01 12:38:59,801| - ReservaAulas.reservaAulas_app.inicio - ERROR] - Exception on /connect/get_token/ [GET]
+Traceback (most recent call last):
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1988, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1641, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1544, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\_compat.py", line 33, in reraise
+    raise value
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1639, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\Users\X541UJ\Desktop\TFG\environment\lib\site-packages\flask\app.py", line 1625, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\Users\X541UJ\Desktop\TFG\ReservaAulas\reservaAulas_app\views.py", line 64, in connect_o365_token
+    print(oauth_token[0][2])
+IndexError: list index out of range
+[|2020-05-01 12:38:59,821| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:59] "[35m[1mGET /connect/get_token/?code=Medb80f69-65e0-3769-e5d6-e0d33c4f364a HTTP/1.1[0m" 500 -
+[|2020-05-01 12:38:59,862| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 12:38:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[|2020-05-01 18:28:13,144| - root - INFO] - 
+
+[|2020-05-01 18:28:13,163| - root - INFO] - |--------------------|
+[|2020-05-01 18:28:13,165| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 18:28:13,166| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 18:28:13,167| - root - INFO] - |--------------------|
+[|2020-05-01 18:28:13,186| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 18:31:01,349| - root - INFO] - 
+
+[|2020-05-01 18:31:01,349| - root - INFO] - |--------------------|
+[|2020-05-01 18:31:01,349| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 18:31:01,350| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 18:31:01,350| - root - INFO] - |--------------------|
+[|2020-05-01 18:31:01,376| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 18:57:48,815| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:root:
+
+INFO:root:|--------------------|
+INFO:root:|INICIO DE LA WEB APP|
+INFO:root:| -  Jorge Gomez   - |
+INFO:root:|--------------------|
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-01 19:30:44,918| - root - INFO] - 
+
+[|2020-05-01 19:30:44,918| - root - INFO] - |--------------------|
+[|2020-05-01 19:30:44,918| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 19:30:44,918| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 19:30:44,918| - root - INFO] - |--------------------|
+[|2020-05-01 19:30:44,918| - root - INFO] - Estamos en la pagina 
+[|2020-05-01 19:30:45,106| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:30:45] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-01 19:30:45,944| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:30:45] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-01 19:30:45,944| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:30:45] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-01 19:30:46,132| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:30:46] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-01 19:30:46,553| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:30:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[|2020-05-01 19:31:00,856| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:00] "[32mGET /connect/get_token?code=M003a896d-8583-673b-e724-7ac30eebda92 HTTP/1.1[0m" 308 -
+[|2020-05-01 19:31:00,903| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): login.microsoftonline.com
+[|2020-05-01 19:31:03,109| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[32mGET /connect/get_token/?code=M003a896d-8583-673b-e724-7ac30eebda92 HTTP/1.1[0m" 302 -
+[|2020-05-01 19:31:03,140| - root - INFO] - 
+
+[|2020-05-01 19:31:03,140| - root - INFO] - |--------------------|
+[|2020-05-01 19:31:03,140| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-01 19:31:03,140| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-01 19:31:03,140| - root - INFO] - |--------------------|
+[|2020-05-01 19:31:03,140| - root - INFO] - Estamos en la pagina 
+[|2020-05-01 19:31:03,140| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-01 19:31:03,421| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[|2020-05-01 19:31:03,437| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-01 19:31:03,453| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-01 19:31:03,468| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[|2020-05-01 19:31:03,484| - werkzeug - INFO] - 127.0.0.1 - - [01/May/2020 19:31:03] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:33,143| - root - INFO] - 
+
+[|2020-05-02 11:29:33,205| - root - INFO] - |--------------------|
+[|2020-05-02 11:29:33,205| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 11:29:33,205| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 11:29:33,205| - root - INFO] - |--------------------|
+[|2020-05-02 11:29:33,205| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 11:29:33,705| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:33] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 11:29:34,064| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:34] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[|2020-05-02 11:29:34,065| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:34] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:34,065| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:34] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:34,081| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:34] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[|2020-05-02 11:29:34,175| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:34] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:52,877| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:52] "[32mGET /connect/get_token?code=Mba3c1eae-5457-952d-d350-6d575be42d9b HTTP/1.1[0m" 308 -
+[|2020-05-02 11:29:53,994| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): login.microsoftonline.com
+[|2020-05-02 11:29:58,219| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:58] "[32mGET /connect/get_token/?code=Mba3c1eae-5457-952d-d350-6d575be42d9b HTTP/1.1[0m" 302 -
+[|2020-05-02 11:29:58,355| - root - INFO] - 
+
+[|2020-05-02 11:29:58,355| - root - INFO] - |--------------------|
+[|2020-05-02 11:29:58,355| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 11:29:58,355| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 11:29:58,355| - root - INFO] - |--------------------|
+[|2020-05-02 11:29:58,355| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 11:29:58,370| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:58] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 11:29:58,964| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:58] "[37mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 200 -
+[|2020-05-02 11:29:58,995| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:58] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:58,995| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:58] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:59,011| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:59] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:29:59,073| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:59] "[36mGET /static/js/bootstrap.min.js HTTP/1.1[0m" 304 -
+[|2020-05-02 11:29:59,105| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:29:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:03,410| - root - INFO] - 
+
+[|2020-05-02 11:39:03,410| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:03,410| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 11:39:03,410| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 11:39:03,410| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:03,410| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 11:39:03,472| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:03] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 11:39:03,541| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:03] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:03,551| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:03] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:03,616| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:03] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:05,752| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:05] "[32mGET /connect/get_token?code=M76828b6b-7923-15c8-04ca-7a94bb58b15b HTTP/1.1[0m" 308 -
+[|2020-05-02 11:39:05,758| - root - INFO] - 
+
+[|2020-05-02 11:39:05,758| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:05,759| - root - INFO] - |CONNECT -  GET TOKEN|
+[|2020-05-02 11:39:05,760| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 11:39:05,760| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:05,761| - root - INFO] - Redirect para coger token 
+[|2020-05-02 11:39:05,800| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): login.microsoftonline.com
+[|2020-05-02 11:39:07,718| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[32mGET /connect/get_token/?code=M76828b6b-7923-15c8-04ca-7a94bb58b15b HTTP/1.1[0m" 302 -
+[|2020-05-02 11:39:07,747| - root - INFO] - 
+
+[|2020-05-02 11:39:07,748| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:07,748| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 11:39:07,748| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 11:39:07,749| - root - INFO] - |--------------------|
+[|2020-05-02 11:39:07,749| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 11:39:07,751| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 11:39:07,823| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+[|2020-05-02 11:39:07,833| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:07,851| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:07,901| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:07] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 11:39:31,230| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): graph.microsoft.com
+[|2020-05-02 11:39:32,291| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 11:39:32] "[37mGET /events HTTP/1.1[0m" 200 -
+[|2020-05-02 11:54:23,415| - root - INFO] - DataBase:
+[|2020-05-02 11:54:23,416| - root - INFO] - <SQLAlchemy engine='sqlite://'>
+[|2020-05-02 11:54:25,812| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 11:55:10,269| - root - INFO] - DataBase:
+[|2020-05-02 11:55:10,270| - root - INFO] - <SQLAlchemy engine='sqlite://'>
+[|2020-05-02 11:55:12,117| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 12:10:27,169| - root - INFO] - 
+
+[|2020-05-02 12:10:27,185| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:27,185| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 12:10:27,185| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 12:10:27,185| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:27,185| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 12:10:27,185| - root - INFO] - <class 'ReservaAulas.reservaAulas_app.models.User'>
+[|2020-05-02 12:10:27,355| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:27] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 12:10:27,564| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:27] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 12:10:27,572| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:27] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 12:10:27,718| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:27] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 12:10:31,232| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:31] "[32mGET /connect/get_token?code=Ma5893720-316e-40a8-170f-cce29ed346ba HTTP/1.1[0m" 308 -
+[|2020-05-02 12:10:31,259| - root - INFO] - 
+
+[|2020-05-02 12:10:31,260| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:31,260| - root - INFO] - |CONNECT -  GET TOKEN|
+[|2020-05-02 12:10:31,260| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 12:10:31,261| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:31,261| - root - INFO] - Redirect para coger token 
+[|2020-05-02 12:10:31,358| - requests.packages.urllib3.connectionpool - INFO] - Starting new HTTPS connection (1): login.microsoftonline.com
+[|2020-05-02 12:10:33,512| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:33] "[32mGET /connect/get_token/?code=Ma5893720-316e-40a8-170f-cce29ed346ba HTTP/1.1[0m" 302 -
+[|2020-05-02 12:10:33,536| - root - INFO] - 
+
+[|2020-05-02 12:10:33,536| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:33,537| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 12:10:33,537| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 12:10:33,538| - root - INFO] - |--------------------|
+[|2020-05-02 12:10:33,538| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 12:10:33,539| - root - INFO] - <class 'ReservaAulas.reservaAulas_app.models.User'>
+[|2020-05-02 12:10:33,542| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:33] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 12:10:33,683| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:33] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 12:10:33,701| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:33] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 12:10:33,777| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 12:10:33] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 17:56:41,675| - root - INFO] - 
+
+[|2020-05-02 17:56:41,706| - root - INFO] - |--------------------|
+[|2020-05-02 17:56:41,706| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:56:41,706| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:56:41,706| - root - INFO] - |--------------------|
+[|2020-05-02 17:56:41,706| - root - INFO] - Inicio de la aplicacion
+[|2020-05-02 17:58:00,998| - root - INFO] - 
+
+[|2020-05-02 17:58:01,013| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:01,013| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:58:01,013| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:58:01,013| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:01,013| - root - INFO] - Inicio de la aplicacion
+[|2020-05-02 17:58:06,339| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 17:58:24,664| - root - INFO] - 
+
+[|2020-05-02 17:58:24,664| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:24,664| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:58:24,664| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:58:24,664| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:24,664| - root - INFO] - Inicio de la aplicacion
+[|2020-05-02 17:58:26,707| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 17:58:44,336| - root - INFO] - 
+
+[|2020-05-02 17:58:44,337| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:44,337| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:58:44,337| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:58:44,337| - root - INFO] - |--------------------|
+[|2020-05-02 17:58:44,338| - root - INFO] - Inicio de la aplicacion
+[|2020-05-02 17:58:46,119| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 17:59:03,953| - root - INFO] - 
+
+[|2020-05-02 17:59:03,953| - root - INFO] - |--------------------|
+[|2020-05-02 17:59:03,953| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:59:03,953| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:59:03,953| - root - INFO] - |--------------------|
+[|2020-05-02 17:59:03,953| - root - INFO] - Inicio de la aplicacion
+[|2020-05-02 17:59:05,786| - werkzeug - INFO] -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+[|2020-05-02 17:59:36,925| - root - INFO] - 
+
+[|2020-05-02 17:59:36,925| - root - INFO] - |--------------------|
+[|2020-05-02 17:59:36,925| - root - INFO] - |INICIO DE LA WEB APP|
+[|2020-05-02 17:59:36,940| - root - INFO] - | -  Jorge Gomez   - |
+[|2020-05-02 17:59:36,940| - root - INFO] - |--------------------|
+[|2020-05-02 17:59:36,940| - root - INFO] - Estamos en la pagina 
+[|2020-05-02 17:59:36,940| - root - INFO] - <class 'ReservaAulas.reservaAulas_app.models.User'>
+[|2020-05-02 17:59:37,331| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 17:59:37] "[37mGET / HTTP/1.1[0m" 200 -
+[|2020-05-02 17:59:40,582| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 17:59:40] "[37mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 200 -
+[|2020-05-02 17:59:40,613| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 17:59:40] "[33mGET /static/css/jumbotron.css HTTP/1.1[0m" 404 -
+[|2020-05-02 17:59:40,613| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 17:59:40] "[33mGET /static/js/jquery.min.js HTTP/1.1[0m" 404 -
+[|2020-05-02 17:59:40,676| - werkzeug - INFO] - 127.0.0.1 - - [02/May/2020 17:59:40] "[33mGET /assets/js/vendor/jquery.min.js HTTP/1.1[0m" 404 -
