@@ -9,7 +9,7 @@ class createEventForm(FlaskForm):
     teacher = TextField('Nombre profesor', [validators.InputRequired(message='Introduce un nombre de un profesor')])
     startDate = DateField('Fecha inicio', [validators.InputRequired(message='Elige un fecha')])
     endDate = DateField('Fecha fin')
-    day = SelectField('Selecciona dÃ­a de la semana')
+    day = SelectField('Selecciona día de la semana')
     startTime = DateTimeField('Hora inicio (HH:MM)',[validators.InputRequired(message='Introduce una hora')],format='%H:%M')
     endTime = DateTimeField('Hora fin (HH:MM)',[validators.InputRequired(message='Introduce una hora')],format='%H:%M')
     submit = SubmitField('Crear evento')
