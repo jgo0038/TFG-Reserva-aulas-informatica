@@ -1,7 +1,19 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+{% block title%}
+<div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h1 style="margin-top: 0; text-align: center;">Reservar aulas</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
 {% block content %}
+<div class = "container">
 <h1>Añadir evento</h1>
 
 
@@ -10,13 +22,15 @@
     {{ form1.csrf_token }}
     <div>{{ form1.capacidad.label }}</div>
     <div>{{ form1.capacidad }}</div>
+    <div>{{ form1.n_ord.label }}</div>
+    <div>{{ form1.n_ord }}</div>
     <div>{{ form1.edificio.label }}</div>
     <div>{{ form1.edificio }}</div>
     <div>{{ form1.tipo.label }}</div>
     <div>{{ form1.tipo }}</div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <button type='button' id ='enviarFiltros'>Consultar</button>
-    <button type="button" onclick="window.location.href='{{ url_for('reservar') }}'">Modificar opciones</button>    
+    <button type="button" onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>    
 </form>
 
 <div class="alert alert-warning col-md-4" id="errorMsg" style="display: none;"> No existen aulas con esas características. </div>
@@ -35,6 +49,7 @@
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
         <div>{{ form.selectAula }}</div>
+        <div><button type="button" onclick="showEventsAula()"> Ver eventos del aula </button> </div>
         <div>{{ form.subject.label }}</div>
         <div>{{ form.subject }}</div>
             <ul>
@@ -46,6 +61,13 @@
         <div>{{ form.teacher }}</div>
             <ul>
                 {% for error in form.teacher.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.email.label }}</div>
+        <div>{{ form.email }}</div>
+            <ul>
+                {% for error in form.email.errors %}
                     <li style="color: red;">{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -88,6 +110,8 @@
 </div>
 
 {%if validate == False%}
+<p>no es valido</p>
+
     <div id="form-hidden" style="display: block">
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
@@ -106,6 +130,16 @@
                     <li style="color: red;">{{ error }}</li>
                 {% endfor %}
             </ul>
+        <div>{{ form.email.label }}</div>
+        <div>{{ form.email }}</div>
+            <ul>
+                {% for error in form.email.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% if emailVal == False %}
+                <li style="color: red;">El email introducido no es valido</li>
+            {% endif %}
         <div>{{ form.startDate.label }}</div>
         <div>{{ form.startDate }}</div>
             <ul>
@@ -141,7 +175,6 @@
 {% endif %}
 
 
-
 <!-- Mensaje de creación de evento correcta o fallida -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -171,7 +204,7 @@
     <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('events') }}'"> Ver eventos</button>
     <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
 </div>
-
+</div>
 
 {% endblock content %}
 
@@ -180,6 +213,7 @@
       arrayValores = $('#filterAulas').serialize();
       capacidad =  $('#capacidad').val();
       edificio = $('#edificio').val();
+      ordenadores = $('#n_ord').val();
       tipo = $('#tipo').val();
       var csrftoken = $('meta[name=csrf-token]').attr('content')
       $.ajaxSetup({
@@ -194,7 +228,7 @@
         url: "/showReservar",
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({capacidad: capacidad, edificio: edificio, tipo: tipo}),
+        data: JSON.stringify({capacidad: capacidad, edificio: edificio, tipo: tipo, n_ord: ordenadores}),
         success: function(response) {
             $('#selectAula').empty();
             for (var i=0; i<response.length; i++) {
@@ -255,6 +289,29 @@
         }
         
 
+    };
+
+    function showEventsAula(){
+        var aulaEvents = document.getElementById("selectAula").value ;
+
+        var csrftoken = $('meta[name=csrf-token]').attr('content')
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                }
+            }
+        })
+        $.ajax({
+            type: "POST",
+            url: "/getEventsTable",
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({aula: aulaEvents}),
+            success: function(response){
+                window.open('{{ url_for('showEventsTable') }}')
+            }
+        });
     };
 </script>
 

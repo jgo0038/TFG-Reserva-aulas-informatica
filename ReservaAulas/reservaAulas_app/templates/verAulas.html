@@ -2,20 +2,21 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-{% block content %}
-
-<body style="padding-top: 0">
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-10 col-lg-offset-1">
-            <h1 style="margin-top: 0; text-align: center;">Ver y modificar aulas</h1>
-          </div>
+{% block title%}
+<div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h1 style="margin-top: 0; text-align: center;">Información sobre aulas</h1>
         </div>
       </div>
     </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<body style="padding-top: 0">
 
     <div class="container">
 
@@ -41,6 +42,8 @@
           {{ form2.tipo }}</div>
           <div class="col-3">{{ form2.capacidad.label }}
           {{ form2.capacidad }}</div>
+          <div class="col-3">{{ form2.n_ordenadores.label }}
+          {{ form2.n_ordenadores }}</div>
           <div class="col-3">{{ form2.propietario.label }}
           {{ form2.propietario }}</div>
           <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -62,6 +65,7 @@
               <th>Edificio</th>
               <th>Tipo</th>
               <th>Capacidad</th>
+              <th>Nº ordenadores</th>
               <th>Propietario</th>
             </tr>
           </thead>
@@ -74,6 +78,7 @@
                   <td><div class="row_data" col_name="edificio">{{ aula[1] }}</div></td>
                   <td><div class="row_data" col_name="tipo">{{ aula[2] }}</div> </td>
                   <td><div class="row_data" col_name="capacidad">{{ aula[3] }} </div></td>
+                  <td><div class="row_data" col_name="n_ord">{{ aula[5] }}</div> </td>
                   <td><div class="row_data" col_name="propietario">{{ aula[4] }}</div> </td>
                   <td><button class="editbtn" id="editarBtn" style="display:block;" row_id={{contador + loop.index }}>Editar</button>
                     <button class="deletebtn" id="borrarBtn" style="display:block;" row_id={{contador + loop.index }}>Borrar</button>
@@ -97,8 +102,7 @@
 <script>
 //Funcion boton editar
  $('.editbtn').click(function() {
-
-  //var item = $(this).closest("tr").text();
+ item = $(this).closest("tr").text();
   //console.log(item);
   console.log($(this).closest("tr"));
   var currentRow=$(this).closest("tr"); 
@@ -109,10 +113,17 @@
   var col3=currentRow.find("td:eq(2)").text();
   var col4=currentRow.find("td:eq(3)").text(); 
   var col5=currentRow.find("td:eq(4)").text(); 
-  var data=col1+"\n"+col2+"\n"+col3+"\n"+col4+"\n"+col5;
+  var col6=currentRow.find("td:eq(5)").text(); 
+  var data=col1+"\n"+col2+"\n"+col3+"\n"+col4+"\n"+col5+"\n"+col6;
  
   document.getElementById("nombreAula").value = col1;
+  console.log(col2);
+  document.getElementById("edificio").mySelect = col2;
+  document.getElementById("tipo").value = col3;  
   document.getElementById("capacidad").value = col4;
+  document.getElementById("n_ordenadores").value = col5;
+  document.getElementById("propietario").value = col6;
+
 
 
   var csrftoken = $('meta[name=csrf-token]').attr('content')

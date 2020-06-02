@@ -1,42 +1,57 @@
-{% extends "base.html" %}
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-{% block base_container_content %}
+{% block title%}
+<div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h1 style="margin-top: 0; text-align: center;">Añadir aulas</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block content%}
+<div class = "container">
+    <form name="createAula" id="createAula" method="POST">
+        {{ form.csrf_token }}
+        <div>{{ form.edificio.label }}</div>
+        <div>{{ form.edificio }}</div>
+        <div>{{ form.nombreAula.label }}</div>
+        <div>{{ form.nombreAula }}</div>
+            <ul>
+                {% for error in form.nombreAula.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.tipo.label }}</div>
+        <div>{{ form.tipo }}</div>
+        <div>{{ form.capacidad.label }}</div>
+        <div>{{ form.capacidad }}</div>
+            <ul>
+                {% for error in form.capacidad.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.n_ordenadores.label }}</div>
+        <div>{{ form.n_ordenadores }}</div>
+            <ul>
+                {% for error in form.n_ordenadores.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        <div>{{ form.propietario.label }}</div>
+        <div>{{ form.propietario }}</div>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <button type='button' id ='crearAula' onclick=form.submit()>Crear aula</button>
+        
+    </form>
 
-{% block title %}<div style="font-size: 50px;" >Crear nueva aula</div>{% endblock %}
+    {% if created == True%}
+        <div class="alert alert-success col-md-4" id="createdMsg" > Aula creada correctamente. </div>
+    {% endif %}
 
-<form name="createAula" id="createAula" method="POST">
-    {{ form.csrf_token }}
-    <div>{{ form.edificio.label }}</div>
-    <div>{{ form.edificio }}</div>
-    <div>{{ form.nombreAula.label }}</div>
-    <div>{{ form.nombreAula }}</div>
-        <ul>
-            {% for error in form.nombreAula.errors %}
-                <li style="color: red;">{{ error }}</li>
-            {% endfor %}
-        </ul>
-    <div>{{ form.tipo.label }}</div>
-    <div>{{ form.tipo }}</div>
-    <div>{{ form.capacidad.label }}</div>
-    <div>{{ form.capacidad }}</div>
-        <ul>
-            {% for error in form.capacidad.errors %}
-                <li style="color: red;">{{ error }}</li>
-            {% endfor %}
-        </ul>
-    <div>{{ form.propietario.label }}</div>
-    <div>{{ form.propietario }}</div>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <button type='button' id ='crearAula' onclick=form.submit()>Crear aula</button>
-    
-</form>
-
-{% if created == True%}
-    <div class="alert alert-success col-md-4" id="createdMsg" > Aula creada correctamente. </div>
-{% endif %}
-
-<div>
-    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
+    <div>
+        <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
+    </div>
 </div>
-
 {% endblock %}

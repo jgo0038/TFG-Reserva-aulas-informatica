@@ -16,7 +16,8 @@ from .oauth_helpers import (
     get_user,
     create_aulas,
     upload_calendar,
-    delete_calendar
+    delete_calendar,
+    send_email
     )
 from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula, modificarAulasForm
 import json
@@ -28,8 +29,7 @@ from reservaAulas_app.odbctest import cnxn
 from reservaAulas_app.getSQLData import getCapacidades,getEdificios,getPropietarios,getTipos
 import logging
 import requests
-
-
+import re
 
 
 @app.route('/')
@@ -136,9 +136,6 @@ def connect_o365_token():
 
 @app.route('/events', methods=['GET', 'POST'])
 def events():
-    # infoMe = get_user(flask.session['access_token'])
-    # print("QUE TENEMOS")
-    # print(infoMe)
     acc_token = flask.session['access_token']
 
     selectEdificioForm = selectGroupCalendar() #Crear primer desplegable
@@ -279,6 +276,7 @@ def showReservar():
     data = flask.request.get_json()
     print(data)
     capacidad = data['capacidad']
+    ordenadores = data['n_ord']
     edificio = data['edificio']
     tipo = data['tipo']
     #Si es admin, mostrar las aulas con las caracteristicas pedidas
@@ -287,13 +285,13 @@ def showReservar():
         cursor.execute('''
             SELECT aulas.nombre
             FROM aulas
-            WHERE aulas.capacidad = ? AND aulas.edificio = ? AND aulas.tipo = ? ;
-        ''',capacidad, edificio, tipo)
+            WHERE aulas.capacidad >= ? AND aulas.edificio = ? AND aulas.tipo = ? AND aulas.n_ordenadores >= ?;
+        ''',capacidad, edificio, tipo, ordenadores)
         varAulas = cursor.fetchall()
         listaAulas = []
         for var in varAulas:
             listaAulas.append((var[0],var[0]))
-        print("VAR A CAMBIAR")
+        print("VAR A RESERVAR")
         print(listaAulas)
         if varAulas:
             flask.session['listaAulasReservar'] = listaAulas
@@ -303,17 +301,18 @@ def showReservar():
             return json.dumps({'success':False}), 404
     #Si es responsable, consulta para ver las aulas que puede reservar si coinciden con las caracteristicas pedidas
     elif flask.session['user_email'] in listaEmailsProp :
+        print("Somos propietario")
         #Aulas segun las caracteristicas
         cursor = cnxn.cursor()
         cursor.execute('''
             SELECT aulas.nombre
             FROM aulas
-            WHERE aulas.capacidad = ? AND aulas.edificio = ? AND aulas.tipo = ? ;
-        ''',capacidad, edificio, tipo)
+            WHERE aulas.capacidad >= ? AND aulas.edificio = ? AND aulas.tipo = ? AND aulas.n_ordenadores >= ?;
+        ''',capacidad, edificio, tipo, ordenadores)
         varAulasCaract = cursor.fetchall()
         listaAulasCaract = []
         for var in varAulasCaract:
-            listaAulasCaract.append(var[0])
+            listaAulasCaract.append((var[0],var[0]))
         #Aulas según el responsable
         cursor = cnxn.cursor()
         cursor.execute('''
@@ -333,6 +332,8 @@ def showReservar():
             listaAulasResp.append((var[0],var[0]))
         #Comprobar que aulas puede reservar y coincide con las caracteristicas
         listaAulasReservar = []
+        print(listaAulasResp)
+        print(listaAulasCaract)
         for aulaR in listaAulasResp:
             if aulaR in listaAulasCaract:
                 listaAulasReservar.append(aulaR)
@@ -424,7 +425,11 @@ def reservar():
             
             aulaId = request.form["selectAula"]
             tema = request.form["subject"]
+            print("TEMA:::")
+            print(tema==None)
+            print(tema=="")
             profesor = request.form["teacher"]
+            email_prof = request.form["email"]
             fechaIni = request.form["startDate"]
             horaIni = request.form["startTime"]
             horaFin = request.form["endTime"]
@@ -438,6 +443,16 @@ def reservar():
                 print("asignamos fechainicio")
                 fechaInicio = datetime.strptime(fechaIni + " "  + horaIni ,'%Y-%m-%d %H:%M') #Convertirlo la fecha y hora en datetime
                 fechaFin = datetime.strptime(fechaFin + " "  + horaFin ,'%Y-%m-%d %H:%M') #Convertirlo la fecha y hora en datetime
+            
+            # Comprobar si el email es valido
+            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+            if(re.search(regex,email_prof)): 
+                print("Email valido")
+            else:
+                print("Email no valido")
+                return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, emailVal = False,validate = False)
+
+            
             # CAMBIO DE CONEXION BD AZURE
             aula = aulaId
             aulaId = keys_dicc[vals_dicc.index(aulaId)]
@@ -457,9 +472,10 @@ def reservar():
 
             #Si el cuestionario es valido y la fechaFin ni el dia existen -> Reservar solo para un día
             # if eventForm.validate_on_submit() and request.form["endDate"] == None and diaSemana == None:
-
+            
+            eventForm.validate_on_submit()
             #reserva simple
-            if aulaId != None and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and (request.form["endDate"] == None or request.form["endDate"] == "") and diaSemana == "None":
+            if aulaId != "" and tema!= "" and profesor!= "" and fechaIni!= "" and horaIni!= "" and horaFin!= "" and request.form["endDate"] == "" and diaSemana == "None":
                 print("Reserva Simple")
                 cursor = cnxn.cursor()
                 cursor.execute('''
@@ -523,6 +539,8 @@ def reservar():
                         # connection.commit()
                         db.session.close()
                         # engine.dispose()
+                        #Enviar mensaje
+                        em = send_email(flask.session['access_token'], email_prof, aula, fechaInicio, fechaFin)
                     except OperationalError:
                         db.session.rollback()
                         # connection.rollback()
@@ -544,6 +562,8 @@ def reservar():
             elif aulaId != None and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and request.form["endDate"] != "" and diaSemana == "None":
                 #Hacer un bucle desde inicio a findate reservando 
                 #FOR UPDATE
+                print("Reserva multiple")
+
                 cursor = cnxn.cursor()
                 cursor.execute('''
                 SELECT nombre
@@ -594,6 +614,9 @@ def reservar():
                             cnxn.commit()
                             cursor.close()
                             db.session.commit()
+                            #Enviar mensaje
+                            em = send_email(flask.session['access_token'], email_prof)
+
                         except OperationalError:
                             db.session.rollback()
                             # connection.rollback()
@@ -607,7 +630,7 @@ def reservar():
             #reserva periodica
             elif aulaId != None and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and request.form["endDate"] != "" and diaSemana != "None":
                 
-
+                print("Reserva periodica")
                 #FOR UPDATE
                 cursor = cnxn.cursor()
                 cursor.execute('''
@@ -618,9 +641,9 @@ def reservar():
                 cursor.close()
                 flagC = True
                 listaFechasReserva = []
-                fechaInicioContigua = fechaInicio
+                fechaInicioPeriodica = fechaInicio
 
-                while fechaInicioContigua <= fechaFin and flagC == True:
+                while fechaInicioPeriodica <= fechaFin and flagC == True:
                     # Comprobar que estan libres
                     cursor = cnxn.cursor()
                     cursor.execute('''
@@ -629,13 +652,13 @@ def reservar():
                     WHERE aula = ?
                     AND ( inicio < ? )
                     AND ( fin > ? );
-                    ''', aula, fechaFin, fechaInicioContigua)
+                    ''', aula, fechaFin, fechaInicioPeriodica)
                     varSolapamiento = cursor.fetchall()
                     cursor.close()
                     #Si devuelve 0 es que esta libre la hora
                     if(varSolapamiento[0][0] == 0):
-                        listaFechasReserva.append(fechaInicioContigua)
-                        fechaInicioContigua = fechaInicioContigua + timedelta(days=7)
+                        listaFechasReserva.append(fechaInicioPeriodica)
+                        fechaInicioPeriodica = fechaInicioPeriodica + timedelta(days=7)
                     else:#Si no esta libre, la bandera se pone a false y no se ejecuta la reserva
                         flagC = False
                 #Fuera del while, ver si la bandera es true o false
@@ -645,9 +668,6 @@ def reservar():
                         hora = int(str(fechaFin.time())[0:2]) #Sacamos la hora
                         min = int(str(fechaFin.time())[3:5]) #Sacamos los minutos
                         fechaFinReserva = fechaIniReserva.replace(hour=hora, minute = min)#Formamos la fechaFin de cada dia (el dia de reserva con la hora de fin)
-                        print("Aulas que se reservarian periodicamente")
-                        print(fechaIniReserva)
-                        print(fechaFinReserva)
                         #Se crean los eventos en el calendario
                         evento = create_events(flask.session['access_token'], aulaId, tema, fechaIniReserva, fechaFinReserva)
                         #Se guarda en eventos en BD
@@ -661,6 +681,8 @@ def reservar():
                             cnxn.commit()
                             cursor.close()
                             db.session.commit()
+                            #Enviar mensaje
+                            em = send_email(flask.session['access_token'], email_prof)
                         except OperationalError:
                             db.session.rollback()
                             cnxn.rollback()
@@ -672,9 +694,11 @@ def reservar():
                 return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
             
             else:
+                print("NO ES VALIDO1")
                 return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, validate = False)
 
     else:
+        print("NO ES VALIDO2")
         return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
 
 @app.route('/anadirAulas', methods=['GET', 'POST'])
@@ -718,6 +742,7 @@ def anadirAulas():
         tipo = request.form["tipo"]
         capacidad = request.form["capacidad"]
         propietario = request.form["propietario"]
+        n_ord = request.form["n_ordenadores"]
 
         nombreEdificio = dict(listaCalendarGroups).get(edificio)
         print(nombreEdificio)
@@ -727,9 +752,9 @@ def anadirAulas():
         try:
             cursor = cnxn.cursor()
             cursor.execute('''
-                INSERT into aulas (nombre, edificio, tipo, capacidad, propietario)
-                values(?, ?, ?, ?, ?); 
-            ''' , nombreAula, nombreEdificio, tipo, capacidad, propietario)
+                INSERT into aulas (nombre, edificio, tipo, capacidad, propietario, n_ordenadores)
+                values(?, ?, ?, ?, ?, ?); 
+            ''' , nombreAula, nombreEdificio, tipo, capacidad, propietario, n_ord)
             cursor.commit()
             cursor.close()  
             return flask.render_template('anadirAulas.html', form = createAulasForm, created = True)
@@ -774,7 +799,7 @@ def verAulas():
         edificio = request.form["select"]
         cursor = cnxn.cursor()
         cursor.execute('''
-            SELECT aulas.nombre, edificios.nombre, tipos.descripcion, aulas.capacidad, aulas.propietario
+            SELECT aulas.nombre, edificios.nombre, tipos.descripcion, aulas.capacidad, aulas.propietario, aulas.n_ordenadores
             FROM aulas 
             JOIN edificios ON aulas.edificio = edificios.id_edificio
             JOIN tipos ON aulas.tipo = tipos.id_tipo
@@ -795,14 +820,15 @@ def verAulas():
         edificioNuevo = request.form["edificio"]
         tipoNuevo = request.form["tipo"]
         capacidadNueva = request.form["capacidad"]
+        n_ordNuevo = request.form["n_ordenadores"]
         propietarioNuevo = request.form["propietario"]
 
         #Actualizar los datos en la BD
         cursor = cnxn.cursor()
         cursor.execute('''
             UPDATE aulas
-            SET aulas.nombre = ?, aulas.edificio = ?, aulas.tipo = ?, aulas.capacidad = ?, aulas.propietario = ?
-            WHERE aulas.nombre = ?''', aulaNueva, edificioNuevo, tipoNuevo, capacidadNueva, propietarioNuevo, flask.session['aulaActualizar'])
+            SET aulas.nombre = ?, aulas.edificio = ?, aulas.tipo = ?, aulas.capacidad = ?, aulas.propietario = ?, aulas.n_ordenadores = ?
+            WHERE aulas.nombre = ?''', aulaNueva, edificioNuevo, tipoNuevo, capacidadNueva, propietarioNuevo, n_ordNuevo, flask.session['aulaActualizar'])
         cnxn.commit()
 
         #Si se ha cambiado el nombre del aula, actualizarlo en el calendario de outlook tambien
@@ -816,9 +842,7 @@ def verAulas():
 
             calendarioAct = diccCalendarios.get(flask.session['aulaActualizar']) #Calendario a actualizar
 
-            upload_calendar(flask.session['access_token'], calendarioAct, aulaNueva)
-
-        
+            upload_calendar(flask.session['access_token'], calendarioAct, aulaNueva)  
 
         return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, cambio = True)
 
@@ -851,6 +875,26 @@ def eliminarAula():
         delete_calendar(flask.session['access_token'], calendarioBorrar)
         return json.dumps(data)
 
+@app.route('/getEventsTable',methods=['POST','GET'])
+def getEventsTable():
+    data = flask.request.get_json()
+    aulaNombre = data['aula']
+    print(aulaNombre)
+    flask.session['tablaEvents'] = aulaNombre
+    return json.dumps({'success':True}), 200
+    
+@app.route('/showEventsTable',methods=['POST','GET'])
+def showEventsTable():
+    cursor = cnxn.cursor()
+    cursor.execute('''
+    SELECT eventos.evento,eventos.email,eventos.inicio,eventos.fin
+    FROM eventos
+    WHERE eventos.aula = ?;''',flask.session['tablaEvents'])
+    varEventos = cursor.fetchall()
+    cursor.close() 
+    print("Ahora recibimos de query esto:")
+    print(varEventos)
 
-
-
+    varEventos = tuple(sorted(varEventos, key=lambda item: item[2])) #Ordenar segun la fecha    
+    fechaActual = datetime.now()
+    return flask.render_template('eventsTable.html', dictEvents = varEventos, fechaActual = fechaActual)

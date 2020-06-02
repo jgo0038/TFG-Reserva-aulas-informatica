@@ -253,3 +253,32 @@ def delete_calendar(access_token, aulaId):
         return r.json()
     else:
         return "{0}: {1}".format(r.status_code, r.text)
+
+def send_email(access_token, email, aula, fechaInicio, fechaFin):
+     
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    send_email_url = graph_endpoint.format('/me/sendMail')  #Ruta para obtener informacion sobre el usuario   
+
+    payload = {
+        "message": {
+            "subject": "Mensaje de prueba",
+            "body": {
+                "contentType": "Text",
+                "content": "Se ha realizado una reserva sobre el aula " + aula 
+            },
+            "toRecipients": [
+            {
+                "emailAddress": {
+                    "address": email
+                }
+            }],
+               
+        }
+    }
+
+    r = make_api_call('POST', send_email_url, access_token, payload)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)

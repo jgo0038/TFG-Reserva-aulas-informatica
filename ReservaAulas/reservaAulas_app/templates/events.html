@@ -1,10 +1,20 @@
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-{% block title %}<div style="font-size: 50px;" >Eventos</div>{% endblock %}
+{% block title %}
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+        <h1 style="margin-top: 0; text-align: center;">Eventos</h1>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
 {% block content %}
 <script src="https://ajax.googleapis.com//ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-
+<div class = "container">
   <!-- Formulario para elegir el grupo de calendario del que ver las aulas -->
   <form name="selectEdif" id="selectEdif" method="POST">
     <div>{{ formEdificio.select.label }}</div>
@@ -32,7 +42,7 @@
     <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
   </div>
 
-
+</div>
 
 
   <script type="text/javascript">
