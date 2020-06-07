@@ -11,6 +11,8 @@ app = flask.Flask(__name__)
 
 app.config['SECRET_KEY'] = 'hard to guess string'
 # app.secret_key = os.environ.get('SECRET_KEY')
+app.jinja_env.globals['ADMIN_USERS'] = ('gestCalendar@outlook.com')
+
 try:
     logging.basicConfig(filename='log_web_app.log', format='[|%(asctime)s| - %(name)s - %(levelname)s] - %(message)s', level=logging.INFO)
     logging.info('\n')

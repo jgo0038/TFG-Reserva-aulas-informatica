@@ -8,7 +8,7 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/static/css/jumbotron.css" rel="stylesheet">
-
+    <link href="/static/css/navBar.css" rel="stylesheet">
      <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -21,7 +21,7 @@
   <body style="padding-top: 0">
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="margin-bottom: 0;">
       <div class="container">
         <div class="row">
           <div class="col-lg-10 col-lg-offset-1">
@@ -31,12 +31,11 @@
       </div>
     </div>
 
-    <div class="container">
 
       {% block base_container_content %}
       {% endblock %}
 
-    </div>
+    
 
   </body>
 </html>

@@ -1,6 +1,33 @@
 \capitulo{4}{Técnicas y herramientas}
 
-Esta parte de la memoria tiene como objetivo presentar las técnicas metodológicas y las herramientas de desarrollo que se han utilizado para llevar a cabo el proyecto. Si se han estudiado diferentes alternativas de metodologías, herramientas, bibliotecas se puede hacer un resumen de los aspectos más destacados de cada alternativa, incluyendo comparativas entre las distintas opciones y una justificación de las elecciones realizadas. 
-No se pretende que este apartado se convierta en un capítulo de un libro dedicado a cada una de las alternativas, sino comentar los aspectos más destacados de cada opción, con un repaso somero a los fundamentos esenciales y referencias bibliográficas para que el lector pueda ampliar su conocimiento sobre el tema.
+\section{Técnicas}
 
+\subsection{\textit{Scrum}}
+La metodología \textit{Scrum} es una metodología de desarrollo ágil, en la que se aplican buenas prácticas y procesos con la finalidad de obtener la mejor calidad posible en el producto final buscado.\newline
+Esta metodología está pensada para un equipo de trabajo, con el fin de organizarse y trabajar más eficientemente obteniendo los mejores resultados posibles. En mi caso trataré de simular una metodología \textit{Scrum} ya que el trabajo le realizaré yo solo, pero la intención es dividir dicho trabajo en \textit{sprints} que contendrán dentro las tareas a realizar.\newline
+Como acabo de mencionar, esta metodología se basa en crear \textit{sprints}, dentro de los que se crearán las tareas a realizar (\textit{issues}). Para establecer estas tareas dentro de cada sprint, se realiza una planificación, en la que se deja claro los objetivos a conseguir y el tiempo para cada uno de ellos. 
+Se realizan revisiones para controlar los avances de los sprint planificados y llevar un control sobre el proyecto.
 
+\subsubsection{\textit{GitHub}}
+Para el control de versiones de este proyecto he utilizado \textit{GitHub}, que es un repositorio en línea que emplea \textit{Git}. Así podemos guardar los cambios que vamos realizando en el proyecto y controlar que se cumplan las tareas en el tiempo indicado.
+
+\section{Herramientas}
+\subsection{\textit{Visual Studio Code}}
+Editor y compilador de código fuente. Incluye y utilizamos el soporte que ofrece para la depuración y para el control integrado de \textit{Azure Web Services}.
+
+\subsection{\textit{Flask}}
+\textit{Flask} es un \textit{framework} escrito en \textit{Python} que permite crear aplicaciones web rápidamente y con un mínimo número de líneas de código.
+
+\subsection{\textit{Jinja2}}
+\textit{Jinja2} es un motor de plantillas web para aplicaciones desarrolladas en \textit{Python}. Permite que \textit{Flask} pueda hacer uso de los contenidos de las plantillas \textit{HTML}.
+
+\subsection{Documentación}
+Como herramienta para realizar la documentación se ha escogido \textit{LaTeX}, está diseñado para crear documentos con una alta calidad tipográfica. Como editor de \textit{LaTeX} he utilizado \texit{Overleaf}
+
+\subsection{Outlook API (Microsoft Graph) }
+Para realizar este proyecto se ha utilizado la \texit{API} de \texit{Outlook} para manejar los calendarios, que equivalen a las aulas que se proporcionan al usuario para reservar. Para tener acceso a las herramientas de esta API, usé el punto de conexión Microsoft Graph ya que ofrece más servicios y características siguiendo la recomendación de Microsoft (\url{https://docs.microsoft.com/es-ES/outlook/rest/compare-graph}).
+En concreto para este proyecto he utilizado distintas funciones de esta \texit{API}:
+\begin{itemize}
+    \item \texbf{Microsoft graph} para realizar las llamadas a esta \texit{API} y recoger o escribir datos en los calendarios, y modificar y crear dichos calendarios.
+    \item \texbf{Outlook Login} para el inicio de sesión mediante una cuenta de \texit{Outlook}.
+\end{itemize}

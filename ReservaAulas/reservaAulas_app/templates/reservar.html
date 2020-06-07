@@ -1,8 +1,10 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/navBar.css" rel="stylesheet">
+<link href="/static/css/buttons.css" rel="stylesheet">
 {% block title%}
-<div class="jumbotron">
+<div class="jumbotron" style="margin-bottom: 0;">
     <div class="container">
       <div class="row">
         <div class="col-lg-10 col-lg-offset-1">
@@ -13,6 +15,35 @@
   </div>
 {% endblock %}
 {% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar">
+    <ul class="navbar-nav mr-auto">
+    <li class="homeImg">
+      <a class="navbar-brand" href="{{ url_for('inicio') }}">
+        <img src="/static/img/home.jpg" width="30" height="30" alt="">
+      </a>
+    </li>
+    <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
+    <li class="nav-item">
+        {% if session['user_email'] in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
+            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
+        {% else %}
+            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
+        {% endif %}
+    </li>
+          
+    <li>
+        <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
+    </li>
+  
+    <li>
+        {% if session['user_email'] in ADMIN_USERS %}        
+            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
+        {% else %}
+            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
+        {% endif %}
+    </li>
+    </ul>
+</nav>
 <div class = "container">
 <h1>Añadir evento</h1>
 
@@ -27,10 +58,10 @@
     <div>{{ form1.edificio.label }}</div>
     <div>{{ form1.edificio }}</div>
     <div>{{ form1.tipo.label }}</div>
-    <div>{{ form1.tipo }}</div>
+    <div style="padding-bottom: 5px;">{{ form1.tipo }}</div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <button type='button' id ='enviarFiltros'>Consultar</button>
-    <button type="button" onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>    
+    <button type='button' id ='enviarFiltros' class="btn btn-link" >Consultar</button>
+    <button type="button" class="btn btn-link"  onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>    
 </form>
 
 <div class="alert alert-warning col-md-4" id="errorMsg" style="display: none;"> No existen aulas con esas características. </div>
@@ -49,7 +80,7 @@
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
         <div>{{ form.selectAula }}</div>
-        <div><button type="button" onclick="showEventsAula()"> Ver eventos del aula </button> </div>
+        <div><button type="button" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
         <div>{{ form.subject.label }}</div>
         <div>{{ form.subject }}</div>
             <ul>
@@ -200,10 +231,7 @@
   {% endif %}
 {% endwith %}
 
-<div>
-    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('events') }}'"> Ver eventos</button>
-    <button type="button" class="btn btn-warning" onclick="window.location.href='{{ url_for('inicio') }}' "> Inicio</button>
-</div>
+
 </div>
 
 {% endblock content %}

@@ -17,7 +17,8 @@ from .oauth_helpers import (
     create_aulas,
     upload_calendar,
     delete_calendar,
-    send_email
+    send_email,
+    share_calendar
     )
 from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula, modificarAulasForm
 import json
@@ -49,9 +50,15 @@ def inicio():
         listaUsuariosReservar.append(us[0])
     print("LISTA RESERVADORES")
     print(listaUsuariosReservar)
+    flask.session['listaUsuariosPropietarios'] = listaUsuariosReservar
     cursor.close()  
-    return flask.render_template('home.html', o365_sign_in_url=sign_in_url(), ADMIN_USERS=ADMIN_USERS, listaUsuariosReservar = listaUsuariosReservar)
+    return flask.render_template('home.html', o365_sign_in_url=sign_in_url(), ADMIN_USERS=ADMIN_USERS)
 
+
+@app.route('/cerrarSesion')
+def cerrarSesion():
+    flask.session.clear()
+    return flask.render_template('home.html', o365_sign_in_url=sign_in_url())
 
 @app.route('/connect/get_token')
 def connect_o365_token():
@@ -136,6 +143,8 @@ def connect_o365_token():
 
 @app.route('/events', methods=['GET', 'POST'])
 def events():
+    print("PROPIEDADES DEL CALENDARIO A COMPARTIR")
+    print(share_calendar(flask.session['access_token']))
     acc_token = flask.session['access_token']
 
     selectEdificioForm = selectGroupCalendar() #Crear primer desplegable
@@ -403,16 +412,25 @@ def reservar():
     listaDias = [(None,"Selecciona un día"),("Lunes","Lunes"),("Martes","Martes"),("Miercoles","Miercoles"),("Jueves","Jueves"),("Viernes","Viernes"),("Sabado","Sabado"),("Domingo","Domingo")]
     eventForm.day.choices = listaDias
     logging.info("RESERVAR")
-    calendars = get_calendars(flask.session['access_token']) #Reocgemos todos los calendarios
-    logging.info(calendars)
-    valores = calendars['value']  #Sacamos sus valores del diccionario recibido
+    try:
+        calendars = get_calendars(flask.session['access_token']) #Reocgemos todos los calendarios
+        logging.info(calendars)
+        valores = calendars['value']  #Sacamos sus valores del diccionario recibido
 
-    listaCalendarios = []
-    for cal in valores:
-        #Añadir todos los calendarios menos los que venian predefinidos en outlook (no se pueden borrar)
-        if cal['name'] != "Calendario" and cal['name'] != "Días festivos de España" and cal['name'] != "Cumpleaños":
-            listaCalendarios.append((cal['id'],cal['name'])) 
-
+        listaCalendarios = []
+        for cal in valores:
+            #Añadir todos los calendarios menos los que venian predefinidos en outlook (no se pueden borrar)
+            if cal['name'] != "Calendario" and cal['name'] != "Días festivos de España" and cal['name'] != "Cumpleaños":
+                listaCalendarios.append((cal['id'],cal['name'])) 
+    except Exception:
+        print("Somos la exception")
+        print("Antiguo token")
+        print(flask.session['access_token'])
+        nuevoToken = refresh_oauth_token(flask.session['refresh_token'])
+        flask.session['access_token'] = nuevoToken['access_token']
+        print("Nuevo token")
+        print(flask.session['access_token'])
+        return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
     diccCalendarios = dict(listaCalendarios) #Creamos un diccionario para poder sacar el nombre del aula a partir del aulaId
     keys_dicc = list(diccCalendarios.keys()) 
     vals_dicc= list(diccCalendarios.values()) 
@@ -748,7 +766,16 @@ def anadirAulas():
         print(nombreEdificio)
 
         create_aulas(flask.session['access_token'], edificio, nombreAula)
-        
+        cursor = cnxn.cursor()
+        cursor.execute('''
+            SELECT propietarios.email
+            FROM propietarios
+            WHERE propietarios.id_propietario = ?; 
+        ''' ,propietario)
+        varPropietarioEmail = cursor.fetchall()
+        print("EL EMAIL AL QUE SE TIENE QUE AVISAR")
+        print(varPropietarioEmail[0][0])
+
         try:
             cursor = cnxn.cursor()
             cursor.execute('''
@@ -757,15 +784,13 @@ def anadirAulas():
             ''' , nombreAula, nombreEdificio, tipo, capacidad, propietario, n_ord)
             cursor.commit()
             cursor.close()  
-            return flask.render_template('anadirAulas.html', form = createAulasForm, created = True)
-        except OperationalError:  
+            return flask.render_template('anadirAulas.html', form = createAulasForm, created = True, prop = varPropietarioEmail[0][0])
+        except Exception:  
             db.session.rollback()
             cnxn.rollback()
             db.session.close()
 
             return flask.render_template('anadirAulas.html', form = createAulasForm, created = False)
-
-        
 
 
     return flask.render_template('anadirAulas.html', form = createAulasForm)
@@ -776,22 +801,31 @@ def verAulas():
     selectAulasForm = selectGroupCalendar()
     modAulaForm = modificarAulasForm()
     #Añadir los grupos de calendarios (edificios) a la opcion edificio
-    calendarGroups = get_calendarsGroups(flask.session['access_token'])
-    valCalendarGroups = calendarGroups['value']
+    valCalendarGroups = getEdificios()
     listaCalendarGroups = []
     for val in valCalendarGroups:
-        if val['name'] != 'Mis calendarios' and val['name'] != 'Other Calendars':
-            listaCalendarGroups.append((val['name'],val['name']))
+        listaCalendarGroups.append((val[0],val[1]))
     selectAulasForm.select.choices = listaCalendarGroups
 
+    cursor = cnxn.cursor()
+    cursor.execute('''
+    SELECT propietarios.email
+    FROM propietarios;
+    ''' )
+    usersPropietarios = cursor.fetchall()
+    listaUsuariosPropietarios = []
+    for us in usersPropietarios:
+        listaUsuariosPropietarios.append(us[0])
+    #Formulario para modificar
     modAulaForm.edificio.choices = getEdificios()
     modAulaForm.tipo.choices = getTipos()
     modAulaForm.propietario.choices = getPropietarios()
     if flask.request.get_json():
         data = flask.request.get_json()
-        print("DAta que nos llega:::")
-        print(data['aula'])
         flask.session['aulaActualizar'] = data['aula']
+        flask.session['propActualizar'] = data['prop']
+        print("Propietariaso:::")
+        print(flask.session['propActualizar'])
         return json.dumps(data)
         # modAulaForm.nombreAula.data = data['aula']
     #Coger todas las aulas del edificio pedido en el form
@@ -809,7 +843,7 @@ def verAulas():
         print(varAulas)
         cursor.close()
 
-        return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, aulas = varAulas)
+        return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, aulas = varAulas, user = flask.session['user_email'], listaPropietarios = listaUsuariosPropietarios)
     
     #Formulario para actualizar los datos
     if request.method == 'POST' and modAulaForm.validate_on_submit():
@@ -831,6 +865,8 @@ def verAulas():
             WHERE aulas.nombre = ?''', aulaNueva, edificioNuevo, tipoNuevo, capacidadNueva, propietarioNuevo, n_ordNuevo, flask.session['aulaActualizar'])
         cnxn.commit()
 
+        
+
         #Si se ha cambiado el nombre del aula, actualizarlo en el calendario de outlook tambien
         if(aulaNueva != flask.session['aulaActualizar']):
             calendars = get_calendars(flask.session['access_token']) #Reocgemos todos los calendarios
@@ -843,6 +879,10 @@ def verAulas():
             calendarioAct = diccCalendarios.get(flask.session['aulaActualizar']) #Calendario a actualizar
 
             upload_calendar(flask.session['access_token'], calendarioAct, aulaNueva)  
+        
+        #Si se actualiza el propietario mostrar un mensaje avisando para los permisos
+        if propietarioNuevo.strip() != flask.session['propActualizar'].strip():
+            return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, cambio = True, cambioProp = True, prop = propietarioNuevo)
 
         return flask.render_template('verAulas.html', form = selectAulasForm, form2 = modAulaForm, cambio = True)
 

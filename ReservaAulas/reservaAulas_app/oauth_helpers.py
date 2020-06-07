@@ -15,6 +15,7 @@ import uuid
 import logging
 from flask import request
 
+
 def datetime_from_timestamp(timestamp):
     timestamp = float(timestamp)
     return datetime.datetime.utcfromtimestamp(timestamp)
@@ -282,3 +283,16 @@ def send_email(access_token, email, aula, fechaInicio, fechaFin):
         return r.json()
     else:
         return "{0}: {1}".format(r.status_code, r.text)
+
+
+def share_calendar(access_token):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    share_calendar_url = graph_endpoint.format('/users/gestCalendar@outlook.com/calendar/calendarPermissions')  #Ruta para obtener informacion sobre el usuario   
+    
+    r = make_api_call('GET', share_calendar_url, access_token)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
+

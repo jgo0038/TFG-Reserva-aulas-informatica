@@ -1,13 +1,110 @@
 \apendice{Plan de Proyecto Software}
 
 \section{Introducción}
+Un plan de proyecto recoge la planificación temporal donde se resumen las divisiones de trabajo en periodos de tiempo y un estudio de viabilidad teniendo en cuenta las repercusiones tanto legales como económicas de dicho proyecto.
 
 \section{Planificación temporal}
+Para la planificación temporal he usado la plataforma GitHub en la que he intentado simular una metodología \textit{Scrum}, en la que las divisiones de tiempo para realizar una determinada función se conocen como \textit{Sprints}. La duración de los Sprints en este caso no era especificada, ya que no tenía unos plazos obligatorios y algunos sprints duraban más de lo planeado y otros menos. Los primeros Sprints están resumidos en unas \textit{issues} de mayor tamaño ya que se centraban en realizar pruebas y generación del comienzo del proyecto.\newline
+Dentro de la plataforma de GitHub utilicé tablero de Zen-hub para controlar mejor la inicialización y finalización de las \textit{issues}.\newline
+Aquí dejo el enlace al repositorio de mi proyecto GitHub: \url{https://github.com/jgo0038/TFG-Reserva-aulas-informatica} \newline
+
+\subsection{Sprint 0 - 24/02/2020 - 27/02/2020}
+Primer sprint en el que se inicia el proyecto, realmente comienza antes el proyecto y la investigación pero hasta entonces no se crea el GitHub. Las tareas en este sprint estaban destinadas a la investigación y la preparación para el proyecto:
+\begin{itemize}
+    \item Elegir los programas a utilizar. 
+	\item Crear un repositorio en GitHub.
+    \item Generar el entorno virtual de trabajo.
+    \item Registrar la aplicación en Azure Active Directory para obtener un identificador de la aplicación.
+	\item Implementación una primera versión simple del login en nuestra web app.
+	\item Empezar a manejar Overleaf para la documentación el LaTex.
+	\item Investigar sobre el uso de la API de Outlook para Flask.
+\end{itemize}
+Resaltar que aquí creo la primera rama donde subo estos primeros pasos del proyecto.
+\subsection{Sprint 1 - 27/02/2020 - 08/03/2020}
+En este sprint solamente hubo especificada una tarea, que engloba trabajar con la API y empezar a enviar y recibir datos para conocer su funcionamiento. Ya conociendo la forma en la que iba a trabajar y los requisitos que había que conseguir, comencé a hacer pruebas sobre la API solucionando los primeros errores y consiguiendo los primeros avances.\newline
+Una vez estaba iniciada la sesión de Outlook el objetivo de este Sprint era leer y modificar eventos del calendario de la sesión. Se sube esto a nueva nueva rama, en la que tenemos entonces a parte del inicio de sesión ya comentado en el Sprint 0, la funcionalidad de poder recoger eventos del calendario principal del usuario que ha iniciado sesión en la web app.
+
+\subsection{Sprint 2 - 08/03/2020 - 05/04/2020}
+Los objetivos principales en este sprint fueron los siguientes:
+\begin{itemize}
+    \item Investigar y comenzar a trabajar con los calendarios compartidos de Outlook.
+    \item Comenzar a trabajar con la base de datos local de MySQL.
+    \item Investigar sobre la seguridad de la aplicación.
+\end{itemize}
+En este Sprint, la tarea de investigar la seguridad era secundaria y no corría prisa de momento, por lo que se relegó a mirarlo más tarde cuando tuviera más de funcionalidad y páginas creadas. La tarea principal era el trabajo con los calendarios compartidos, en concreto se buscaba poder crear eventos en calendarios compartidos, que son los que hacen la función de albergar los eventos de cada aula.
+
+\subsection{Sprint 3 - 26/03/2020 - 15/04/2020}
+Los objetivos que abordamos en este Sprint se centrar en añadir funcionalidades a la aplicación y estudiar el despliegue:
+\begin{itemize}
+    \item Controlar el solapamiento de horas de los eventos en los calendarios ya que no lo realiza Outlook.
+    \item Añadir una página en la que se puedan ver los eventos que hay creados en un determinado calendario.
+    \item Estudiar las posibilidades que hay para desplegar la web app. En mi caso quedándome con Azure.
+\end{itemize}
+Este Sprint se fue compaginando con el anterior, ya que la tarea de investigar sobre la seguridad de la aplicación había quedado pendiente.
+\subsection{Sprint 4 - 05/04/2020 - 27/04/2020}
+Este Sprint tenía como objetivos principales:
+\begin{itemize}
+    \item Controlar que funcione en un entorno multiusuario, que no se pueda reservar a la vez el mismo aula.
+    \item Crear el primer modelo de las tablas y relaciones en la base de datos loca.
+    \item Comprobar que las fechas sean la misma de inicio y fin en una reserva simple.
+    \item Ofrecer al cliente una opción para elegir de que calendario quiere ver las horas reservadas y si es para reservar dependiendo de si es responsable o no.
+\end{itemize}
+Este Sprint se da por cerrado pese a haber quedado una tarea abierta (sincronizar la web app con la base de datos, de modo que que borre los eventos de la base de datos local y los vuelva a guardar recuperándolos directamente desde Outlook, como solución a algún problema o corrupción de los datos de la base de datos), esta tarea fue desestimada en una reunión posterior.
+\subsection{Sprint 5 - 17/04/2020 - 07/05/2020}
+Los objetivos que voy a abordar en este Sprint son los siguientes:
+\begin{itemize}
+    \item Realizar un cambio en una relación de la base de datos, permite albergar mas de un propietario a un aula.
+    \item Crear el servidor de Azure database, se crea en lenguaje SQL y sin servidor, para reducir el coste a lo mínimos.
+    \item Subir la base de datos local al servidor de Azure database creado y adaptar el lenguaje al SQL server.
+    \item Conectar la base de datos subida a Azure con nuestra web app, se realiza mediante pyodbc.
+    \item Organizar el proyecto según el estandar establecido por Microsoft y VSCode para poder subir facilmente a Azure.
+    \item Desplegar la aplicación en Azure.
+    \item Primera asignación y restricción de acceso a páginas según la cuenta que acceda.
+\end{itemize}
+
+\subsection{Sprint 6 - 07/05/2020 - 26/05/2020}
+Este Sprint se centra en mejorar partes del código ya existentes y facilitar la reserva de las aulas, concretamente los objetivos fueron:
+\begin{itemize}
+    \item Solucionar los errores de los formularios, que no se muestran por pantalla correctamente.
+    \item Añadir unos filtros antes de reservar el aula, limitando las aulas que se muestran. Añadir también un campo para el nombre del profesor que lo reserva.
+    \item Crear una nueva página en la que el administrador pueda crear nuevas aulas.
+    \item Crear una nueva página desde la que se pueda ver la información de cada aula.
+    \item En la página de la información, permitir el modificar los datos de las aulas.
+    \item Restringir los datos que se pueden introducir al modificar aulas en campos como propietario, edificio o tipo de aula.
+    \item En la página de la información, permitir una opción para borrar las aulas.
+    \item Añadir las opciones de reserva múltiple (reservar más de un día seguido a la misma hora) y de reserva periódica (reservar un día a la semana a la misma hora durante el tiempo que se quiera ).
+\end{itemize}
+Comentar que se actualiza también la base de datos, aplicando la actualización y borrado en cascada.
+Queda abierto el Sprint, la fecha de finalización está según la última tarea que se acaba de cerrar, ya que la tarea de la tabla de auditorías queda pospuesta, si hay tiempo al final se realizará.
+
+\subsection{Sprint 7 - 20/05/2020 - ???????????}
+El Sprint 7 se centra en volver a introducir el código con el que he estado trabajando en Azure e ir añadiendo la documentación al proyecto, para ello se fijan estos objetivos:
+\begin{itemize}
+    \item Actualizar el repositorio, añadiendo todo tal cual está con los cambios subidos a Azure.
+    \item Añadir la carpeta de documentación siguiendo la plantilla proporcionada.
+\end{itemize}
+
+\subsection{Sprint 8 - 26/05/2020 - ???????????}
+Este Sprint se centra en tareas más cortas y más visibles, dando estilos a la página y sus elementos y añadiendo funciones para mejorar el funcionamiento. Las tareas más destacables son las siguientes:
+\begin{itemize}
+    \item Añadir botón que permita ver las horas ocupadas del aula a reservar.
+    \item Añadir cabeceras a las páginas.
+    \item Añadir un campo nuevo de "nº de ordenadores" a las aulas, si no tiene ordenadores se indicará con un 0. Establecer este campo como filtro al reservar aula también.
+    \item Añadir campo de correo electrónico del nombre del profesor al que se reserva el aula y enviarle un mensaje cuando la reserva se realice.
+    \item Representar los privilegios de cada usuario en los botones, de forma que se bloquee si no tiene permiso para esa función.
+    \item Mostrar mensaje al modificar el campo propietario recordando al administrador que tiene que darle los permisos al nuevo propietario manualmente desde el calendario de Outlook.
+    \item Aplicar estilos a los elementos de la página.
+    \item Crear la barra de navegación.
+    \item Implementar el cierre de sesión.
+\end{itemize}
+Entre estas tareas quiero resaltar que los filtros de búsqueda de capacidad y nº de ordenadores en la página de realizar reserva se atienen al mínimo buscado, no es un búsqueda exacta de esas características, sino se limitaría demasiado.
 
 \section{Estudio de viabilidad}
 
 \subsection{Viabilidad económica}
 
 \subsection{Viabilidad legal}
+
+
 
 

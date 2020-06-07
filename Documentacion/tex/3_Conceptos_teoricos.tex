@@ -1,83 +1,33 @@
 \capitulo{3}{Conceptos teóricos}
 
-En aquellos proyectos que necesiten para su comprensión y desarrollo de unos conceptos teóricos de una determinada materia o de un determinado dominio de conocimiento, debe existir un apartado que sintetice dichos conceptos.
+\subsection{Flask}
+Es un framework en lenguaje Python que permite y facilita la creación de aplicaciones web con un comienzo sencillo y una escalabilidad muy alta. Utiliza la especificación Werkzeug y Jinja como motor en los templates.
 
-Algunos conceptos teóricos de \LaTeX \footnote{Créditos a los proyectos de Álvaro López Cantero: Configurador de Presupuestos y Roberto Izquierdo Amo: PLQuiz}.
-
-\section{Secciones}
-
-Las secciones se incluyen con el comando section.
-
-\subsection{Subsecciones}
-
-Además de secciones tenemos subsecciones.
-
-\subsubsection{Subsubsecciones}
-
-Y subsecciones. 
-
-
-\section{Referencias}
-
-Las referencias se incluyen en el texto usando cite \cite{wiki:latex}. Para citar webs, artículos o libros \cite{koza92}.
-
-
-\section{Imágenes}
-
-Se pueden incluir imágenes con los comandos standard de \LaTeX, pero esta plantilla dispone de comandos propios como por ejemplo el siguiente:
-
-\imagen{escudoInfor}{Autómata para una expresión vacía}
-
-
-
-\section{Listas de items}
-
-Existen tres posibilidades:
-
+\subsection{Werkzeug}
+Es una biblioteca de aplicaciones web de WSGI (interfaz de puerta de enlace del servidor web), se utiliza internamente en Flask y hace las siguientes funciones:
 \begin{itemize}
-	\item primer item.
-	\item segundo item.
+\item Depurador para inspeccionar rastros de la pila y el código fuente.
+\item Objeto de solicitud para interactuar con encabezados, argumentos de consulta, datos de formulario, archivos y cookies.
+\item Objeto de respuesta en la transmisión de datos.
+\item Enrutamiento de URL.
+\item Utilidades HTTP.
 \end{itemize}
 
-\begin{enumerate}
-	\item primer item.
-	\item segundo item.
-\end{enumerate}
+\subsection{HTML}
+Las siglas hacen referencia a HyperText Markup Language, lo que viene a ser el lenguaje utilizado para la elaboración de las páginas web.
 
-\begin{description}
-	\item[Primer item] más información sobre el primer item.
-	\item[Segundo item] más información sobre el segundo item.
-\end{description}
-	
-\begin{itemize}
-\item 
-\end{itemize}
+\subsection{Bootstrap}
+Es una biblioteca de código abierto que proporciona estilos, plantillas y diseños ya creados para usar directamente en nuestras aplicaciones web.
+ 
+\subsection{JavaScript}
+Es un lenguaje de programación ligero e interpretado, orientado a objetos. En mi caso utilizado como lenguaje de scripting para páginas web. Se ha utilizado desde el lado del cliente proporcionando mejoras de las interfaz y de la comunicación con el servidor.
 
-\section{Tablas}
+\subsection{MySQL}
+Programa gestor de base de datos, de código abierto, en este caso utilizado para el comienzo y las pruebas del código en local.
 
-Igualmente se pueden usar los comandos específicos de \LaTeX o bien usar alguno de los comandos de la plantilla.
+\subsection{Azure}
+Es un servicio de computación en la nube, de Microsoft, diseñado para construir, probar, desplegar y administrar aplicaciones y servicios mediante el uso de sus centros de datos. Proporciona muchas herramientas para facilitar el manejo de estas aplicaciones o servicios. En mi caso la he utilizado para desplegar mi aplicación web y mi base de datos. Ambas pueden ser gestionadas desde extensiones del \texit{VSCode}.
 
-\tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c}{herramientasportipodeuso}
-{ \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
-HTML5 & X & & &\\
-CSS3 & X & & &\\
-BOOTSTRAP & X & & &\\
-JavaScript & X & & &\\
-AngularJS & X & & &\\
-Bower & X & & &\\
-PHP & & X & &\\
-Karma + Jasmine & X & & &\\
-Slim framework & & X & &\\
-Idiorm & & X & &\\
-Composer & & X & &\\
-JSON & X & X & &\\
-PhpStorm & X & X & &\\
-MySQL & & & X &\\
-PhpMyAdmin & & & X &\\
-Git + BitBucket & X & X & X & X\\
-Mik\TeX{} & & & & X\\
-\TeX{}Maker & & & & X\\
-Astah & & & & X\\
-Balsamiq Mockups & X & & &\\
-VersionOne & X & X & X & X\\
-} 
+\subsection{Pyodbc}
+Es un módulo de Python de código abierto que simplifica el acceso a las bases de datos ODBC. Usado para realizar la conexión entre la base de datos subida al servicio de Azure y nuestra aplicación web también desplegada.
+
