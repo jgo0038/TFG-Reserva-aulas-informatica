@@ -1,18 +1,52 @@
-{% extends "base.html" %}
-{% block base_container_content %}
-    <div class="col-lg-10">
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/navBar.css" rel="stylesheet">
+<link href="/static/css/buttons.css" rel="stylesheet">
+{% block title%}
+<title>Inicio</title>
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;" >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-lg-offset-1">
+          <h1 style="margin-top: 0; text-align: center;">Reserva Aulas Web App</h1>
+        </div>
+      </div>
+    </div>
+    {% if session['user_email'] %}
+    <flexbox style="display: flex; justify-content:right;">
+      <a id="cerrarSesion" class="cerrarSesion"  href="https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://localhost:5000/cerrarSesion">
+        <img src="/static/img/cerrar-sesion.png" width="30" height="30" alt="">
+      </a> 
+    </flexbox>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block content %}
+{% if o365_sign_in_url and not session['user_email'] %}
+<body style="padding-top: 0; background-size: 100%;" background="/static/img/politecnica.jpg">
+    <div class="col-lg-12">
       <div>
-
-        {% if o365_sign_in_url and not session['user_email'] %}
-        <p>Iniciar sesión desde Outlook.</p>
-        <button class="btn btn-link" style="background-color: #b3cccc" onclick="window.location.href='{{ o365_sign_in_url }}'">
+        <flexbox style="justify-content: center;display: flex;">
+          <p style="margin-top: 150px;padding: 10px;border-radius: 6px;background-color: lightgray;">Comience a usar la app</p>
+        </flexbox>
+        <flexbox style="justify-content: center;display: flex;">
+          <button class="btn btn-link" style="background-color: #b3cccc" onclick="window.location.href='{{ o365_sign_in_url }}'">
           <span class="label">Iniciar sesión desde Outlook</span>
-        </button>
+          </button>
+        </flexbox>
+        <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark" style="height: 45px;">
+          <flexbox class="col-sm-4"></flexbox>
+          <flexbox class="col-sm-4"></flexbox>
+          <flexbox class="col-sm-4" style="display:flex;justify-content:right;">
+            <img src="/static/img/flask.png" style="height:45px;">
+            <img src="/static/img/logoUbu.jpg" style="height:45px;">
+          </flexbox>
+        </nav>
         {% endif %}
       </div>
     </div>
         {% if session['user_email'] %}
-        <a href="https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=http://localhost:5000/cerrarSesion">Cerrar sesion</a>
         <div class="contenedorNavBar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar">
           <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
@@ -62,4 +96,11 @@
       </div>
     </div>
   </div>
+</body>
 {% endblock %}
+
+<script>
+$('.cerrarSesion').click(function() {
+  sessionStorage.clear();
+});
+</script>

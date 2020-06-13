@@ -5,10 +5,11 @@
 <link href="/static/css/navBar.css" rel="stylesheet">
 <link href="/static/css/buttons.css" rel="stylesheet">
 {% block title%}
-<div class="jumbotron" style="margin-bottom: 0;">
+<title>Ver/Modificar aulas</title>
+<div background="/static/img/fondoCalendarios.jpg" class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;" >
     <div class="container">
       <div class="row">
-        <div class="col-lg-10 col-lg-offset-1">
+        <div class="col-lg-12 col-lg-offset-1">
           <h1 style="margin-top: 0; text-align: center;">Información sobre aulas</h1>
         </div>
       </div>
@@ -20,7 +21,7 @@
 
 <body style="padding-top: 0">
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar" >
     <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
       <ul class="navbar-nav mr-auto">
         <li class="homeImg">
@@ -52,6 +53,8 @@
       </ul>
     <!-- </div> -->
   </nav>
+  <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+
     <div class="container">
 
 
@@ -150,23 +153,27 @@
   //console.log(item);
   console.log($(this).closest("tr"));
   var currentRow=$(this).closest("tr"); 
-         
+  
   //Habra que enviar el nombreAula inicial para saber que aula actualizar
-  var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
-  var col2=currentRow.find("td:eq(1)").text(); 
-  var col3=currentRow.find("td:eq(2)").text();
-  var col4=currentRow.find("td:eq(3)").text(); 
-  var col5=currentRow.find("td:eq(4)").text(); 
-  var col6=currentRow.find("td:eq(5)").text(); 
-  var data=col1+"\n"+col2+"\n"+col3+"\n"+col4+"\n"+col5+"\n"+col6;
+  var aula=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+  var edif=currentRow.find("td:eq(1)").text(); 
+  var tipo=currentRow.find("td:eq(2)").text();
+  var capacidad=currentRow.find("td:eq(3)").text(); 
+  var ordenadores=currentRow.find("td:eq(4)").text(); 
+  var propietario=currentRow.find("td:eq(5)").text(); 
  
-  document.getElementById("nombreAula").value = col1;
-  console.log(col2);
-  document.getElementById("edificio").mySelect = col2;
-  document.getElementById("tipo").value = col3;  
-  document.getElementById("capacidad").value = col4;
-  document.getElementById("n_ordenadores").value = col5;
-  document.getElementById("propietario").value = col6;
+  document.getElementById("nombreAula").value = aula;
+  console.log(edif);
+  console.log(document.getElementById("edificio").options.value)
+  document.getElementById("tipo").value = tipo;  
+  if(capacidad == "None"){
+    document.getElementById("capacidad").value = 0;
+  }else{
+    document.getElementById("capacidad").value = capacidad;
+  }
+    
+  document.getElementById("n_ordenadores").value = ordenadores;
+  document.getElementById("propietario").value = propietario;
 
 
 
@@ -184,7 +191,7 @@
           url: "/verAulas",
           dataType: 'json',
           contentType: 'application/json; charset=utf-8',
-          data: JSON.stringify({aula: col1, prop: col6}),
+          data: JSON.stringify({aula: aula,tipo:tipo,edif:edif, prop: propietario}),
           success: function(response) {
              $('#modAulas').css('display', 'block');
           }
@@ -218,6 +225,8 @@ $('.deletebtn').click(function() {
           data: JSON.stringify({aula: aulaName}),
           success: function(response) {
              $('#aulaElim').css('display', 'block');
+             window.alert("Se ha borrado correctamente");
+             window.location = window.location.href;             
           }
       });
 	  } else {

@@ -4,10 +4,11 @@
 <link href="/static/css/navBar.css" rel="stylesheet">
 <link href="/static/css/buttons.css" rel="stylesheet">
 {% block title%}
-<div class="jumbotron" style="margin-bottom: 0;">
+<title>Reservar</title>
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;">
     <div class="container">
       <div class="row">
-        <div class="col-lg-10 col-lg-offset-1">
+        <div class="col-lg-12 col-lg-offset-1">
           <h1 style="margin-top: 0; text-align: center;">Reservar aulas</h1>
         </div>
       </div>
@@ -44,6 +45,8 @@
     </li>
     </ul>
 </nav>
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+
 <div class = "container">
 <h1>Añadir evento</h1>
 
@@ -68,11 +71,11 @@
 
 
 <div id="radioTipos" style="display:none;padding:5px;">
-    <a> Selecciona el tipo de reserva </a> <br>
-    <input type="radio" name="tipoReserva" value="Simple" style="padding:5px;">Un día 
-    <input type="radio" name="tipoReserva" value="Multiple" style="padding:5px;">Días contiguos 
-    <input type="radio" name="tipoReserva" value="Periodica" style="padding:5px;">Un día por semana 
-    <button type="button" onclick="showFormReservar()"> Aplicar </button> 
+    <b> Selecciona el tipo de reserva </b> <br>
+    <div><input type="radio" name="tipoReserva" value="Simple" style="padding:5px;">Un día </div>
+    <div><input type="radio" name="tipoReserva" value="Multiple" style="padding:5px;">Días contiguos </div>
+    <div><input type="radio" name="tipoReserva" value="Periodica" style="padding:5px;">Un día por semana </div>
+    <br><button type="button" class="btn btn-link" style="margin-top: 10px;margin-bottom: 20px;" onclick="showFormReservar()"> Aplicar </button> 
 </div>
 
 
@@ -80,7 +83,7 @@
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
         <div>{{ form.selectAula }}</div>
-        <div><button type="button" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
+        <div><button type="button" class="btn btn-link" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
         <div>{{ form.subject.label }}</div>
         <div>{{ form.subject }}</div>
             <ul>
@@ -131,9 +134,7 @@
             </ul>
         <div id="endDateL" style="display:none">{{ form.endDate.label }}</div>
         <div id="endDate" style="display:none">{{ form.endDate }}</div>
-        {% if form.errors %}
-        {{ form.errors }}
-        {% endif %}
+
         <button type="button" class="btn btn-success" onclick=form.submit()> {{ form.submit.label }} </button>
 
         {{ form.csrf_token }}
@@ -141,8 +142,6 @@
 </div>
 
 {%if validate == False%}
-<p>no es valido</p>
-
     <div id="form-hidden" style="display: block">
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
@@ -198,7 +197,7 @@
 
         <div id="endDateL">{{ form.endDate.label }}</div>
         <div id="endDate">{{ form.endDate }}</div>
-        <button type="button" class="btn btn-success" onclick=form.submit()> {{ form.submit.label }} </button>
+        <button type="button" class="btn btn-link" onclick=form.submit()> {{ form.submit.label }} </button>
 
         {{ form.csrf_token }}
     </form>

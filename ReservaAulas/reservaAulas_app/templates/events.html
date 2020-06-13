@@ -2,11 +2,12 @@
 <link href="/static/css/navBar.css" rel="stylesheet">
 <link href="/static/css/buttons.css" rel="stylesheet">
 {% block title %}
-<div class="jumbotron" style="margin-bottom: 0;">
+<title>Eventos</title>
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;">
   <div class="container">
     <div class="row">
-      <div class="col-lg-10 col-lg-offset-1">
-        <h1 style="margin-top: 0; text-align: center;">Eventos</h1>
+      <div class="col-lg-12 col-lg-offset-1">
+        <h1 style="margin-top: 0; text-align: center;">Consultar eventos</h1>
       </div>
     </div>
   </div>
@@ -45,7 +46,10 @@
   </li>
   </ul>
 </nav>
-
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+{% if modif == true%}
+<flexbox class="alert alert-success col-md-4" id="successMsg" style="display: flex;justify-content: center;max-width:100%;"> Se ha modificado el aula correctamente </flexbox>
+{% endif %}
 <div class = "container">
   <h3> Selecciona el grupo de aulas</h3>
   <!-- Formulario para elegir el grupo de calendario del que ver las aulas -->
@@ -64,6 +68,58 @@
     <input type="submit" name="submitAula" id="submitAula" value="Mostrar eventos" class="btn btn-link" onclick=formAula.submit()>
     {{ formAula.csrf_token }}
   </form>
+  <div id="radioFiltro" style="padding:5px;">
+    <input type="radio" name="filtros" value="Filtrar" style="padding:5px;" onclick="showFilterForm()">Filtros
+  </div>
+
+  <form name="filterAulas" id="filterAulas" method="POST" style="display:none;">
+    <div>{{ filterForm.capacidad.label }}</div>
+    <div>{{ filterForm.capacidad }}</div>
+      <ul>
+        {% for error in filterForm.capacidad.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    <div>{{ filterForm.n_ord.label }}</div>
+    <div>{{ filterForm.n_ord }}</div>
+      <ul>
+        {% for error in filterForm.n_ord.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    <div>{{ filterForm.tipo.label }}</div>
+    <div>{{ filterForm.tipo }}</div>
+      <ul>
+        {% for error in filterForm.tipo.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    <div>{{ filterForm.startDate.label }}</div>
+    <div>{{ filterForm.startDate }}</div>
+      <ul>
+        {% for error in filterForm.startDate.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    
+    <div>{{ filterForm.startTime.label }}</div>
+    <div>{{ filterForm.startTime }}</div>
+      <ul>
+        {% for error in filterForm.startTime.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      <div>{{ filterForm.endTime.label }}</div>
+      <div>{{ filterForm.endTime }}</div>
+        <ul>
+          {% for error in filterForm.endTime.errors %}
+              <li style="color: red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+    <input id="submitFilters" type="submit" class="btn btn-success" onclick=filterForm.submit()>
+    {{ filterForm.csrf_token }}
+
+  </form>
   <!-- </div> -->
   {% endif %}
   
@@ -76,13 +132,12 @@
 
   <script type="text/javascript">
 
-    function showForm2() {
-      document.getElementById("form2").style.visibility="visible";
+    function showFilterForm() {
+      $('#filterAulas').css('display', 'block');
+      $('#submitAula').css('display', 'none');
+      
     }
 
-    $('#submitEdif').click(function(){
-      document.getElementById("form2").style.visibility="visible";
-    })
 
   </script>
 

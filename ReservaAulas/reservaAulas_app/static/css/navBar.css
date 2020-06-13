@@ -1,0 +1,31 @@
+ul {
+    display:flex;
+    width:100%;
+    box-sizing:border-box;
+}
+#navBar{
+    display:flex;
+    justify-content: space-around;
+    /* width: 100%; */
+}
+ ul li {
+    display:table-cell;
+    float:left;
+    width: 25%;
+} 
+a {
+    display: flex;
+    color:#d4d4d4;
+    text-decoration:none;
+    text-align: center;
+}
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: lightblue;
+}
+.homeImg{
+    width:5%;
+}
+
+.nav__links{
+    list-style:none;
+}

@@ -125,6 +125,21 @@ def get_events(access_token, calendarioId, grupoCalId):
     else:
         return "{0}: {1}".format(r.status_code, r.text)
 
+def get_events_from_calendar(access_token, calendarId):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'
+    get_events_url = graph_endpoint.format('/me/calendars/'+calendarId+'/events') 
+    #get_events_url = graph_endpoint.format('/me/events')    #Ruta para obtener info de los eventos
+    parameters = {'$top': '20',
+                      '$select': 'subject,start,end',
+                      '$orderby': 'start/dateTime ASC'
+                       }
+    
+
+    r = make_api_call('GET', get_events_url, access_token, parameters = parameters)
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
 
 def get_calendarsGroups(access_token):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
@@ -157,7 +172,9 @@ def get_calendars(access_token):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     get_calendar_url = graph_endpoint.format('/me/calendars')    #Ruta para obtener los calendarios
 
-    r = make_api_call('GET', get_calendar_url, access_token)
+    params = {"$top":'50'}
+
+    r = make_api_call('GET', get_calendar_url, access_token, parameters=params)
     
     if (r.status_code == requests.codes.ok):
         return r.json()
@@ -245,17 +262,28 @@ def upload_calendar(access_token, aulaId, nuevoNombre):
 
 def delete_calendar(access_token, aulaId):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
-    upload_calendar_url = graph_endpoint.format('/me/calendars/')+aulaId  #Ruta para obtener informacion sobre el usuario   
+    delete_calendar_url = graph_endpoint.format('/me/calendars/')+aulaId  #Ruta para obtener informacion sobre el usuario   
 
 
-    r = make_api_call('DELETE', upload_calendar_url, access_token)
+    r = make_api_call('DELETE', delete_calendar_url, access_token)
     
     if (r.status_code == requests.codes.ok):
         return r.json()
     else:
         return "{0}: {1}".format(r.status_code, r.text)
 
-def send_email(access_token, email, aula, fechaInicio, fechaFin):
+def delete_event(access_token, aulaId, eventId):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    delete_event_url = graph_endpoint.format('/me/calendars/')+aulaId+'/events/'+eventId  #Ruta para obtener informacion sobre el usuario   
+
+    r = make_api_call('DELETE', delete_event_url, access_token)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)
+
+def send_email(access_token, email, aula):
      
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     send_email_url = graph_endpoint.format('/me/sendMail')  #Ruta para obtener informacion sobre el usuario   
@@ -265,7 +293,7 @@ def send_email(access_token, email, aula, fechaInicio, fechaFin):
             "subject": "Mensaje de prueba",
             "body": {
                 "contentType": "Text",
-                "content": "Se ha realizado una reserva sobre el aula " + aula 
+                "content": "Se ha realizado una reserva sobre el aula " + aula
             },
             "toRecipients": [
             {
@@ -296,3 +324,23 @@ def share_calendar(access_token):
     else:
         return "{0}: {1}".format(r.status_code, r.text)
 
+def modificar_evento(access_token, evento_id, calendario_id, tema, fechaIni, fechaFin):
+    graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
+    modificar_evento_url = graph_endpoint.format('/me/calendars/'+ calendario_id+'/events/'+evento_id)  #Ruta para obtener informacion sobre el usuario   
+    
+    payload = {
+        "subject":tema,
+        "start": {'DateTime': '{}'.format(fechaIni),
+                          'TimeZone': 'W. Europe Standard Time' 
+        },
+        "end": {'DateTime': '{}'.format(fechaFin),
+                          'TimeZone': 'W. Europe Standard Time' }
+               
+    }
+
+    r = make_api_call('PATCH', modificar_evento_url, access_token, payload = payload)
+    
+    if (r.status_code == requests.codes.ok):
+        return r.json()
+    else:
+        return "{0}: {1}".format(r.status_code, r.text)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import TextField, SubmitField, DateTimeField, SelectField, validators, IntegerField, StringField
 from wtforms.fields.html5 import DateField, EmailField
-from wtforms.validators import InputRequired, ValidationError
+from wtforms.validators import InputRequired, ValidationError, Email
 
 class createEventForm(FlaskForm):
     selectAula = SelectField('Selecciona aula')
@@ -49,3 +49,20 @@ class modificarAulasForm(FlaskForm):
     n_ordenadores = IntegerField('Numero de ordenadores')
     propietario = SelectField('Propietario del aula')
     submit = SubmitField('Guardar')
+
+class filterAulasForm2(FlaskForm):
+    capacidad = IntegerField('Inserta la capacidad minima del aula', validators = [InputRequired(message='Introduce una capacidad del aula')])
+    n_ord = IntegerField('Inserta el numero minimo de ordenadores', validators = [InputRequired(message='Introduce un numero de ordenadores')])
+    tipo = SelectField('Selecciona el tipo de aula')
+    startDate = DateField('Fecha inicio', validators = [InputRequired(message='Elige un fecha')])
+    endDate = DateField('Fecha fin')
+    startTime = DateTimeField('Hora inicio (HH:MM)',validators = [InputRequired(message='Introduce una hora')],format='%H:%M')
+    endTime = DateTimeField('Hora fin (HH:MM)',validators = [InputRequired(message='Introduce una hora')],format='%H:%M')
+    submit = SubmitField('Mostrar eventos')
+
+class modificarEvent(FlaskForm):
+    tema = StringField('Tema')
+    user = StringField('Usuario')
+    fechaIni = DateTimeField('Fecha inicio',format='%Y-%m-%d %H:%M:%S')
+    fechaFin = DateTimeField('Fecha fin',format='%Y-%m-%d %H:%M:%S')
+    submit = SubmitField('Modificar')
