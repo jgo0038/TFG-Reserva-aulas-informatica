@@ -1,11 +1,369 @@
 \apendice{Especificación de Requisitos}
 
 \section{Introducción}
-
+En este apartado de la documentación explicaré  los objetivos que se perseguían al comienzo del proyecto, lo que se ha conseguido y los requisitos funcionales y no funcionales.
 \section{Objetivos generales}
-
+\begin{itemize}
+	\item Desarrollar una aplicación web cliente servidor, en la que los usuarios con permisos necesarios puedan reservas aulas para los profesores.
+	\item Ofrecer la posibilidad de reservar un único día, más de uno seguidos o un día a la semana el mismo aula.
+	\item Ofrecer al usuario una vista sobre las aulas existentes, si es administrador podrá modificarlas o borrarlas también.
+	\item Ofrecer al usuario una vista con las franjas horarias reservadas y libres de cada aula.
+	\item Controlar el solapamiento de horas.
+\end{itemize}
 \section{Catalogo de requisitos}
+En esta sección enumeraré los requisitos funcionales de la aplicación y los usuarios que intervienen.
+\textbf{Usuario:} será quién use la aplicación, según los privilegios les hay de tres tipos:
+    \begin{itemize}
+        \item Sin privilegios: Puede consultar todas las aulas y su ocupación.
+        \item Propietario: Puede consultar todas las aulas y su ocupación. Además puede realizar reservas sobre las aulas de las que es propietario.
+        \item Administrador: Puede consultar todas las aulas y su ocupación. Además puede realizar reservas sobre todas las aulas. Puede modificar la información de las aulas o borrarlas. Se encarga de conceder los privilegios a los usuarios.
+    \end{itemize}
+\subsection{Requisitos funcionales} 
+\begin{itemize}
+    \item \textbf{RF.1} Controlar el acceso mediante un inicio de sesión.
+    \begin{itemize}
+        \item \textbf{RF.1.1} Acceso a la aplicación mediante el login de Outlook.
+    \end{itemize}
+    \item \textbf{RF.2} La aplicación tiene que poder distinguir entre el tipo de usuario que ha accedido. Distingue tres tipos:
+    \begin{itemize}
+        \item \textbf{RF.2.1} Diferencia los usuarios sin permisos.
+        \item \textbf{RF.2.2} Diferencia los usuarios propietarios de aulas.
+        \item \textbf{RF.2.3} Diferencia los usuarios administradores.
+    \end{itemize}
+    \item \textbf{RF.3} La aplicación tiene que poder mostrar información sobre las aulas.
+    \begin{itemize}
+        \item \textbf{RF.3.1} Permite ver el listado de aulas.
+        \item \textbf{RF.3.2} Permite ver características de cada aula.
+    \end{itemize}
+    \item \textbf{RF.4} La aplicación tiene que poder modificar las aulas.
+    \begin{itemize}
+        \item \textbf{RF.4.1} Permite modificar las características de las aulas.
+        \item \textbf{RF.4.2} Permite el borrado de aulas.
+    \end{itemize}
+    \item \textbf{RF.5} La aplicación tiene que poder realizar una reserva de tres tipos.
+    \begin{itemize}
+        \item \textbf{RF.5.1} Permite reservar un sólo día de una hora a otra especificada.
+        \item \textbf{RF.5.2} Permite reservar varios seguidos a la misma hora.
+        \item \textbf{RF.5.3} Permite reservar un día a la semana a la misma hora durante el tiempo especificado. 
+    \end{itemize}
+    \item \textbf{RF.6} La aplicación tiene que poder mostrar todos los eventos creados.
+    \begin{itemize}
+        \item \textbf{RF.6.1} Permite modificar los eventos.
+        \item \textbf{RF.6.2} Permite borrar los eventos.
+    \end{itemize}
+    \item \textbf{RF.7} La aplicación tiene que poder crear un aula nueva para un manejo posterior.
+     
+    
+    
+\end{itemize}
 
+
+\subsection{Requisitos no funcionales}
+\begin{itemize}
+	\item \textbf{RNF.1 Usabilidad} Proporcionar una página web sencilla de usar e intuitiva.
+	\item \textbf{RNF.2 Disponibilidad} El tiempo para iniciar o reiniciar el sistema no es mayor a 5 minutos.
+	\item \textbf{RNF.3 Seguridad} Se controla que no se pueda acceder sin haber iniciado sesión y una vez iniciada sesión, se controla el acceso a las distintas partes de la aplicación.
+	\item \textbf{RFN.4 Mantenibilidad} Es sencillo añadir nuevas funcionalidades.
+\end{itemize}
 \section{Especificación de requisitos}
+\subsection{Diagrama de casos de uso}
+
+\imagen{CU_SinPermisos}{Diagrama de casos de uso de un usuario sin permisos.}
+\imagen{CU_Propietario}{Diagrama de casos de uso de un usuario propietario.}
+\imagen{CU_Administrador}{Diagrama de casos de uso de un usuario administrador.}
+
+\subsection{Especificación de los casos de uso}
+\tablaSmallSinColores{Caso de uso 0: Iniciar sesión.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC0}{
+  \multicolumn{3}{l}{Caso de uso 0: Iniciar sesión.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario iniciar sesión en la aplicación.} \\\hline
+  \multirow{6}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-1} \\\cline{2-3}
+                                         & \multicolumn{2}{p{10.25cm}}{RF-1.1} 
+                                         \\\cline{2-3}
+                                         & \multicolumn{2}{p{10.25cm}}{RF-2}
+                                         \\\cline{2-3}
+                                         &
+                                    \multicolumn{2}{p{10.25cm}}{RF-2.1}
+                                    \\\cline{2-3}
+                                         &
+                                    \multicolumn{2}{p{10.25cm}}{RF-2.2}
+                                    \\\cline{2-3}
+                                         &
+                                    \multicolumn{2}{p{10.25cm}}{RF-2.3}
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Disponer de una cuenta de Outlook.}   \\\hline
+  \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Iniciar sesión'.
+  \\\cline{2-3}
+                                         & 2    & Se redirige al inicio de sesión de Outlook.
+  \\\cline{2-3}
+                                         & 3    & Se introducen los datos de inicio de sesión de la cuenta de Outlook.
+    \\\cline{2-3}
+                                         & 4    & Se inicia la sesión si existe la cuenta.
+                                         \\\hline
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Si la sesión se ha iniciado correctamente, se lleva al usuario a la página de inicio. Si no se vuelve a pedir que introduzca una cuenta existente.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{Cuenta de Outlook inexistente.}
+\\\hline
+}
 
 
+
+\tablaSmallSinColores{Caso de uso 1: Consultar eventos de aulas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC1}{
+  \multicolumn{3}{l}{Caso de uso 1: Consultar eventos de aulas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario visualizar los eventos creados en las aulas, facilitando filtros para una búsqueda mas concreta.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-6} 
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+  \\\cline{2-3}
+                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+    \\\cline{2-3}
+                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+     \\\cline{2-3}
+                                        & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Permite la visualización de los eventos según el aula elegido, depende de los privilegios del usuario dispondrá de las opciones de modificar (CU1.1) y borrar estos eventos (CU1.2).} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{Activar la opción de los filtros pero no rellenarlos todos.}
+\\\hline
+}
+
+
+\tablaSmallSinColores{Caso de uso 1.1: Modificar eventos.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC1.1}{
+  \multicolumn{3}{l}{Caso de uso 1.1: Modificar eventos.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario modificar los eventos existentes.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-6} 
+  \\\cline{2-3}
+        &       \multicolumn{2}{p{10.25cm}}{RF-6.1}
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador o de propietario.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+  \\\cline{2-3}
+                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+    \\\cline{2-3}
+                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+     \\\cline{2-3}
+                                        & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
+    \\\cline{2-3}
+                                        & 6     & Se ve un botón de 'Modificar' al lado de los eventos sobre los que tenga permiso para modificar.
+    \\\cline{2-3}
+                                        & 7     & Se pincha en el botón 'Modificar' y te abre un formulario en la parte superior para cambiar los datos del evento.
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Si se modifica correctamente, se vuelve a la página anterior. Si hay un error se muestra un mensaje y se permite volver a modificar.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{Cambiar a una fecha ya reservada.}
+  \\\cline{2-3} & \multicolumn{2}{p{10.25cm}}{No tener permisos.}
+\\\hline
+}
+
+
+
+
+\tablaSmallSinColores{Caso de uso 1.2: Borrar eventos.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC1.2}{
+  \multicolumn{3}{l}{Caso de uso 1.2: Borrar eventos.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario borrar los eventos existentes.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-6} 
+  \\\cline{2-3}
+        &       \multicolumn{2}{p{10.25cm}}{RF-6.2}
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador o de propietario.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+  \\\cline{2-3}
+                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+    \\\cline{2-3}
+                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+     \\\cline{2-3}
+                                        & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
+    \\\cline{2-3}
+                                        & 6     & Se ve un botón de 'Borrar' al lado de los eventos sobre los que tenga permiso para borrar.
+    \\\cline{2-3}
+                                        & 7     & Se pincha en el botón 'Borrar' y te pide la confirmación del usuario para borrar el evento.
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Si se borra correctamente, se muestra un mensaje por pantalla y se vuelve a la página anterior. Si se cancela el borrado te mantienes en la misma.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No tener permisos.}
+\\\hline
+}
+
+
+\tablaSmallSinColores{Caso de uso 2: Consultar información sobre las aulas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC2}{
+  \multicolumn{3}{l}{Caso de uso 2: Consultar información sobre las aulas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario conocer la información relevante acerca de las aulas existentes, sea o no propietario de ellas. La información que se facilita es: nombre, edificio, tipo de aula, capacidad, nº de ordenadores y propietario.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-3}
+                                    \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-3.1} \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-3.2}
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Ver/Modificar aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a la página de información sobre las aulas, donde se muestra una opción para elegir el grupo de aulas.
+  \\\cline{2-3}
+                                         & 3    & Una vez se elige el grupo de aulas, se pincha en el botón 'Ver aulas'.
+    \\\cline{2-3}
+                                         & 4    & Se muestra una tabla con las aulas y su información del edificio elegido en el paso anterior.
+
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Permite la visualización de las características de las aulas, depende de los privilegios del usuario dispondrá de las opciones de modificar (CU2.1) y borrar (CU2.2) estas aulas.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No haber iniciado sesión.}
+\\\hline
+}
+
+
+\tablaSmallSinColores{Caso de uso 2.1: Modificar aulas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC2.1}{
+  \multicolumn{3}{l}{Caso de uso 2.1: Modificar aulas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario modificar la información relevante acerca de las aulas existentes. } \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-4}
+                                    \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-4.1} 
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Ver/Modificar aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a la página de información sobre las aulas, donde se muestra una opción para elegir el grupo de aulas.
+  \\\cline{2-3}
+                                         & 3    & Una vez se elige el grupo de aulas, se pincha en el botón 'Ver aulas'.
+    \\\cline{2-3}
+                                         & 4    & Se muestra una tabla con las aulas y su información del edificio elegido en el paso anterior.
+    \\\cline{2-3}
+                                         & 5    & Se ve un botón de 'Editar' al lado de la información de las aulas que pueda modificar.
+   \\\cline{2-3}
+                                         & 6    & Al pinchar sobre éste botón se abre un cuadro en la parte superior de la pantalla donde se pueden introducir los valores a modificar.
+
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Si se cambia el propietario, se mostrará un mensaje recordando el cambio manual de propietario que tiene que hacer el administrador.}
+  \\\cline{2-3} &   \multicolumn{2}{p{10.25cm}}{Si se cambia correctamente, se vuelve a la pantalla anterior y se muestra un mensaje por pantalla.}
+  
+  \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No tener permisos.}
+  \\\cline{2-3} &  \multicolumn{2}{p{10.25cm}}{Dejar sin rellenar partes del formulario de modificación.}
+\\\hline
+}
+
+
+\tablaSmallSinColores{Caso de uso 2.2: Borrar aulas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC2.2}{
+  \multicolumn{3}{l}{Caso de uso 2.2: Borrar aulas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario borrar aulas existentes. } \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-4.2}
+                                    
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario pincha el botón 'Ver/Modificar aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se redirige a la página de información sobre las aulas, donde se muestra una opción para elegir el grupo de aulas.
+  \\\cline{2-3}
+                                         & 3    & Una vez se elige el grupo de aulas, se pincha en el botón 'Ver aulas'.
+    \\\cline{2-3}
+                                         & 4    & Se muestra una tabla con las aulas y su información del edificio elegido en el paso anterior.
+    \\\cline{2-3}
+                                         & 5    & Se ve un botón de 'Borrar' al lado de la información de las aulas que pueda eliminar.
+   \\\cline{2-3}
+                                         & 6    & Al pinchar sobre éste botón se abre un cuadro pidiendo confirmación del usuario para borrar el aula. Ofreciendo una comprobación en la que se permite borrar definitivamente o cancelar el borrado.
+
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Si se borra el aula,se muestra un mensaje por pantalla avisando del borrado y se vuelve al formulario anterior.}
+  
+  \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No tener permisos.}
+\\\hline
+}
+
+
+
+\tablaSmallSinColores{Caso de uso 3: Realizar reservas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC3}{
+  \multicolumn{3}{l}{Caso de uso 3: Realizar reservas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario realizar reservas sobre las aulas que tenga permisos siempre que la hora no esté ocupada.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-5}
+                                    \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-5.1} \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-5.2}
+                                    \\\cline{2-3}
+                                    & \multicolumn{2}{p{10.25cm}}{RF-5.3}
+                                         \\\hline
+  Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión. Tener permisos necesarios.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario (administrador o propietario) pincha el botón 'Realizar reserva' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se muestra un pequeño formulario en el que se piden la capacidad, nº de ordenadores, edificio y tipo de aula.
+  \\\cline{2-3}
+                                         & 3    & Si se pincha en el botón 'Consultar'. Se muestran las 3 formas distintas en que se puede realizar la reserva. Se selecciona una para seguir.
+\\\cline{2-3}
+                                         & 4    & Se pincha en el botón 'Aplicar'. Esto muestra un formulario para rellenar la información requerida según el tipo de reserva seleccionada previamente.
+\\\cline{2-3}
+                                         & 5    & Si se pincha en el botón 'Consultar ocupación de aulas', se muestran las horas reservadas del aula elegida, si la elección es 'Cualquiera', se muestra de todas las aulas.
+\\\cline{2-3}
+                                         & 6    & Si se pincha en el botón 'Crear evento' para reservar la hora y aula pedida si están libres, sino se mostrará un error por pantalla.
+
+                                        \\\hline
+
+                                        
+  Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Se permite volver a reservar otro aula recordando la reserva recién realizada por si se quiere una mínima modificación.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No existan aulas con los requisitos específicos.}
+\\\hline
+}
+
+
+
+
+\tablaSmallSinColores{Caso de uso 4: Crear aulas.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC4}{
+  \multicolumn{3}{l}{Caso de uso 4: Crear aulas.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario administrador crear aulas nuevas.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-7}
+                                    \\\cline{2-3}
+                                         \\\hline
+Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión. Ser administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario (administrador) pincha el botón 'Añadir aulas' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se muestra un formulario en el que se puede seleccionar el edificio donde se ubica el aula, el tipo de aula y el propietario. Se dejan campos a rellenar para proporcionar el nombre del aula, la capacidad y el nº de ordenadores.
+  \\\cline{2-3}
+                                         & 3    & Se pincha en el botón 'Crear aula'.
+
+
+                                        \\\hline
+ Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Asignar manualmente los permisos desde Outlook al propietario del nuevo aula.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No ser administrador.}
+  \\\cline{2-3}
+                        &\multicolumn{2}{p{10.25cm}}    {No llenar todos los campos requeridos}
+                        \\\hline
+
+}
+                                        
