@@ -17,41 +17,70 @@
 {% endblock %}
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar">
-    <ul class="navbar-nav mr-auto">
-    <li class="homeImg">
-      <a class="navbar-brand" href="{{ url_for('inicio') }}">
-        <img src="/static/img/home.jpg" width="30" height="30" alt="">
-      </a>
-    </li>
-    <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
-    <li class="nav-item">
-        {% if session['user_email'] in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
-            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
-        {% else %}
-            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
-        {% endif %}
-    </li>
+    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+      <ul class="navbar-nav mr-auto">
+        <li class="homeImg">
+          <a class="navbar-brand" href="{{ url_for('inicio') }}">
+            <img src="/static/img/home.jpg" width="30" height="30" alt="">
+          </a>
+        </li>
+        <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
+
+        <li class="nav-item">
+          {% if session['user_email'] in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
+            <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
+          {% else %}
+            <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
+          {% endif %}
+        </li>
           
-    <li>
-        <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
-    </li>
-  
-    <li>
-        {% if session['user_email'] in ADMIN_USERS %}        
-            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
-        {% else %}
-            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
-        {% endif %}
-    </li>
-    </ul>
-</nav>
+        <li>
+          <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
+        </li>
+
+        <li>
+          {% if session['user_email'] in ADMIN_USERS %}        
+            <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
+          {% else %}
+            <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
+          {% endif %}
+        </li>
+        <li>
+          {% if session['user_email'] in ADMIN_USERS %}        
+            <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('auditoria') }}'">Ver auditorias</a>
+          {% else %}
+            <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('auditoria') }}'">Ver auditorias</a>
+          {% endif %}
+        </li>
+        
+        <li>
+          
+          
+          <div class="dropdown">
+            <button class="dropbtn">Propietarios</button>
+            <div class="dropdown-content">
+              {% if session['user_email'] in ADMIN_USERS %} 
+              <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
+              <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
+              {% else %}
+              <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
+              <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
+              {% endif %}
+            </div>
+          </div>
+
+        </li>
+      </ul>
+    <!-- </div> -->
+  </nav>
 <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
 <div class = "container">
 <h1>Añadir evento</h1>
 
 
-
+<div class="flexContainer" style="display: flex;">
+<div>
 <form name="filterAulas" id="filterAulas" method="POST">
     {{ form1.csrf_token }}
     <div>{{ form1.capacidad.label }}</div>
@@ -66,11 +95,11 @@
     <button type='button' id ='enviarFiltros' class="btn btn-link" >Consultar</button>
     <button type="button" class="btn btn-link"  onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>    
 </form>
-
+</div>
 <div class="alert alert-warning col-md-4" id="errorMsg" style="display: none;"> No existen aulas con esas características. </div>
 
 
-<div id="radioTipos" style="display:none;padding:5px;">
+<div id="radioTipos" style="display:block;padding:5px;margin: 0px 50px 0px 50px;">
     <b> Selecciona el tipo de reserva </b> <br>
     <div><input type="radio" name="tipoReserva" value="Simple" style="padding:5px;">Un día </div>
     <div><input type="radio" name="tipoReserva" value="Multiple" style="padding:5px;">Días contiguos </div>
@@ -79,130 +108,95 @@
 </div>
 
 
-<div id="form-hidden" style="display: none">
+<div id="form-hidden" style="display: block">
     <form name="createEvent" id="createEvent" method="POST">
         <div>{{ form.selectAula.label }}</div>
         <div>{{ form.selectAula }}</div>
         <div><button type="button" class="btn btn-link" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
-        <div>{{ form.subject.label }}</div>
-        <div>{{ form.subject }}</div>
-            <ul>
-                {% for error in form.subject.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div>{{ form.teacher.label }}</div>
-        <div>{{ form.teacher }}</div>
-            <ul>
-                {% for error in form.teacher.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div>{{ form.email.label }}</div>
-        <div>{{ form.email }}</div>
-            <ul>
-                {% for error in form.email.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div>{{ form.startDate.label }}</div>
-        <div>{{ form.startDate }}</div>
-            <ul>
-                {% for error in form.startDate.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        <div id="dayL" style="display:none">{{ form.day.label }}</div>
-        <div id="day" style="display:none">{{ form.day }}</div>
-
-        <div>{{ form.startTime.label }}</div>
-        <div>{{ form.startTime }}</div>
-            <ul>
-                {% for error in form.startTime.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-
-        <div>{{ form.endTime.label }}</div>
-        <div>{{ form.endTime }}</div>
-            <ul>
-                {% for error in form.endTime.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div id="endDateL" style="display:none">{{ form.endDate.label }}</div>
-        <div id="endDate" style="display:none">{{ form.endDate }}</div>
-
-        <button type="button" class="btn btn-success" onclick=form.submit()> {{ form.submit.label }} </button>
-
-        {{ form.csrf_token }}
-    </form>
-</div>
-
-{%if validate == False%}
-    <div id="form-hidden" style="display: block">
-    <form name="createEvent" id="createEvent" method="POST">
-        <div>{{ form.selectAula.label }}</div>
-        <div>{{ form.selectAula }}</div>
-        <div>{{ form.subject.label }}</div>
-        <div>{{ form.subject }}</div>
-            <ul>
-                {% for error in form.subject.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div>{{ form.teacher.label }}</div>
-        <div>{{ form.teacher }}</div>
-            <ul>
-                {% for error in form.teacher.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div>{{ form.email.label }}</div>
-        <div>{{ form.email }}</div>
-            <ul>
-                {% for error in form.email.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% if emailVal == False %}
-                <li style="color: red;">El email introducido no es valido</li>
-            {% endif %}
-        <div>{{ form.startDate.label }}</div>
-        <div>{{ form.startDate }}</div>
-            <ul>
-                {% for error in form.startDate.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        <div id="dayL">{{ form.day.label }}</div>
-        <div id="day">{{ form.day }}</div>
-        <div>{{ form.startTime.label }}</div>
-        <div>{{ form.startTime }}</div>
-            <ul>
-                {% for error in form.startTime.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
         
-        <div>{{ form.endTime.label }}</div>
-        <div>{{ form.endTime }}</div>
+        
+        <div style="display: flex;">
+           <a>{{ form.subject.label }}</a>
+           <a style="margin-left: 210px;">{{ form.teacher.label }}</a>
+        </div>
+        <div style="display: flex;">
+            <a>{{ form.subject }}</a>
             <ul>
-                {% for error in form.endTime.errors %}
+                {% for error in form.subject.errors %}
                     <li style="color: red;">{{ error }}</li>
                 {% endfor %}
             </ul>
+            <a>{{ form.teacher }}</a>
+            <ul>
+                {% for error in form.teacher.errors %}
+                    <li style="color: red;">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        <div id="endDateL">{{ form.endDate.label }}</div>
-        <div id="endDate">{{ form.endDate }}</div>
+        <div style="display: flex;">
+            <a>{{ form.email.label }}</a>
+            <a style="margin-left: 120px;">{{ form.startDate.label }}</a>
+         </div>
+         <div style="display: flex;">
+             <a>{{ form.email }}</a>
+             <ul>
+                 {% for error in form.email.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+             <a>{{ form.startDate }}</a>
+             <ul>
+                 {% for error in form.startDate.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+         </div>
+
+         <div style="display: flex;">
+            <a>{{ form.startTime.label }}</a>
+            <a style="margin-left: 100px;" >{{ form.endTime.label }}</a>
+         </div>
+        <div style="display: flex;">
+             <a>{{ form.startTime }}</a>
+             <ul>
+                 {% for error in form.startTime.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+             <a>{{ form.endTime }}</a>
+             <ul>
+                 {% for error in form.endTime.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+        </div>
+
+        <div style="display: flex;">
+            <a id="dayL" style="display:none">{{ form.day.label }}</a>
+            <a id="endDateL" style="display:none;margin-left: 57px;">{{ form.endDate.label }}</a>
+         </div>
+        <div style="display: flex;">
+             <a id="day" style="display:none">{{ form.day }}</a>
+             <ul>
+                 {% for error in form.day.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+             <a id="endDate" style="display:none">{{ form.endDate }}</a>
+             <ul>
+                 {% for error in form.endDate.errors %}
+                     <li style="color: red;">{{ error }}</li>
+                 {% endfor %}
+             </ul>
+        </div>
+
         <button type="button" class="btn btn-link" onclick=form.submit()> {{ form.submit.label }} </button>
 
         {{ form.csrf_token }}
     </form>
-    </div>
-{% endif %}
+</div>
+</div>
 
 
 <!-- Mensaje de creación de evento correcta o fallida -->
@@ -341,5 +335,41 @@
         });
     };
 </script>
+<style>
 
+    .dropbtn {
+      background-color: #f8f9fa;
+      color: rgba(0,0,0,.5);
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #ddd;}
+    
+    .dropdown:hover .dropdown-content {display: block;}
+    
+    .dropdown:hover .dropbtn {color: lightblue;}
+</style>
 </html>

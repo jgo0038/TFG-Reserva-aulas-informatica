@@ -23,14 +23,14 @@ from .oauth_helpers import (
     delete_event,
     modificar_evento
     )
-from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula, modificarAulasForm, filterAulasForm2, modificarEvent
+from reservaAulas_app.forms import createEventForm, selectCalendar, selectGroupCalendar, filterAulasForm, createNewAula, modificarAulasForm, filterAulasForm2, modificarEvent,modificarPropietarioForm, anadirPropietarioForm
 import json
 from flask import flash, request, redirect, url_for
 from datetime import datetime, timedelta  
 from flask_wtf.csrf import CSRFProtect
 from reservaAulas_app.config import ADMIN_USERS
 from reservaAulas_app.odbctest import cnxn
-from reservaAulas_app.getSQLData import getCapacidades,getEdificios,getPropietarios,getTipos
+from reservaAulas_app.getSQLData import getCapacidades,getEdificios,getPropietarios,getTipos,getEdificiosProp
 import logging
 import requests
 import re
@@ -218,6 +218,26 @@ def events():
                     WHERE eventos.aula = ? AND eventos.inicio = ? AND eventos.fin = ?'''
                     , temaNuevo, horaIniNueva, horaFinNueva, userNuevo, flask.session['aulaEventMod'], flask.session['fechaIniEventMod'], flask.session['fechaFinEventMod'])
                 cnxn.commit()
+
+                cursor = cnxn.cursor()
+                cursor.execute('''
+                SELECT id
+                FROM eventos
+                WHERE aula = ? AND evento = ? AND inicio = ? AND fin = ?
+                ''', flask.session['aulaEventMod'],horaIniNueva,horaFinNueva)
+                varIdEvento = cursor.fetchall()
+                cursor.close()
+
+                cursor = cnxn.cursor()
+                cursor.execute('''
+                INSERT INTO
+                auditoria(id_evento,usuario,fecha_modif,identificador) 
+                VALUES
+                (?,?,?,?)''', varIdEvento[0][0], flask.session['user_email'],datetime.now(),'MODIF')
+                cnxn.commit()
+                cursor.close()
+                db.session.commit()
+                
             else:
                 error_solapamiento = True
                 modif = False  
@@ -230,6 +250,26 @@ def events():
                 WHERE eventos.aula = ? AND eventos.inicio = ? AND eventos.fin = ?'''
                 , temaNuevo, horaIniNueva, horaFinNueva, userNuevo, flask.session['aulaEventMod'], flask.session['fechaIniEventMod'], flask.session['fechaFinEventMod'])
             cnxn.commit() 
+
+            cursor = cnxn.cursor()
+            cursor.execute('''
+            SELECT id
+            FROM eventos
+            WHERE aula = ? AND inicio = ? AND fin = ?
+            ''', flask.session['aulaEventMod'],horaIniNueva,horaFinNueva)
+            varIdEvento = cursor.fetchall()
+            cursor.close()
+
+            cursor = cnxn.cursor()
+            cursor.execute('''
+            INSERT INTO
+            auditoria(id_evento,usuario,fecha_modif,identificador) 
+            VALUES
+            (?,?,?,?)''', varIdEvento[0][0], flask.session['user_email'],datetime.now(),'MODIF')
+            cnxn.commit()
+            cursor.close()
+            db.session.commit()
+
             modif = True   
             error_solapamiento = False
 
@@ -363,42 +403,70 @@ def modificarEvento():
 def borrarEvento():
     data = flask.request.get_json()
     if data:
+        print(data)
         aula = data['aula']
         fechaIni = data['fechaIni']
         fechaFin = data['fechaF']
+        nReserva = data['idEvento']
         nuevoToken = refresh_oauth_token(flask.session['refresh_token'])
         flask.session['access_token'] = nuevoToken['access_token']
         calendarios = get_calendars(flask.session['access_token'])
         calendarios = calendarios['value']
-        
+        eventos = None
         for cal in calendarios:
             if cal['name'] == data['aula']:
                 id_cal = cal['id']
+                eventos = get_events_from_calendar(flask.session['access_token'], id_cal)
+                eventos = eventos['value']
+        if eventos!=None:
+            print("DENTRO DE EVENTOS")
+            for eve in eventos:
+                print(eve)
+                fecha = eve['start']['dateTime'].split("T")
+                dia = fecha[0]
+                fechaFormat = fecha[1].split(".")
+                fechaI = dia +" "+ fechaFormat[0]
+                print(fechaI)
+                print(data['fechaIni'])
+                print("               ")
+                if fechaI == data['fechaIni']:
+                    
+                    id_evento = eve['id']
+                    delete_event(flask.session['access_token'],id_cal , id_evento)
+                    #Tabla auditoria
+                    cursor = cnxn.cursor()
+                    cursor.execute('''
+                    SELECT id
+                    FROM eventos
+                    WHERE aula = ? AND inicio = ? AND fin = ?
+                    ''', aula,fechaIni,fechaFin)
+                    varIdEvento = cursor.fetchall()
+                    cursor.close()
 
-        eventos = get_events_from_calendar(flask.session['access_token'], id_cal)
-        eventos = eventos['value']
-        for eve in eventos:
-            fecha = eve['start']['dateTime'].split("T")
-            dia = fecha[0]
-            fechaFormat = fecha[1].split(".")
-            fechaI = dia +" "+ fechaFormat[0]
-            print(fechaI)
-            print(data['fechaIni'])
-            if fechaI == data['fechaIni']:
-                id_evento = eve['id']
-        delete_event(flask.session['access_token'],id_cal , id_evento)
-        cursor = cnxn.cursor()
-        cursor.execute('''
-            DELETE
-            FROM eventos
-            WHERE eventos.aula = ? AND eventos.inicio = ? AND eventos.fin = ?''', aula, fechaIni, fechaFin)
-        cnxn.commit()
-        return json.dumps(data)
+                    cursor = cnxn.cursor()
+                    cursor.execute('''
+                    INSERT INTO
+                    auditoria(id_evento,usuario,fecha_modif,identificador) 
+                    VALUES
+                    (?,?,?,?)''', varIdEvento[0][0], flask.session['user_email'],datetime.now(),'BAJA')
+                    cnxn.commit()
+                    cursor.close()
+                    db.session.commit()
+
+                    #Borrar de BD
+                    cursor = cnxn.cursor()
+                    cursor.execute('''
+                        DELETE
+                        FROM eventos
+                        WHERE eventos.aula = ? AND eventos.inicio = ? AND eventos.fin = ?''', aula, fechaIni, fechaFin)
+                    cnxn.commit()
+                    return json.dumps({'success':True}), 200
+        return json.dumps({'success':False}), 404
 
 @app.route('/showReservar',methods=['POST'])
 def showReservar():
     #Distinta consulta SQL si es admin o responsable
-
+    print("SHOWRESERVAR")
     cursor = cnxn.cursor()
     cursor.execute('''
         SELECT propietarios.email
@@ -436,7 +504,8 @@ def showReservar():
             ''',capacidad, edificio, ordenadores)
             varAulas = cursor.fetchall()
         listaAulas = []
-        listaAulas.append(('Cualquiera','Cualquiera'))
+        if len(varAulas) > 1:
+            listaAulas.append(('Cualquiera','Cualquiera'))
         for var in varAulas:
             listaAulas.append((var[0],var[0]))
         print("VAR A RESERVAR")
@@ -459,6 +528,8 @@ def showReservar():
         ''',capacidad, edificio, tipo, ordenadores)
         varAulasCaract = cursor.fetchall()
         listaAulasCaract = []
+        if len(varAulasCaract) > 1:
+            listaAulasCaract.append(('Cualquiera','Cualquiera'))
         for var in varAulasCaract:
             listaAulasCaract.append((var[0],var[0]))
         #Aulas según el responsable
@@ -501,10 +572,20 @@ def reservar():
     filterForm.capacidad.choices = getCapacidades()
 
     #Rellenar edificios
-    filterForm.edificio.choices = getEdificios()
+    if flask.session['user_email'] in ADMIN_USERS:
+        filterForm.edificio.choices = getEdificios()
+    else:
+        filterForm.edificio.choices = getEdificiosProp(flask.session['user_email'])
 
     #Rellenar tipo
     filterForm.tipo.choices = getTipos()
+
+    valorRadio = None
+    if flask.request.get_json():
+        data = flask.request.get_json()
+        valorRadio = data['valorRadio']
+        print("VALOR RADIO")
+        print(valorRadio)
 
     #SEGUNDO FORMULARIO
 
@@ -514,7 +595,6 @@ def reservar():
         listaAulas = []
         for p in listaParametros:
             listaAulas=json.loads(p)
-        print(listaAulas)
 
         
     eventForm = createEventForm()
@@ -522,10 +602,8 @@ def reservar():
     eventForm.day.choices = listaDias
     logging.info("RESERVAR")
     try:
-        print("IMPRIMIMOS CALENDARIOS")
         calendars = get_calendars(flask.session['access_token']) #Reocgemos todos los calendarios
         logging.info(calendars)
-        print(calendars)
         valores = calendars['value']  #Sacamos sus valores del diccionario recibido
 
         listaCalendarios = []
@@ -534,7 +612,6 @@ def reservar():
             if cal['name'] != "Calendario" and cal['name'] != "Días festivos de España" and cal['name'] != "Cumpleaños":
                 listaCalendarios.append((cal['id'],cal['name'])) 
     except Exception:
-        print(flask.session['access_token'])
         nuevoToken = refresh_oauth_token(flask.session['refresh_token'])
         flask.session['access_token'] = nuevoToken['access_token']
         return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
@@ -571,13 +648,15 @@ def reservar():
                 print("Email valido")
             else:
                 print("Email no valido")
-                return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, emailVal = False,validate = False)
+                # return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, emailVal = False,validate = False)
 
             
             
             if aulaId != 'Cualquiera':
                 aula = aulaId
                 aulaId = keys_dicc[vals_dicc.index(aulaId)]
+            else:
+                return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, aula = False, validate= False)
             # CAMBIO DE CONEXION BD AZURE
             # aula = diccCalendarios.get(aulaId)
             # connection.begin()
@@ -638,40 +717,46 @@ def reservar():
                     #Pasar el id del aula
                     evento = create_events(flask.session['access_token'], aulaId, tema, fechaInicio, fechaFin)
                     try:
-                        # CAMBIO DE CONEXION BD AZURE
-                        # cursor = connection.cursor()
-                        # query3 = '''
-                        # INSERT INTO
-                        # outlook.eventos(aula,evento,email,inicio,fin,creacion) 
-                        # VALUES
-                        # (%s,%s,%s,%s,%s,%s)
-                        # '''
-                        # params3 = [aula, tema, flask.session['user_email'],fechaInicio,fechaFin,datetime.now()]
-                        # cursor.execute(query3, params3)
-
                         cursor = cnxn.cursor()
                         cursor.execute('''
                         INSERT INTO
                         eventos(aula,evento,email,inicio,fin,creacion,profesor) 
                         VALUES
                         (?,?,?,?,?,?,?)''', aula, tema, flask.session['user_email'],fechaInicio,fechaFin,datetime.now(),profesor)
-                        # var = cursor.fetchall()
                         cnxn.commit()
                         cursor.close()
                         db.session.commit()
-                        # connection.commit()
+                        #Tabla auditoria
+
+                        cursor = cnxn.cursor()
+                        cursor.execute('''
+                        SELECT id
+                        FROM eventos
+                        WHERE aula = ? AND evento = ? AND inicio = ? AND fin = ?
+                        ''', aula, tema, fechaInicio,fechaFin)
+                        varIdEvento = cursor.fetchall()
+                        cursor.close()
+
+                        cursor = cnxn.cursor()
+                        cursor.execute('''
+                        INSERT INTO
+                        auditoria(id_evento,usuario,fecha_modif,identificador) 
+                        VALUES
+                        (?,?,?,'ALTA')''', varIdEvento[0][0], flask.session['user_email'],datetime.now())
+                        cnxn.commit()
+                        cursor.close()
+                        db.session.commit()
                         db.session.close()
-                        # engine.dispose()
                         #Enviar mensaje
                         em = send_email(flask.session['access_token'], email_prof, aula)
                     except OperationalError:
                         db.session.rollback()
-                        # connection.rollback()
                         cnxn.rollback()
                         db.session.close()
-                        # engine.dispose()
                         return '<h1> Transaccion bloqueada demasiado tiempo </h1>'
                     flash(u'Se ha creado correctamente el evento', 'message')
+                    print("AffffSDAS")
+
                     return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
                 else:
                     db.session.rollback()
@@ -680,6 +765,7 @@ def reservar():
                     db.session.close()
                     # engine.dispose()
                     flash(u'No se ha podido crear el evento', 'error')
+                    print("dddASDAS")
                     return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
             #Reserva multiple
             elif aulaId != "Cualquiera" and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and request.form["endDate"] != "" and diaSemana == "None":
@@ -737,6 +823,32 @@ def reservar():
                             cnxn.commit()
                             cursor.close()
                             db.session.commit()
+                                
+                            print(aula)
+                            print(tema)
+                            print(fechaIniReserva)
+                            print(fechaFinReserva)
+                            #Tabla auditoria
+                            cursor = cnxn.cursor()
+                            cursor.execute('''
+                            SELECT id
+                            FROM eventos
+                            WHERE aula = ? AND evento = ? AND inicio = ?
+                            ''', aula, tema, fechaIniReserva)
+                            varIdEvento = cursor.fetchall()
+                            cursor.close()
+                            print("ERROR")
+                            print(varIdEvento)
+                            cursor = cnxn.cursor()
+                            cursor.execute('''
+                            INSERT INTO
+                            auditoria(id_evento,usuario,fecha_modif,identificador) 
+                            VALUES
+                            (?,?,?,'ALTA')''', varIdEvento[0][0], flask.session['user_email'],datetime.now())
+                            cnxn.commit()
+                            cursor.close()
+                            db.session.commit()
+                            db.session.close()
                             #Enviar mensaje
                             em = send_email(flask.session['access_token'], email_prof, aula)
 
@@ -749,6 +861,8 @@ def reservar():
                 else:
                     flash(u'Las horas estan ocupadas', 'error')
                 # flash(u'Se han creado correctamente los eventos', 'message')
+                print("ASDAaaS")
+
                 return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
             #reserva periodica
             elif aulaId != "Cualquiera" and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and request.form["endDate"] != "" and diaSemana != "None":
@@ -804,6 +918,26 @@ def reservar():
                             cnxn.commit()
                             cursor.close()
                             db.session.commit()
+                            #Tabla auditoria
+                            cursor = cnxn.cursor()
+                            cursor.execute('''
+                            SELECT id
+                            FROM eventos
+                            WHERE aula = ? AND evento = ? AND inicio = ?
+                            ''', aula, tema, fechaIniReserva)
+                            varIdEvento = cursor.fetchall()
+                            cursor.close()
+
+                            
+                            cursor = cnxn.cursor()
+                            cursor.execute('''
+                            INSERT INTO
+                            auditoria(id_evento,usuario,fecha_modif,identificador) 
+                            VALUES
+                            (?,?,?,'ALTA')''', varIdEvento[0][0], flask.session['user_email'],datetime.now())
+                            cnxn.commit()
+                            cursor.close()
+                            db.session.commit()
                             #Enviar mensaje
                             em = send_email(flask.session['access_token'], email_prof, aula)
                         except OperationalError:
@@ -813,14 +947,14 @@ def reservar():
                     flash(u'Se han creado correctamente los eventos', 'message')    
                 else:
                     flash(u'Las horas estan ocupadas', 'error')
-                
+                print("ASDAS")
                 return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
-                # return redirect(url_for('reservar'),form = eventForm, form1 = filterForm )
-            
             else:
-                return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, validate = False)
+                print("JSOIJDNAUS")
+                return flask.render_template('reservar.html', form = eventForm, form1 = filterForm, validate = False, valorRadio=valorRadio)
 
     else:
+        print("AAA")
         return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
 
 
@@ -1035,6 +1169,8 @@ def getEventsTable():
 def showEventsTable():
     print("La lista completa:::")
     print(flask.session['listaAulasReservar'])
+    modEventForm = modificarEvent()
+
     #Si no se elige la opción de cualquier aula, se muestran solo los eventos de la pedida
     if flask.session['tablaEvents'] != 'Cualquiera':
         cursor = cnxn.cursor()
@@ -1060,9 +1196,89 @@ def showEventsTable():
                 for ev in evAula:
                     varEventosFinal.append(ev)
         
-        return flask.render_template('eventsTable.html', dictEvents = varEventosFinal, fechaActual = datetime.now())
+        return flask.render_template('showEventsTable.html',dictEvents = varEventosFinal, fechaActual = datetime.now())
 
 
     # varEventos = tuple(sorted(varEventos, key=lambda item: item[2])) #Ordenar segun la fecha    
     fechaActual = datetime.now()
-    return flask.render_template('eventsTable.html', dictEvents = varEventos, fechaActual = fechaActual)
+    return flask.render_template('showEventsTable.html',dictEvents = varEventos, fechaActual = fechaActual)
+
+@app.route('/auditoria')
+def auditoria():
+
+    cursor = cnxn.cursor()
+    cursor.execute('''
+    SELECT *
+    FROM auditoria
+    ;''')
+    varAuditoria =cursor.fetchall()
+    cursor.close()
+    print("AUDITORIA")
+    print(varAuditoria)
+    return flask.render_template('auditoria.html', varAuditoria = varAuditoria)
+
+
+@app.route('/verPropietarios',methods=['POST','GET'])
+def verPropietarios():
+
+    modifProp = modificarPropietarioForm()
+
+    cursor = cnxn.cursor()
+    cursor.execute('''
+    SELECT *
+    FROM propietarios
+    ;''')
+    varPropietarios =cursor.fetchall()
+    cursor.close()
+
+
+    #Modificar propietario
+    if flask.request.get_json():
+        data = flask.request.get_json()
+        flask.session['IdPropActualizar'] = data['id']
+        
+        return json.dumps(data)
+        # modAulaForm.nombreAula.data = data['aula']
+    #Coger todas las aulas del edificio pedido en el form
+    if request.method == 'POST' and modifProp.validate_on_submit():
+        
+        descripcionNueva = request.form["descripcion"]
+        responsableNuevo = request.form["responsable"]
+        emailNuevo = request.form["email"]
+
+        #Actualizar los datos en la BD
+        cursor = cnxn.cursor()
+        cursor.execute('''
+            UPDATE propietarios
+            SET  propietarios.descripcion = ?, propietarios.responsable = ?, propietarios.email = ?
+            WHERE propietarios.id_propietario = ?''',  descripcionNueva, responsableNuevo, emailNuevo, flask.session['IdPropActualizar'])
+        cnxn.commit()
+        
+        flash(u'Se ha modificado correctamente el propietario', 'message')
+        return redirect(url_for('verPropietarios'))
+    return flask.render_template('verPropietarios.html',form = modifProp, varPropietarios = varPropietarios)
+
+
+@app.route('/anadirPropietarios',methods=['POST','GET'])
+def anadirPropietarios():
+    addPropForm = anadirPropietarioForm()
+    
+    if request.method == 'POST' and addPropForm.validate_on_submit():
+        id_propietario = request.form["id_propietario"]
+        descripcion = request.form["descripcion"]
+        responsable = request.form["responsable"]
+        email = request.form["email"]
+        if id_propietario!="" and descripcion!="" and responsable!="" and email!="":
+            try:
+                cursor = cnxn.cursor()
+                cursor.execute('''
+                INSERT into propietarios (id_propietario, descripcion, responsable, email)
+                values(?, ?, ?, ?); 
+                ''' , id_propietario, descripcion, responsable, email)
+                cursor.commit()
+                cursor.close()  
+                flash('Propietario creado','message')
+                return flask.redirect(url_for('verPropietarios'))
+            except Exception as exc: 
+                flash(exc,'error') 
+    return flask.render_template('anadirPropietarios.html',form = addPropForm)

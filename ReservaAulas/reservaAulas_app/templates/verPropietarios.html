@@ -1,0 +1,113 @@
+{% extends "navBar.html" %}
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/navBar.css" rel="stylesheet">
+<link href="/static/css/buttons.css" rel="stylesheet">
+{% block title %}
+<title>Propietarios</title>
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-lg-offset-1">
+        <h1 style="margin-top: 0; text-align: center;">Ver/Modificar propietarios</h1>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com//ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+
+<form name="modProp" id="modProp" class="border" method="POST" action="{{url_for('verPropietarios')}}" style="display:none;padding:5px" >
+    {{ form.csrf_token }}
+    <div class="row" >
+      <div class="col-3" disabled="disabled">{{ form.id_propietario.label }}
+      {{ form.id_propietario }}</div>
+      <div class="col-3">{{ form.descripcion.label }}
+      {{ form.descripcion }}</div>
+      <div class="col-3">{{ form.responsable.label }}
+      {{ form.responsable }}</div>
+      <div class="col-3">{{ form.email.label }}
+      {{ form.email }}</div>
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+    </div>
+    <div class="col-3" style="padding:5px;"><a type='button' id ='guardarAula' onclick=form.submit()>{{ form.submit }}</a></div>
+  </form>
+
+<div class="container">
+<table id="tablaPropietarios" class="table table-striped table-bordered table-sm" cellspacing="40" overflow="auto">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Descripción</th>
+      <th>Responsable</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% set contador = 0%}
+    {% for prop in varPropietarios %}
+        <tr row_id={{contador + loop.index }}>
+          <td><div class="row_data" col_name="nombre" id="nombreFila">{{ prop[0] }}</div></td>
+          <td><div class="row_data" col_name="edificio">{{ prop[1] }}</div></td>
+          <td><div class="row_data" col_name="tipo">{{ prop[2] }}</div> </td>
+          <td><div class="row_data" col_name="capacidad">{{ prop[3] }} </div></td>
+          <td>
+            <button class="editbtn" id="editarBtn" style="display:flex;" row_id={{contador + loop.index }}>Editar</button>
+            <!-- <button class="deletebtn" id="borrarBtn" style="display:flex;" row_id={{contador + loop.index }}>Borrar</button> -->
+          </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+</div>
+{% endblock %}
+
+
+<script>
+    //Funcion boton editar
+     $('.editbtn').click(function() {
+      item = $(this).closest("tr").text();
+      //console.log(item);
+      console.log($(this).closest("tr"));
+      var currentRow=$(this).closest("tr"); 
+      
+      //Habra que enviar el nombreAula inicial para saber que aula actualizar
+      var id=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+      var descr=currentRow.find("td:eq(1)").text(); 
+      var resp=currentRow.find("td:eq(2)").text();
+      var email=currentRow.find("td:eq(3)").text(); 
+      
+      document.getElementById("id_propietario").value = id;
+      document.getElementById("descripcion").value = descr;  
+      document.getElementById("responsable").value = resp;  
+      document.getElementById("email").value = email;  
+      
+
+      var csrftoken = $('meta[name=csrf-token]').attr('content')
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                  }
+              }
+            })
+    
+          $.ajax({
+              type: "POST",
+              url: "/verPropietarios",
+              dataType: 'json',
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify({id: id,descr:descr,resp:resp, email: email}),
+              success: function(response) {
+                 $('#modProp').css('display', 'block');
+              }
+          });
+      
+      });
+
+    </script>

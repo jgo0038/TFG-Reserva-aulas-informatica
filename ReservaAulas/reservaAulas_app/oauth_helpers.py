@@ -113,7 +113,7 @@ def get_events(access_token, calendarioId, grupoCalId):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'
     get_events_url = graph_endpoint.format('/me/calendarGroups/'+grupoCalId+'/calendars/'+calendarioId+'/events') 
     #get_events_url = graph_endpoint.format('/me/events')    #Ruta para obtener info de los eventos
-    parameters = {'$top': '20',
+    parameters = {'$top': '50',
                       '$select': 'subject,start,end',
                       '$orderby': 'start/dateTime ASC'
                        }
@@ -129,7 +129,7 @@ def get_events_from_calendar(access_token, calendarId):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'
     get_events_url = graph_endpoint.format('/me/calendars/'+calendarId+'/events') 
     #get_events_url = graph_endpoint.format('/me/events')    #Ruta para obtener info de los eventos
-    parameters = {'$top': '20',
+    parameters = {'$top': '50',
                       '$select': 'subject,start,end',
                       '$orderby': 'start/dateTime ASC'
                        }
@@ -290,7 +290,7 @@ def send_email(access_token, email, aula):
 
     payload = {
         "message": {
-            "subject": "Mensaje de prueba",
+            "subject": "Reserva de aula",
             "body": {
                 "contentType": "Text",
                 "content": "Se ha realizado una reserva sobre el aula " + aula

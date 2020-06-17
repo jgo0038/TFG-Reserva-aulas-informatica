@@ -26,6 +26,22 @@ def getEdificios():
     cursor.close() 
     return listaEdificios
 
+def getEdificiosProp(email):
+    cursor = cnxn.cursor()
+    cursor.execute('''
+    SELECT DISTINCT edificios.id_edificio, edificios.nombre
+    FROM propietarios
+    JOIN aulas on propietarios.id_propietario = aulas.propietario
+    JOIN edificios on aulas.edificio = edificios.id_edificio
+    WHERE propietarios.email = ?
+    ;''',email)
+    varEdificios = cursor.fetchall()
+    listaEdificios = []
+    for edif in varEdificios:
+        listaEdificios.append((edif[0],edif[1]))
+    cursor.close() 
+    return listaEdificios
+
 def getCapacidades():
     cursor = cnxn.cursor()
     cursor.execute('''

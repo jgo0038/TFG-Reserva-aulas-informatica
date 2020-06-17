@@ -58,6 +58,13 @@ class Aulas(db.Model):
     
     eventosAula = db.relationship('Eventos', backref='aulas')
 
+class Auditoria(db.Model):
+    id_auditoria = db.Column(db.String, primary_key=True)
+    id_evento = db.Column(db.Integer, nullable = False)
+    usuario = db.Column(db.String, nullable = False)
+    fecha_modif = db.Column(db.DateTime, nullable = False)
+    identificador = db.Column(db.String, nullable = False)
+
 def init_db():
     db.create_all()
 

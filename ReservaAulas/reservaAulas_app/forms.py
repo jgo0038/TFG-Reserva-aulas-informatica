@@ -13,7 +13,7 @@ class createEventForm(FlaskForm):
     day = SelectField('Selecciona día de la semana')
     startTime = DateTimeField('Hora inicio (HH:MM)',validators = [InputRequired(message='Introduce una hora')],format='%H:%M')
     endTime = DateTimeField('Hora fin (HH:MM)',validators = [InputRequired(message='Introduce una hora')],format='%H:%M')
-    submit = SubmitField('Crear evento')
+    submit = SubmitField('Reservar')
     
     def validate_endTime(self, form):
         if self.startTime.data and (self.startTime.data >= self.endTime.data):
@@ -66,3 +66,17 @@ class modificarEvent(FlaskForm):
     fechaIni = DateTimeField('Fecha inicio',format='%Y-%m-%d %H:%M:%S')
     fechaFin = DateTimeField('Fecha fin',format='%Y-%m-%d %H:%M:%S')
     submit = SubmitField('Modificar')
+
+class modificarPropietarioForm(FlaskForm):
+    id_propietario = StringField('ID')
+    descripcion = StringField('Descripcion')
+    responsable = StringField('Responsable')
+    email = StringField('Email')
+    submit = SubmitField('Modificar')
+
+class anadirPropietarioForm(FlaskForm):
+    id_propietario = StringField('Identificador', validators = [InputRequired(message='Introduce un ID')])
+    descripcion = StringField('Descripcion', validators = [InputRequired(message='Introduce una descripción')])
+    responsable = StringField('Responsable', validators = [InputRequired(message='Introduce un responsable')])
+    email = StringField('Email', validators = [InputRequired(message='Introduce un email')])
+    submit = SubmitField('Crear')

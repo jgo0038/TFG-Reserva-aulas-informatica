@@ -1,8 +1,8 @@
 import os
 #Ejecutar en local
-# SERVER_ADDRESS = 'http://localhost:5000/'
+SERVER_ADDRESS = 'http://localhost:5000/'
 #Ejecutar en Azure
-SERVER_ADDRESS = 'https://reservaaulas.azurewebsites.net/'
+# SERVER_ADDRESS = 'https://reservaaulas.azurewebsites.net/'
 DEBUG = True
 global ADMIN_USERS
 ADMIN_USERS = ('gestCalendar@outlook.com')

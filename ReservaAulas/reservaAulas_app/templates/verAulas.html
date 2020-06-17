@@ -1,3 +1,4 @@
+{% extends "navBar.html" %}
 <html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -21,38 +22,6 @@
 
 <body style="padding-top: 0">
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar" >
-    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-      <ul class="navbar-nav mr-auto">
-        <li class="homeImg">
-          <a class="navbar-brand" href="{{ url_for('inicio') }}">
-            <img src="/static/img/home.jpg" width="30" height="30" alt="">
-          </a>
-        </li>
-        <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
-
-        <li class="nav-item">
-          {% if session['user_email'] in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
-            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
-          {% else %}
-            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
-          {% endif %}
-        </li>
-          
-        <li>
-          <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
-        </li>
-
-        <li>
-          {% if session['user_email'] in ADMIN_USERS %}        
-            <a type="button" class="nav-link" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
-          {% else %}
-            <a type="button" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
-          {% endif %}
-        </li>
-      </ul>
-    <!-- </div> -->
-  </nav>
   <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
     <div class="container">
@@ -234,52 +203,7 @@ $('.deletebtn').click(function() {
 	  }
 
   });
-/*
-//Funcion boton guardar
-  $('#guardarBtn').click(function() {
-    var fila = $(this).closest('tr');
-    var id_fila = fila.attr('row_id');
-    $('#guardarBtn').css('display', 'none');
-    $('#cancelarBtn').css('display', 'none');
-    $('#editarBtn').css('display', 'block');   
 
-    //Quitar el editable de la fila
-    fila.find('.row_data').attr('contenteditable','false').css("background-color", "")
-
-    //Guardar los datos en el template
-    var arr = [];
-    console.log("HOLA");
-    fila.find('.row_data').each(function(index,val){
-      var col_name = $(this).attr('col_name');
-      var col_var = $(this).html();
-      arr.push((col_name,col_var));
-    });   
-    alert("suepramos");
-    //Enviar los cambios al views
-    
-    var csrftoken = $('meta[name=csrf-token]').attr('content')
-      $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken)
-            }
-        }
-      })
-
-    $.ajax({
-        type: "POST",
-        url: "/modificarAula",
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(arr),
-        error: function(response){
-          console.log("Llego al error");
-          console.log(response);
-          alert(response.responseText);
-        }
-    });
-
-  }); */
 </script>
 
 

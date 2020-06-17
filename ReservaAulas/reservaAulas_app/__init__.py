@@ -27,17 +27,13 @@ except Exception as ex:
 # SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/outlook'
 # app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-logging.info('Linea 29')
 csrf = CSRFProtect(app)
 csrf.init_app(app)
-logging.info('Linea 31')
 # app.config.from_object(Config)
 Bootstrap(app)
-logging.info('Linea 34')
 # engine = create_engine('mysql://root:password@localhost/outlook')
 # connection = engine.raw_connection()
 db = SQLAlchemy(app)
-logging.info('Linea 38')
 db.init_app(app)
 with app.app_context():
     db.create_all()
