@@ -9,9 +9,10 @@ En este apartado de la documentación explicaré  los objetivos que se perseguí
 	\item Ofrecer al usuario una vista sobre las aulas existentes, si es administrador podrá modificarlas o borrarlas también.
 	\item Ofrecer al usuario una vista con las franjas horarias reservadas y libres de cada aula.
 	\item Controlar el solapamiento de horas.
+	\item Ofrecer un control al administrador sobre las reservas y la información de las aulas.
 \end{itemize}
 \section{Catalogo de requisitos}
-En esta sección enumeraré los requisitos funcionales de la aplicación y los usuarios que intervienen.
+En esta sección enumeraré los requisitos funcionales de la aplicación y los usuarios que intervienen.\newline
 \textbf{Usuario:} será quién use la aplicación, según los privilegios les hay de tres tipos:
     \begin{itemize}
         \item Sin privilegios: Puede consultar todas las aulas y su ocupación.
@@ -52,11 +53,10 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
         \item \textbf{RF.6.2} Permite borrar los eventos.
     \end{itemize}
     \item \textbf{RF.7} La aplicación tiene que poder crear un aula nueva para un manejo posterior.
-     
-    
+    \item \textbf{RF.8} La aplicación tiene que permitir al administrador ver  una tabla de auditoría con las altas, bajas y modificaciones que se realizan en las reservas.
+    \item \textbf{RF.9} La aplicación tiene que poder crear y modificar los propietarios y su información.
     
 \end{itemize}
-
 
 \subsection{Requisitos no funcionales}
 \begin{itemize}
@@ -65,6 +65,7 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
 	\item \textbf{RNF.3 Seguridad} Se controla que no se pueda acceder sin haber iniciado sesión y una vez iniciada sesión, se controla el acceso a las distintas partes de la aplicación.
 	\item \textbf{RFN.4 Mantenibilidad} Es sencillo añadir nuevas funcionalidades.
 \end{itemize}
+\newpage
 \section{Especificación de requisitos}
 \subsection{Diagrama de casos de uso}
 
@@ -118,20 +119,20 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
                                          \\\hline
   Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión.}   \\\hline
     \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación o el menú principal.
   \\\cline{2-3}
-                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio. Con un botón de 'Mostrar aulas'.
   \\\cline{2-3}
-                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+                                         & 3    & Se elige el edifico y se pincha en 'Mostrar aulas', aparece entonces un desplegable con las aulas de éste y una primera opción 'Cualquiera'. Debajo tenemos unos cuantos campos para filtrar las aulas por características si elegimos la opción 'Cualquiera' anteriormente. Si elegimos un aula en concreto solamente se tendrán en cuenta los campos de fecha y hora obligatorios. Si no se especifica capacidad ni ordenadores, se mostrarán de todas las capacidades y ordenadores, si se especifican se mostrarán eventos con igual o mayor número.
     \\\cline{2-3}
-                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+                                         & 4    & Una vez se ha rellenado el formulario al menos con los campos de fecha y horas se puede pinchar en el botón 'Enviar consulta' para consultar los eventos que coincidan con los especificado anteriormente.
      \\\cline{2-3}
-                                        & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
+                                        & 5     & Se muestra la tabla con los eventos futuros que cumplan las especificaciones, mostrando detalles sobre ellos. Existe un botón en la parte inferior de 'Mostrar eventos pasados' que mostrará los eventos pasados coincidentes en color rojo si en la fecha de inicio se puso una anterior a la actual. Una vez mostrados se puede volver a ocultar del botón 'Ocultar eventos pasados'.
                                         \\\hline
 
                                         
   Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Permite la visualización de los eventos según el aula elegido, depende de los privilegios del usuario dispondrá de las opciones de modificar (CU1.1) y borrar estos eventos (CU1.2).} \\\hline
-  Excepciones                        & \multicolumn{2}{p{10.25cm}}{Activar la opción de los filtros pero no rellenarlos todos.}
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No rellenar los campos de fecha y horas.}
 \\\hline
 }
 
@@ -147,13 +148,13 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
                                          \\\hline
   Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador o de propietario.}   \\\hline
     \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación o el menú principal.
   \\\cline{2-3}
-                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio. Con un botón de 'Mostrar aulas'.
   \\\cline{2-3}
-                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+                                         & 3    & Se elige el edifico y se pincha en 'Mostrar aulas', aparece entonces un desplegable con las aulas de éste y una primera opción 'Cualquiera'. Debajo tenemos unos cuantos campos para filtrar las aulas por características si elegimos la opción 'Cualquiera' anteriormente. Si elegimos un aula en concreto solamente se tendrán en cuenta los campos de fecha y hora obligatorios. Si no se especifica capacidad ni ordenadores, se mostrarán de todas las capacidades y ordenadores, si se especifican se mostrarán eventos con igual o mayor número.
     \\\cline{2-3}
-                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+                                         & 4    & Una vez se ha rellenado el formulario al menos con los campos de fecha y horas. Si se pincha en 'Enviar consulta', se filtran los eventos y si el usuario es propietario de algún aula o administrador tendrá la opción de modificar en la siguiente pantalla.
      \\\cline{2-3}
                                         & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
     \\\cline{2-3}
@@ -183,13 +184,13 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
                                          \\\hline
   Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Tener permisos de administrador o de propietario.}   \\\hline
     \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación.
+                                         & 1    & El usuario pincha el botón 'Consultar ocupación de aulas' de la barra superior de navegación o el menú principal.
   \\\cline{2-3}
-                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio.
+                                         & 2    & Se redirige a una página donde se muestra un desplegable para elegir el edificio. Con un botón de 'Mostrar aulas'.
   \\\cline{2-3}
-                                         & 3    & Se elige el edifico y se muestra un desplegable con las aulas de éste.También se facilita un botón 'Filtros'.
+                                         & 3    & Se elige el edifico y se pincha en 'Mostrar aulas', aparece entonces un desplegable con las aulas de éste y una primera opción 'Cualquiera'. Debajo tenemos unos cuantos campos para filtrar las aulas por características si elegimos la opción 'Cualquiera' anteriormente. Si elegimos un aula en concreto solamente se tendrán en cuenta los campos de fecha y hora obligatorios. Si no se especifica capacidad ni ordenadores, se mostrarán de todas las capacidades y ordenadores, si se especifican se mostrarán eventos con igual o mayor número.
     \\\cline{2-3}
-                                         & 4    & Si se elige la opción filtros, se muestran más campos para rellenar y filtrar las aulas por ellos. Si no se puede pinchar el botón 'Mostrar eventos' para ver los eventos del aula elegida en el desplegable.
+                                         & 4    & Una vez se ha rellenado el formulario al menos con los campos de fecha y horas. Si se pincha en 'Enviar consulta', se filtran los eventos y si el usuario es propietario de algún aula o administrador tendrá la opción de borrar en la siguiente pantalla.
      \\\cline{2-3}
                                         & 5     & Se muestra la tabla con los eventos pasados y los futuros, especificando detalles sobre ellos.
     \\\cline{2-3}
@@ -217,7 +218,7 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
                                          \\\hline
   Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión.}   \\\hline
     \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-                                         & 1    & El usuario pincha el botón 'Ver/Modificar aulas' de la barra superior de navegación.
+                                         & 1    & El usuario pincha el botón 'Ver aulas' de la barra superior de navegación.
   \\\cline{2-3}
                                          & 2    & Se redirige a la página de información sobre las aulas, donde se muestra una opción para elegir el grupo de aulas.
   \\\cline{2-3}
@@ -318,17 +319,19 @@ En esta sección enumeraré los requisitos funcionales de la aplicación y los u
                                          \\\hline
   Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber iniciado sesión. Tener permisos necesarios.}   \\\hline
     \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-                                         & 1    & El usuario (administrador o propietario) pincha el botón 'Realizar reserva' de la barra superior de navegación.
+                                         & 1    & El usuario (administrador o propietario) pincha el botón 'Realizar reserva' de la barra superior de navegación o el menú principal.
   \\\cline{2-3}
-                                         & 2    & Se muestra un pequeño formulario en el que se piden la capacidad, nº de ordenadores, edificio y tipo de aula.
+                                         & 2    & Se muestra un formulario en el que se aprecian 3 divisiones. En el primero se piden la capacidad, nº de ordenadores, edificio y tipo de aula.
   \\\cline{2-3}
-                                         & 3    & Si se pincha en el botón 'Consultar'. Se muestran las 3 formas distintas en que se puede realizar la reserva. Se selecciona una para seguir.
+                                         & 3    & Hay que pinchar en el botón 'Consultar' para continuar y se llena el campo de seleccionar aula con las opciones según lo especificado al comienzo, si hay más de un aula se añade una opción de 'Cualquiera' a la lista de aulas disponibles.
 \\\cline{2-3}
-                                         & 4    & Se pincha en el botón 'Aplicar'. Esto muestra un formulario para rellenar la información requerida según el tipo de reserva seleccionada previamente.
+                                         & 4    & En la segunda división del cuestionario, se ofrece la posibilidad de cambiar el tipo de reserva. La opción de pinchar en el botón 'Aplicar' conlleva que cambie el número de casillas a rellenar dependiendo de la opción que se haya elegido.
 \\\cline{2-3}
-                                         & 5    & Si se pincha en el botón 'Consultar ocupación de aulas', se muestran las horas reservadas del aula elegida, si la elección es 'Cualquiera', se muestra de todas las aulas.
+                                        & 5    & Si se elige 'un día' se queda igual. Si se elige la opción 'días contiguos' se añaden el campo 'Fecha fin'. Si se elige la opción 'Un día por semana' se añaden los campos 'Selecciona día de la semana' y 'Fecha fin'
 \\\cline{2-3}
-                                         & 6    & Si se pincha en el botón 'Crear evento' para reservar la hora y aula pedida si están libres, sino se mostrará un error por pantalla.
+                                         & 6    & Si se pincha en el botón 'Consultar ocupación de aulas', se muestran las horas reservadas del aula elegida, si la elección es 'Cualquiera', se muestran los eventos de todas las aulas del desplegable.
+\\\cline{2-3}
+                                         & 7    & Si se pincha en el botón 'Reservar' se realiza la reserva la hora y aula pedida si están libres, sino se mostrará un mensaje de error por pantalla.
 
                                         \\\hline
 
@@ -367,3 +370,79 @@ Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Haber inic
 
 }
                                         
+                                        
+\tablaSmallSinColores{Caso de uso 5: Ver auditorías.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC5}{
+  \multicolumn{3}{l}{Caso de uso 5: Ver auditorías.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario administrador ver las altas, bajas y modificaciones realizadas sobre cualquier reserva.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-8}
+                                         \\\hline
+Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Ser administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario (administrador) pincha el botón 'Ver auditorías' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se muestra una tabla en la que figuran las acciones sobre las reservas, ya sea una alta, baja o modificación. Se especifica el usuario y la fecha de dicha acción.
+
+
+                                        \\\hline
+ Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Acceso a cualquier función.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No ser administrador.}
+
+                        \\\hline
+
+}       
+
+
+
+
+\tablaSmallSinColores{Caso de uso 6: Ver/editar propietarios.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC5}{
+  \multicolumn{3}{l}{Caso de uso 6: Crear/editar propietarios.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario administrador ver y modificar la información de los propietarios existentes.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-9}
+                                         \\\hline
+Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Ser administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario (administrador) pincha el botón 'Ver/Editar propietarios' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se muestra una tabla en la que figuran los propietarios existentes con su información relevante.
+  \\\cline{2-3}
+                                         & 3    & Se da la opción de modificar la información de cada propietario pinchando en el botón 'Modificar' al lado de cada uno.
+  \\\cline{2-3}
+                                         & 4    & Se muestra un formulario en el que se permite editar los campos del propietario a modificar .                                         
+
+
+                                        \\\hline
+ Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Visualización de los propietarios.} \\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No ser administrador.}
+
+                        \\\hline
+
+}  
+
+
+\tablaSmallSinColores{Caso de uso 6.1: Crear propietario.}{p{3cm} p{.75cm} p{9.5cm}}{tablaUC5}{
+  \multicolumn{3}{l}{Caso de uso 6.1: Crear propietario.} \\
+ }
+ {
+  Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite al usuario administrador crear un nuevo propietario.} \\\hline
+  \multirow{1}{3.5cm}{Requisitos}   &\multicolumn{2}{p{10.25cm}}{RF-9}
+                                         \\\hline
+Precondiciones                         &  \multicolumn{2}{p{10.25cm}}{Ser administrador.}   \\\hline
+    \multirow{2}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+                                         & 1    & El usuario (administrador) pincha el botón 'Crear propietarios' de la barra superior de navegación.
+  \\\cline{2-3}
+                                         & 2    & Se muestra un formulario en el que se piden los datos necesarios para crear un propietario nuevo.
+  \\\cline{2-3}
+                                         & 3    & Se pincha en la opción 'Crear' y el propietario está disponible para ser manejado.
+
+
+                                        \\\hline
+ Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Visualización de los propietarios.}\\\hline
+  Excepciones                        & \multicolumn{2}{p{10.25cm}}{No ser administrador.}
+
+                        \\\hline
+
+}  
