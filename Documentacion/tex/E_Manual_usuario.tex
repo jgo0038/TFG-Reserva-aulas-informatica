@@ -1,11 +1,107 @@
 \apendice{Documentación de usuario}
 
 \section{Introducción}
-
+En este apartado explicaré los pasos a seguir por un usuario que quiere descargarse y utilizar la aplicación.
 \section{Requisitos de usuarios}
-
+Para poder utilizar la aplicación, el usuario tendrá que tener instalado Python, 
 \section{Instalación}
+Los pasos de la instalación para la ejecución de la aplicación son los mismos que expliqué en el manual del programador. Aquí dejo las alternativas al problema comentado del servidor de Azure y explico el despliegue realizado.\newline
+Para el acceso de un usuario a la aplicación web, solamente necesita acceder al enlace en el que está subida dicha aplicación en Azure:\newline
+\url{https://reservaaulas.azurewebsites.net}.
+\newline
+Lo único que se necesita es que el \textit{app service} en el que está realizado el deploy este ejecutándose y la base de datos de Azure activa. Estas acciones se explican a continuación:\newline
+\begin{itemize}
+    \item Acceder a \url{https://portal.azure.com/#home} con la cuenta facilitada en el documento de texto adjunto al proyecto (cuenta desde la que registre los servicios). Se muestra una página como la siguiente:\newline
+    \imagen{ActivarServicios1}{Página portal de Azure.}
+    \item Entrar en el app service llamado "reservaAulas" y pinchar en el botón de la parte superior de "Activar" o de "reiniciar".\newline
+    \imagen{ActivarServicios2}{Activar app service}
+    \item Acceder a la base de datos de Azure "reservaAulas (reserva-aulas/reservaAulas)" y mantenerla abierta.
+\end{itemize}
+Una vez se han seguido esos pasos, se asegura que el proyecto funcione ejecutándose desde la URL proporcionada anteriormente.
+Para que esto funcione tuve que realizar un despliegue en un servicio de aplicación de Azure que explico a continuación:\newline
+\begin{itemize}
+    \item Lo primero que necesitamos es una suscripción a Azure, en mi caso utilicé la suscripción de estudiante, que me proporcionaba 100USD para realizar pruebas.
+    \item Se necesita también un entorno de Python.
+    \item Una vez tenemos los primeros requisitos, hay que crear un fichero 'requirements.txt' en el que se guarden las dependencias de la aplicación.
+    \item Creamos una instancia de un app service en Azure.
+    \item Le establecemos el comando de inicio al que nos proporciona Azure, almacenado en 'startup.txt' que es el siguiente:\newline gunicorn --bind=0.0.0.0 --timeout 600 startup:app
+    \item Realizamos el deploy, en mi caso desde VSCode, mediante la extensión de 'Azure: app service', en la que iniciamos sesión de Azure y nos muestran nuestros app services.
+\end{itemize}
+Esta explicación se puede ver más detallada en el manual proporcionado por Microsoft del siguiente enlace \cite{deployVSCode}.\newline
+Como se puede ver se crean los ficheros y la estructura según pide Microsoft y VSCode a lo largo del proyecto, por lo que el proyecto está creado para ser ejecutado en este entorno y servidor.
+
 
 \section{Manual del usuario}
+A continuación se explicará como realizar las operaciones que proporciona esta aplicación:
+\subsection{Consultar ocupación de aulas}
+Pasos para consultar la ocupación de un aula:
+\begin{itemize}
+    \item Pinchar en el botón de 'Consultar ocupación de aulas'
+    \item Escoger el edificio en el que se encuentra el aula que queremos comprobar(ver figura \ref{fig:ConsultarEventos1}).
+    \item Se muestra un formulario en el que tenemos dos opciones (ver figura \ref{fig:ConsultarEventos2}):
+    \begin{itemize}
+        \item Seleccionar un aula y rellenar al menos los campos obligatorios para filtrar las horas y fechas de las reservas a mostrar de ese aula.
+        \item Seleccionar 'Cualquiera' en la opción del aula y rellenar al menos los campos obligatorios, esto filtrará todas las aulas de ese edificio con las características especificadas.
+    \end{itemize}
+    \item Pinchar en el botón 'Enviar consulta' y se mostrarán los eventos que coincidan en una tabla (ver figura \ref{fig:ConsultarEventos3}).
+\end{itemize}
+\imagen{ConsultarEventos1}{Página inicial para ver eventos de aulas.}
+\imagen{ConsultarEventos2}{Formulario para consultar eventos.}
+\imagen{ConsultarEventos3}{Tabla donde se muestran los eventos.}
 
+\subsection{Modificar eventos}
+Para modificar eventos, tenemos que acceder previamente a la página de la consulta de eventos que acabo de explicar, una vez ahí:
+\begin{itemize}
+    \item Pinchamos en el botón 'Modificar' de la parte derecha de la tabla (ver figura \ref{fig:ModificarEventos1}).
+    \item Se abre un formulario en la parte superior de la página en la que se muestran los datos del evento seleccionado y se puede modificar. Una vez modificado si se pincha en 'Modificar' se guardan los cambios (ver figura \ref{fig:ModificarEventos2}).
+\end{itemize}
+\imagen{ModificarEventos1}{Página inicial para ver eventos de aulas y modificarlos.}
+\imagen{ModificarEventos2}{Formulario para modificar eventos.}
 
+\subsection{Borrar eventos}
+Para borrar eventos, accedemos primero a la página de la consulta de eventos he explicado anteriormente, una vez ahí:
+\begin{itemize}
+    \item Pinchamos en el botón 'Seleccione para borrar' de la parte derecha de la tabla de los eventos que queremos borrar (ver figura \ref{fig:BorrarEventos1}).
+    \item Se resaltan en rojo estos eventos seleccionados (ver figura \ref{fig:BorrarEventos2}).
+    \item Se pincha en el botón de la parte inferior de la página de 'Borrar eventos seleccionados' y sale un cuadro de diálogo en el que se pide la confirmación para borrar (ver figura \ref{fig:BorrarEventos3}). Si se acepta, se borran los eventos seleccionados.
+\end{itemize}
+\imagen{BorrarEventos1}{Página inicial para ver eventos de aulas y borrarlos.}
+\imagen{BorrarEventos2}{Selección de eventos a borrar.}
+\imagen{BorrarEventos3}{Confirmación de borrado.}
+
+\subsection{Realizar reserva}
+Pasos a seguir para realizar la reserva de un aula:
+\begin{itemize}
+    \item Seleccionar en el formulario de la izquierda los valores deseados y pinchar en el botón 'Consultar' (ver figura \ref{fig:Reservar1}). Esto rellena la columna de la derecha el desplegable de 'Selecciona aula'.
+    \item Elegir un tipo de reserva y pinchar en 'Aplicar'. Varía el número de campos a rellenar.
+    \item Completar la información pedida sobre la reserva en la parte derecha (ver figura \ref{fig:Reservar2}).
+\end{itemize}
+\imagen{Reservar1}{Pantalla inicial de la reserva.}
+\imagen{Reservar2}{Pantalla completa antes de la reserva.}
+
+\subsection{Modificar aulas}
+Pasos a seguir para realizar la modificación de un aula:
+\begin{itemize}
+    \item Acceder a la ventana de 'Ver/modificar aulas'.
+    \item Seleccionar un grupo de aulas en el que estará el aula que queremos modificar. Se mostrará una tabla con todas las aulas de dicho grupo (ver figura \ref{fig:Modificar1}).
+    \item Seleccionar el botón 'Editar', se abrirá un formulario en la parte superior para poder editar los datos del aula. Una vez editados pinchar en el botón 'Guardar'. (ver figura \ref{fig:Modificar2}).
+\end{itemize}
+\imagen{Modificar1}{Pantalla inicial de la modificación.}
+\imagen{Modificar2}{Pantalla completa antes de la modificación.}
+
+\subsection{Añadir aulas}
+Pasos a seguir para añadir un aula:
+\begin{itemize}
+    \item Acceder a la ventana de 'Añadir aulas'.
+    \item Rellenar el formulario que se presenta indicando los datos pedidos. Pinchar en 'crear aula'.
+\end{itemize}
+
+\subsection{Modificar propietario}
+Pasos a seguir para modificar un propietario:
+\begin{itemize}
+    \item Acceder a la ventana de 'Ver propietarios'.
+    \item Se muestra una tabla con los propietarios existentes y un botón de 'Editar' a su derecha (ver figura \ref{fig:ModificarPropietario1}).
+    \item Aparecerá un formulario en la parte superior de la página con los datos del propietario a editar, ahí se podrá modificar y pinchar en el botón 'Modificar' para guardar los cambios (ver figura \ref{fig:ModificarPropietario2}).
+\end{itemize}
+\imagen{ModificarPropietario1}{Pantalla inicial de la modificación de propietario.}
+\imagen{ModificarPropietario2}{Pantalla completa antes de la modificación.}

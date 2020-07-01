@@ -1,7 +1,10 @@
 \capitulo{3}{Conceptos teóricos}
 
-\subsection{Flask}
-Es un framework en lenguaje Python que permite y facilita la creación de aplicaciones web con un comienzo sencillo y una escalabilidad muy alta. Utiliza la especificación Werkzeug y Jinja como motor en los templates.
+\subsection{Frameworks de desarrollo}
+Un framework es un entorno o marco de trabajo estandarizado, con una estructura conceptual y tecnológica que puede servir de base para la organización y desarrollo de software \cite{wiki:framework}.\newline
+En este proyecto he utilizado como framework Flask, que es un 'micro' framework en lenguaje Python que permite y facilita la creación de aplicaciones web con un comienzo sencillo y una escalabilidad muy alta. Utiliza la especificación Werkzeug y Jinja como motor en los templates.\newline
+Que sea un framework de tipo 'micro' significa que al instalar Flask tenemos las herramientas necesarias para crear una aplicación web funcional \cite{FlaskDefinicion}.
+
 
 \subsection{Werkzeug}
 Es una biblioteca de aplicaciones web de WSGI (interfaz de puerta de enlace del servidor web), se utiliza internamente en Flask y hace las siguientes funciones:
@@ -13,21 +16,10 @@ Es una biblioteca de aplicaciones web de WSGI (interfaz de puerta de enlace del 
 \item Utilidades HTTP.
 \end{itemize}
 
-\subsection{HTML}
-Las siglas hacen referencia a HyperText Markup Language, lo que viene a ser el lenguaje utilizado para la elaboración de las páginas web.
+\subsection{API REST}
+Una API REST es cualquier interfaz entre sistemas que utilice directamente una llamada de HTTP para obtener datos o indicar la ejecución de operaciones sobre los datos, en cualquier formato (XML, JSON, etc). Esto permite que una aplicación puede interactuar con un recurso proporcionado en REST conociendo el identificador del recurso y la acción requerida para obtener la finalidad deseada \cite{wiki:REST}.
 
-\subsection{Bootstrap}
-Es una biblioteca de código abierto que proporciona estilos, plantillas y diseños ya creados para usar directamente en nuestras aplicaciones web.
- 
-\subsection{JavaScript}
-Es un lenguaje de programación ligero e interpretado, orientado a objetos. En mi caso utilizado como lenguaje de scripting para páginas web. Se ha utilizado desde el lado del cliente proporcionando mejoras de las interfaz y de la comunicación con el servidor.
-
-\subsection{MySQL}
-Programa gestor de base de datos, de código abierto, en este caso utilizado para el comienzo y las pruebas del código en local.
-
-\subsection{Azure}
-Es un servicio de computación en la nube, de Microsoft, diseñado para construir, probar, desplegar y administrar aplicaciones y servicios mediante el uso de sus centros de datos. Proporciona muchas herramientas para facilitar el manejo de estas aplicaciones o servicios. En mi caso la he utilizado para desplegar mi aplicación web y mi base de datos. Ambas pueden ser gestionadas desde extensiones del \texit{VSCode}.
-
-\subsection{Pyodbc}
+\subsection{APIs de conectividad de BD}
+Es un estándar de acceso a las bases de datos que hace posible el acceder a cualquier dato desde la aplicación que desarrollamos \cite{wiki:ODBC}. En mi caso utilizo \textit{pyodbc}:\newline
 Es un módulo de Python de código abierto que simplifica el acceso a las bases de datos ODBC. Usado para realizar la conexión entre la base de datos subida al servicio de Azure y nuestra aplicación web también desplegada.
 

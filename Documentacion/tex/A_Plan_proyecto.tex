@@ -6,7 +6,7 @@ Un plan de proyecto recoge la planificación temporal donde se resumen las divis
 \section{Planificación temporal}
 Para la planificación temporal he usado la plataforma GitHub en la que he intentado simular una metodología \textit{Scrum}, en la que las divisiones de tiempo para realizar una determinada función se conocen como \textit{Sprints}. La duración de los Sprints en este caso no era especificada, ya que no tenía unos plazos obligatorios y algunos sprints duraban más de lo planeado y otros menos. Los primeros Sprints están resumidos en unas \textit{issues} de mayor tamaño ya que se centraban en realizar pruebas y generación del comienzo del proyecto.\newline
 Dentro de la plataforma de GitHub utilicé tablero de Zen-hub para controlar mejor la inicialización y finalización de las \textit{issues}.\newline
-Aquí dejo el enlace al repositorio de mi proyecto GitHub: \url{https://github.com/jgo0038/TFG-Reserva-aulas-informatica} \newline
+El enlace GitHub del repositorio del presente trabajo puede encontrarse en:\newline \url{https://github.com/jgo0038/TFG-Reserva-aulas-informatica} \newline
 
 \subsection{Sprint 0 - 24/02/2020 - 27/02/2020}
 Primer sprint en el que se inicia el proyecto, realmente comienza antes el proyecto y la investigación pero hasta entonces no se crea el GitHub. Las tareas en este sprint estaban destinadas a la investigación y la preparación para el proyecto:
@@ -19,6 +19,7 @@ Primer sprint en el que se inicia el proyecto, realmente comienza antes el proye
 	\item Empezar a manejar Overleaf para la documentación el LaTex.
 	\item Investigar sobre el uso de la API de Outlook para Flask.
 \end{itemize}
+Una vez se registró la app en Azure, el objetivo principal era poder iniciar sesión en Outlook con los códigos recibidos, utilizando un repositorio de GitHub como \href{https://github.com/brysontyrrell/Office-365-Flask-App}{ayuda}\cite{loginO365}.
 Resaltar que aquí creo la primera rama donde subo estos primeros pasos del proyecto.
 \subsection{Sprint 1 - 27/02/2020 - 08/03/2020}
 En este sprint solamente hubo especificada una tarea, que engloba trabajar con la API y empezar a enviar y recibir datos para conocer su funcionamiento. Ya conociendo la forma en la que iba a trabajar y los requisitos que había que conseguir, comencé a hacer pruebas sobre la API solucionando los primeros errores y consiguiendo los primeros avances.\newline
@@ -31,7 +32,7 @@ Los objetivos principales en este sprint fueron los siguientes:
     \item Comenzar a trabajar con la base de datos local de MySQL.
     \item Investigar sobre la seguridad de la aplicación.
 \end{itemize}
-En este Sprint, la tarea de investigar la seguridad era secundaria y no corría prisa de momento, por lo que se relegó a mirarlo más tarde cuando tuviera más de funcionalidad y páginas creadas. La tarea principal era el trabajo con los calendarios compartidos, en concreto se buscaba poder crear eventos en calendarios compartidos, que son los que hacen la función de albergar los eventos de cada aula.
+En este Sprint, la tarea de investigar la seguridad era secundaria y no corría prisa de momento, por lo que se relegó a mirarlo más tarde cuando tuviera más funcionalidad y páginas creadas. La tarea principal era el trabajo con los calendarios compartidos, en concreto se buscaba poder crear eventos en calendarios compartidos, que son los que hacen la función de albergar los eventos de cada aula.
 
 \subsection{Sprint 3 - 26/03/2020 - 15/04/2020}
 Los objetivos que abordamos en este Sprint se centrar en añadir funcionalidades a la aplicación y estudiar el despliegue:
@@ -62,7 +63,7 @@ Los objetivos que voy a abordar en este Sprint son los siguientes:
     \item Primera asignación y restricción de acceso a páginas según la cuenta que acceda.
 \end{itemize}
 
-\subsection{Sprint 6 - 07/05/2020 - 26/05/2020}
+\subsection{Sprint 6 - 07/05/2020 - 15/06/2020}
 Este Sprint se centra en mejorar partes del código ya existentes y facilitar la reserva de las aulas, concretamente los objetivos fueron:
 \begin{itemize}
     \item Solucionar los errores de los formularios, que no se muestran por pantalla correctamente.
@@ -73,18 +74,21 @@ Este Sprint se centra en mejorar partes del código ya existentes y facilitar la
     \item Restringir los datos que se pueden introducir al modificar aulas en campos como propietario, edificio o tipo de aula.
     \item En la página de la información, permitir una opción para borrar las aulas.
     \item Añadir las opciones de reserva múltiple (reservar más de un día seguido a la misma hora) y de reserva periódica (reservar un día a la semana a la misma hora durante el tiempo que se quiera ).
+    \item Crear una pagina de auditoría para los usuarios administrador, desde la que puedan ver las altas, bajas y modificaciones que se realizan sobre los eventos.
 \end{itemize}
 Comentar que se actualiza también la base de datos, aplicando la actualización y borrado en cascada.
-Queda abierto el Sprint, la fecha de finalización está según la última tarea que se acaba de cerrar, ya que la tarea de la tabla de auditorías queda pospuesta, si hay tiempo al final se realizará.
+La fecha de finalización se alargó tanto ya que la tarea de la tabla de auditorías quedó pospuesta, de forma que si quedaba tiempo al final para realizarla se haría, por ello fue terminada el 15/06.
 
-\subsection{Sprint 7 - 20/05/2020 - ???????????}
+\subsection{Sprint 7 - 20/05/2020 - 17/06/2020}
 El Sprint 7 se centra en volver a introducir el código con el que he estado trabajando en Azure e ir añadiendo la documentación al proyecto, para ello se fijan estos objetivos:
 \begin{itemize}
     \item Actualizar el repositorio, añadiendo todo tal cual está con los cambios subidos a Azure.
     \item Añadir la carpeta de documentación siguiendo la plantilla proporcionada.
+    \item Agregar la documentación realizada hasta entonces.
+    \item Añadir los casos de uso.
 \end{itemize}
 
-\subsection{Sprint 8 - 26/05/2020 - ???????????}
+\subsection{Sprint 8 - 26/05/2020 - 17/06/2020}
 Este Sprint se centra en tareas más cortas y más visibles, dando estilos a la página y sus elementos y añadiendo funciones para mejorar el funcionamiento. Las tareas más destacables son las siguientes:
 \begin{itemize}
     \item Añadir botón que permita ver las horas ocupadas del aula a reservar.
@@ -96,15 +100,86 @@ Este Sprint se centra en tareas más cortas y más visibles, dando estilos a la 
     \item Aplicar estilos a los elementos de la página.
     \item Crear la barra de navegación.
     \item Implementar el cierre de sesión.
+    \item Diseñar la página de inicio de la aplicación.
+    \item Diseñar la página principal al iniciar sesión.
+    \item Crear la barra de navegación en un fichero aparte del que puedan heredar dicho código.
 \end{itemize}
 Entre estas tareas quiero resaltar que los filtros de búsqueda de capacidad y nº de ordenadores en la página de realizar reserva se atienen al mínimo buscado, no es un búsqueda exacta de esas características, sino se limitaría demasiado.
 
-\section{Estudio de viabilidad}
+\subsection{Sprint 9 - 08/06/2020 - 27/06/2020}
+Este sprint se crea después de una corrección completa del proyecto por el tutor. Anotando los fallos encontrados, las mejoras a realizar y funcionalidades pendientes:
+\begin{itemize}
+    \item Mejorar la página de eventos, dejando más claro s funcionamiento y eliminando el apartado de los filtros, convirtiéndolo en un mismo formulario.
+    \item Añadir función de modificar eventos.
+    \item Añadir función de borrar eventos.
+    \item Arreglar el envío de mensaje al realizar una reserva.
+    \item Añadir posibilidad de que el administrador añada propietarios nuevos.
+    \item Añadir posibilidad al administrador de modificar los propietarios existentes.
+    \item Arreglar la búsqueda de la página de reservas.
+    \item Añadir un botón al consultar los eventos que permita mostrar y ocultar los eventos pasados.
+    \item Arreglar los casos de uso tras la revisión realizada por el tutor.
+    \item Rediseñar la página de consulta de eventos, para que sea mas intuitiva y más útil.
+    \item Añadir una funcionalidad para que se puedan borrar más de un evento a la vez.
+    \item Arreglar o mejorar pequeños detalles.
+\end{itemize}
 
+\subsection{Sprint 10 - 18/06/2020 - 26/06/2020 }
+Realizar los últimos archivos de documentación que quedan por rellenar y completar o modificar algunos ya realizados.
+\begin{itemize}
+    \item Realizar la viabilidad económica y legal.
+    \item Realizar el apartado de trabajos relacionados.
+    \item Realizar el manual del programador.
+    \item Realizar el manual del usuario.
+    \item Mejoras sobre la documentación tras revisión del tutor.
+\end{itemize}
+
+\section{Estudio de viabilidad}
+En esta sección trataré la viabilidad del proyecto, tanto en el ámbito económico como legal.
 \subsection{Viabilidad económica}
+En este apartado trataré de alcanzar el precio total del proyecto si fuera desarrollado en una empresa o comprado por alguien.\newline
+\subsubsection{Coste de personal}
+Para realizar este proyecto desde una vista de cliente, se ha necesitado un desarrollador de aplicaciones web para lograrlo. Por lo tanto el coste del personal se estima en lo siguiente:\newline
+\subsubsection{Desarrollador}
+Desarrollador: Suponiendo que acaba de comenzar su carrera como desarrollador web, el sueldo medio está entre 17.000 y 22.000. Suponemos un término medio de 20.000 para realizar los cálculos. Lo que supone a la empresa: 
+    \begin{equation}
+        20.000 \div 12 = 1667 bruto
+    \end{equation}
+    El trabajo se ha realizado de finales de Febrero a finales de Junio, lo que suponen 4 meses.
+\tablaSmallSinColores{Coste Desarrollador}{p{6.4cm} p{2.15cm} p{8cm}}{costedesarrollador}{
+  \multicolumn{1}{p{4.5cm}}{\textbf{Concepto}} & \textbf{Coste mensual{}}\\
+ }
+ {
+  Salario mensual neto  & \multicolumn{1}{r}{1366}\\\hline
+  Retencion IRPF & \multicolumn{1}{r}{197}\\\hline
+  Costes seguridad social & \multicolumn{1}{r}{105}\\\hline
+  Coste mensual bruto & \multicolumn{1}{r}{1668}\\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{6672}\\\hline
+  }
+
+
+
+\subsubsection{Coste hardware}
+El coste del hardware utilizado se reduce al coste del portátil usado para desarrollar el proyecto. El precio del ordenador portátil (Asus X541U) con IVA fue de 600 y se supone una amortización de este mismo de 4 años. Por lo que el precio usado del portátil sería:\newline
+\begin{equation}
+    (600 \div 4)\div 3 = 50
+\end{equation}
+
+\subsubsection{Coste despliegue}
+El despliegue se ha realizado en Azure, donde se han ido realizando llamadas a la base de datos y ejecutando la aplicación subida. Esto se realizó con una suscripción a la cuenta de estudiante de Azure en la que se proporciona 100USD gratuitos, el uso de esta aplicación web para pruebas y mejoras ha supuesto un gasto de 45USD de los 100 disponibles. Por lo que el gasto en mi caso ha sido nulo. Pero este coste se aplicaría a una empresa durante este período de desarrollo. Si se quisiera mantener después aumentaría dependiendo del uso que se hiciera de esta aplicación y del plan de pago que se eligiera.
+
+\subsubsection{Coste total}
+\tablaSmallSinColores{Coste Total}{p{6.4cm} p{2.15cm} p{8cm}}{costetotal}{
+  \multicolumn{1}{p{4.5cm}}{\textbf{Concepto}} & \textbf{Coste{}}\\
+ }
+ {
+  Coste desarrollador  & \multicolumn{1}{r}{6672}\\
+  Hardware & \multicolumn{1}{r}{50}\\\hline
+  Despliegue & \multicolumn{1}{r}{45}\\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{6767}\\\hline
+  }
+
 
 \subsection{Viabilidad legal}
-
-
-
+En cuanto al código, todo lo utilizado en este proyecto es de libre distribución y dominio público. Se ha utilizado Flask y librerías de Python públicas.\newline
+En cuanto a los programas utilizados, todos son públicos también.
 

@@ -3,31 +3,52 @@
 \section{Técnicas}
 
 \subsection{\textit{Scrum}}
-La metodología \textit{Scrum} es una metodología de desarrollo ágil, en la que se aplican buenas prácticas y procesos con la finalidad de obtener la mejor calidad posible en el producto final buscado.\newline
+La metodología \textit{Scrum} es una metodología de desarrollo ágil, en la que se aplican buenas prácticas y procesos con la finalidad de obtener la mejor calidad posible en el producto final buscado \cite{scrum}.\newline
 Esta metodología está pensada para un equipo de trabajo, con el fin de organizarse y trabajar más eficientemente obteniendo los mejores resultados posibles. En mi caso trataré de simular una metodología \textit{Scrum} ya que el trabajo le realizaré yo solo, pero la intención es dividir dicho trabajo en \textit{sprints} que contendrán dentro las tareas a realizar.\newline
 Como acabo de mencionar, esta metodología se basa en crear \textit{sprints}, dentro de los que se crearán las tareas a realizar (\textit{issues}). Para establecer estas tareas dentro de cada sprint, se realiza una planificación, en la que se deja claro los objetivos a conseguir y el tiempo para cada uno de ellos. 
 Se realizan revisiones para controlar los avances de los sprint planificados y llevar un control sobre el proyecto.
 
+
+
+\section{Herramientas}
 \subsubsection{\textit{GitHub}}
 Para el control de versiones de este proyecto he utilizado \textit{GitHub}, que es un repositorio en línea que emplea \textit{Git}. Así podemos guardar los cambios que vamos realizando en el proyecto y controlar que se cumplan las tareas en el tiempo indicado.
 
-\section{Herramientas}
+\subsection{GitTortoise}
+Es el cliente de control de revisiones que he utilizado para subir los cambios y tener actualizado el GitHub. Permite comparar versiones y solucionar conflictos entre ellas, facilita la subida de código.\cite{wiki:gitTortoise}
 \subsection{\textit{Visual Studio Code}}
 Editor y compilador de código fuente. Incluye y utilizamos el soporte que ofrece para la depuración y para el control integrado de \textit{Azure Web Services}.
 
-\subsection{\textit{Flask}}
-\textit{Flask} es un \textit{framework} escrito en \textit{Python} que permite crear aplicaciones web rápidamente y con un mínimo número de líneas de código.
-
 \subsection{\textit{Jinja2}}
-\textit{Jinja2} es un motor de plantillas web para aplicaciones desarrolladas en \textit{Python}. Permite que \textit{Flask} pueda hacer uso de los contenidos de las plantillas \textit{HTML}.
+\textit{Jinja2} es un motor de plantillas web para aplicaciones desarrolladas en \textit{Python}. Permite que \textit{Flask} pueda hacer uso de los contenidos de las plantillas \textit{HTML} \cite{wiki:jinja2}.
+
+\subsection{JavaScript}
+Es un lenguaje de programación ligero e interpretado, orientado a objetos. En mi caso utilizado como lenguaje de scripting para páginas web. Se ha utilizado desde el lado del cliente proporcionando mejoras de las interfaz y de la comunicación con el servidor \cite{wiki:javascript}.
+
+\subsection{Bootstrap}
+Es una biblioteca de código abierto que proporciona estilos, plantillas y diseños ya creados para usar directamente en nuestras aplicaciones web \cite{wiki:bootstrap}.
 
 \subsection{Documentación}
 Como herramienta para realizar la documentación se ha escogido \textit{LaTeX}, está diseñado para crear documentos con una alta calidad tipográfica. Como editor de \textit{LaTeX} he utilizado \texit{Overleaf}
 
-\subsection{Outlook API (Microsoft Graph) }
-Para realizar este proyecto se ha utilizado la \texit{API} de \texit{Outlook} para manejar los calendarios, que equivalen a las aulas que se proporcionan al usuario para reservar. Para tener acceso a las herramientas de esta API, usé el punto de conexión Microsoft Graph ya que ofrece más servicios y características siguiendo la recomendación de Microsoft (\url{https://docs.microsoft.com/es-ES/outlook/rest/compare-graph}).
-En concreto para este proyecto he utilizado distintas funciones de esta \texit{API}:
+\subsection{Azure}
+Es un servicio de computación en la nube, de Microsoft, diseñado para construir, probar, desplegar y administrar aplicaciones y servicios mediante el uso de sus centros de datos. Proporciona muchas herramientas para facilitar el manejo de estas aplicaciones o servicios. En mi caso la he utilizado para desplegar mi aplicación web y mi base de datos. Ambas pueden ser gestionadas desde extensiones del Visual Studio Code, el programa que utilizo para el desarrollo del proyecto. \cite{wiki:azure}.\newline
+También ha sido necesario utilizar el servicio de administración de identidades de Azure, conocido como Azure Active Directory, para registrar la aplicación y poder proporcionar un inicio de sesión único a ésta.
+
+\subsection{Outlook API REST (Microsoft Graph) }
+Para realizar este proyecto se ha utilizado la \texit{API REST} de \texit{Outlook} para manejar los calendarios, que equivalen a las aulas que se proporcionan al usuario para reservar. Para tener acceso a las herramientas de esta API REST, usé el punto de conexión Microsoft Graph ya que ofrece más servicios y características siguiendo la recomendación de Microsoft (\url{https://docs.microsoft.com/es-ES/outlook/rest/compare-graph} \cite{microsoftGraph}).
+En concreto para este proyecto he utilizado distintas funciones de esta \texit{API REST}:
 \begin{itemize}
-    \item \texbf{Microsoft graph} para realizar las llamadas a esta \texit{API} y recoger o escribir datos en los calendarios, y modificar y crear dichos calendarios.
+    \item \texbf{Microsoft graph} para realizar las llamadas a esta \texit{API REST} y recoger o escribir datos en los calendarios, y modificar y crear dichos calendarios.
     \item \texbf{Outlook Login} para el inicio de sesión mediante una cuenta de \texit{Outlook}.
 \end{itemize}
+
+\subsection{Pylint}
+Pylint es una herramienta de análisis de código estático de Python que utilizo en Visual Studio Code, busca errores de programación, ayuda a aplicar un estándar de codificación y ofrece sugerencias de refactorización simples. Es un software altamente configurable y gratuito.\cite{pylint}
+
+\subsection{SQL Database}
+Es una base de datos que se ejecuta en una plataforma de computación en la nube , y el acceso a ella se proporciona como un servicio. Utilizado desde un servicio proporcionado por la plataforma Azure. Comparte la base de código de SQL Server.\cite{wiki:sqldatabase}
+
+\subsection{JWT} 
+JWT (JSON Web Token) es un estándar en el que se define un mecanismo para poder propagar entre dos partes, y de forma segura, la identidad de un determinado usuario. Se trata de una cadena de texto que tiene tres partes codificadas en Base64, cada una de ellas separadas por un punto. En este proyecto, necesitamos una función que pueda decodificar el JWT del id recibido al iniciar sesión, para obtener la información necesaria como token de acceso, token para refrescarlo o email de la sesión.\cite{JWT}
+
