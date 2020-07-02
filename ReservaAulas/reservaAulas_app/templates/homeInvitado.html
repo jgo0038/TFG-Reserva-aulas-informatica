@@ -1,0 +1,157 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/navBar.css" rel="stylesheet">
+<link href="/static/css/buttons.css" rel="stylesheet">
+{% block title%}
+<title>Inicio</title>
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;" >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-lg-offset-1">
+          <h1 style="margin-top: 0; text-align: center;">Reserva Aulas Web App</h1>
+        </div>
+      </div>
+    </div>
+    {% if session['user_email'] %}
+    <flexbox style="display: flex; justify-content:right;">
+      <a id="cerrarSesion" class="cerrarSesion"  href="https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://localhost:5000/cerrarSesion">
+        <img src="/static/img/cerrar-sesion.png" width="30" height="30" alt="">
+      </a> 
+    </flexbox>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block content %}
+
+      </div>
+    </div>
+        {% if session['invitado']%}
+        <div class="contenedorNavBar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navBar">
+          <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+            <ul class="navbar-nav mr-auto">
+              <li class="homeImg">
+                <a class="navbar-brand" href="{{ url_for('inicio') }}">
+                  <img src="/static/img/home.jpg" width="30" height="30" alt="">
+                </a>
+              </li>
+              <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
+
+              <li class="nav-item">
+                  <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
+              </li>
+                
+              <li>
+                <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
+              </li>
+
+              <li>
+                  <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirAulas') }}'">Añadir aulas</a>
+              </li>
+              <li>
+                  <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('auditoria') }}'">Ver auditorias</a>
+              </li>
+              
+              <li>
+                
+                
+                <div class="dropdown">
+                  <button class="dropbtn">Propietarios</button>
+                  <div class="dropdown-content">
+                    <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
+                    <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
+                  </div>
+                </div>
+ 
+              </li>
+            </ul>
+          <!-- </div> -->
+        </nav>
+        </div>
+        <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+
+        </nav>
+        <div class="container" style="margin-bottom: 30px;">
+
+          <p>Bienvenido <b>invitado!</b></p>
+          <flexbox style="justify-content:center;display:flex;flex-direction:column;border: black;border-radius: 20px;background-color: lightblue;">
+            <a onclick="window.location.href='{{ url_for('events') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
+              <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
+              <p style="padding: 15px;font-family: Stencil Std, fantasy;">Consultar ocupación de las aulas</p>
+            </a><br>
+
+            <a onclick="window.location.href='{{ url_for('verAulas') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
+              <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
+              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver/Modificar aulas</p>
+            </a>
+            
+
+          </flexbox>
+
+        </div>
+        {%  endif %}
+
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+{% block script%}
+<script>
+$('.cerrarSesion').click(function() {
+  sessionStorage.clear();
+});
+</script>
+{% endblock %}
+<style>
+
+
+  #delay1:hover {
+    position: relative;
+    transition-property: background-color, color;
+    transition-duration: 1s;
+    transition-timing-function: ease-out;
+    -webkit-transition-property: background-color, color;
+    -webkit-transition-duration: 1s;
+    -o-transition-property: background-color, color;
+    -o-transition-duration: 1s;
+    background-color:#f8f9fa;
+    color:black;
+  }
+  
+  .dropbtn {
+    background-color: #f8f9fa;
+    color: rgba(0,0,0,.5);
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  .dropdown:hover .dropbtn {color: lightblue;}
+  </style>
