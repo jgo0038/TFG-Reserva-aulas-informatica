@@ -1,0 +1,25 @@
+{% extends "navBar.html" %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/navBar.css" rel="stylesheet">
+<link href="/static/css/buttons.css" rel="stylesheet">
+{% block title %}    
+<div class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-lg-offset-1">
+        <h1 style="margin-top: 0; text-align: center;">Tabla de eventos</h1>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+
+<flexbox style="display:flex;justify-content:center;margin-top: 30px;">Se ha creado/modificado/borrado el propietario correctamente, porfavor modifique los calendarios necesarios manualmente.</flexbox>
+<flexbox style="display:flex;justify-content:center;margin-top: 30px;"><button onclick="window.location.href='javascript:history.back()'">Aceptar</button></flexbox>
+{% endblock %}
