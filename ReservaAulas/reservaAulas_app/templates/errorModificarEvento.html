@@ -20,8 +20,10 @@
 
 <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
-<flexbox style="display:flex;justify-content:center;margin-top: 30px;color: red;">Las horas que intenta reservar ya están ocupadas, por favor elija otras.</flexbox>
+<flexbox style="display:flex;justify-content:center;margin-top: 30px;color: red;">Las horas que intenta reservar ya están ocupadas o no son correctas, por favor elija otras.</flexbox>
 <flexbox style="display:flex;justify-content:center;margin-top: 30px;"><button onclick="back()">Volver</button></flexbox>
+{% endblock %}
+{% block script%}
 <script type="text/javascript">
     function back(){
       history.back();

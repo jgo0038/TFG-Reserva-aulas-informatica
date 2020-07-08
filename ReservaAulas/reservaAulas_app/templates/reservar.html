@@ -35,7 +35,11 @@
         </li>
           
         <li>
+          {% if session['user_email'] in ADMIN_USERS %}  
           <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
+          {% else %}
+          <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver aulas</a>          
+          {% endif %}
         </li>
 
         <li>
@@ -76,9 +80,9 @@
 <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
 <div class = "container">
-<h1>Añadir evento</h1>
-
-
+<div style="position: relative;background-color: #f8f9fa;width: 200px;text-align: center;left: 700px;top: 60px;border-radius: 8px;color: green;">
+  Datos de la reserva
+</div>
 <div class="flexContainer" style="display: flex;">
 <div>
 <form name="filterAulas" id="filterAulas" method="POST">
@@ -92,8 +96,8 @@
     <div>{{ form1.tipo.label }}</div>
     <div style="padding-bottom: 5px;">{{ form1.tipo }}</div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <button type='button' id ='enviarFiltros' class="btn btn-link" >Consultar</button>
-    <button type="button" class="btn btn-link"  onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>    
+    <button type='button' id ='enviarFiltros' class="btn btn-link" >Actualizar</button>
+    <!-- <button type="button" class="btn btn-link"  onclick="window.location.href='{{ url_for('reservar') }}'">Modificar busqueda</button>     -->
 </form>
 </div>
 <div class="alert alert-warning col-md-4" id="errorMsg" style="display: none;"> No existen aulas con esas características. </div>
@@ -101,7 +105,7 @@
 
 <div id="radioTipos" style="display:block;padding:5px;margin: 0px 50px 0px 50px;">
     <b> Selecciona el tipo de reserva </b> <br>
-    <div><input type="radio" name="tipoReserva" value="Simple" style="padding:5px;">Un día </div>
+    <div><input type="radio" checked name="tipoReserva" value="Simple" style="padding:5px;">Un día </div>
     <div><input type="radio" name="tipoReserva" value="Multiple" style="padding:5px;">Días contiguos </div>
     <div><input type="radio" name="tipoReserva" value="Periodica" style="padding:5px;">Un día por semana </div>
     <br><button type="button" class="btn btn-link" style="margin-top: 10px;margin-bottom: 20px;" onclick="showFormReservar()"> Aplicar </button> 
@@ -110,28 +114,31 @@
 
 <div id="form-hidden" style="display: block">
     <form name="createEvent" id="createEvent" method="POST">
-        <div>{{ form.selectAula.label }}</div>
-        <div>{{ form.selectAula }}</div>
-        <div><button type="button" class="btn btn-link" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
-        
+        <div style="position: relative;top: 270px;left: -590px;padding-top:5px;">{{ form.selectAula.label }}</div>
+        <div style="position: relative;top: 270px;left: -590px;padding-bottom: 5px;">{{ form.selectAula }}</div>
+        <div style="position: relative;top: 270px;left: -590px;"><button type="button" class="btn btn-link" onclick="showEventsAula()">Consultar ocupación de aulas </button> </div>
         
         <div style="display: flex;">
            <a>{{ form.subject.label }}</a>
            <a style="margin-left: 210px;">{{ form.teacher.label }}</a>
         </div>
         <div style="display: flex;">
-            <a>{{ form.subject }}</a>
-            <ul>
-                {% for error in form.subject.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-            <a>{{ form.teacher }}</a>
-            <ul>
-                {% for error in form.teacher.errors %}
-                    <li style="color: red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
+            <a style=" height:30px;">{{ form.subject }}</a>
+            
+            <a style=" height:30px;">{{ form.teacher }}</a>
+            
+        </div>
+        <div style="display: flex;">
+          <ul>
+            {% for error in form.subject.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          <ul>
+            {% for error in form.teacher.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
         </div>
 
         <div style="display: flex;">
@@ -139,37 +146,42 @@
             <a style="margin-left: 120px;">{{ form.startDate.label }}</a>
          </div>
          <div style="display: flex;">
-             <a>{{ form.email }}</a>
-             <ul>
-                 {% for error in form.email.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
-             <a>{{ form.startDate }}</a>
-             <ul>
-                 {% for error in form.startDate.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
+             <a style=" height:30px;">{{ form.email }}</a>
+             <a style=" height:30px;">{{ form.startDate }}</a>
          </div>
 
+         <div style="display: flex;">
+          <ul>
+            {% for error in form.email.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          <ul>
+            {% for error in form.startDate.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
          <div style="display: flex;">
             <a>{{ form.startTime.label }}</a>
             <a style="margin-left: 100px;" >{{ form.endTime.label }}</a>
          </div>
         <div style="display: flex;">
-             <a>{{ form.startTime }}</a>
-             <ul>
-                 {% for error in form.startTime.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
-             <a>{{ form.endTime }}</a>
-             <ul>
-                 {% for error in form.endTime.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
+             <a style=" height:30px;">{{ form.startTime }}</a>
+             <a style=" height:30px;">{{ form.endTime }}</a>
+        </div>
+
+        <div style="display: flex;">
+          <ul>
+            {% for error in form.startTime.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          <ul>
+            {% for error in form.endTime.errors %}
+                <li style="color: red;width:auto">{{ error }}</li>
+            {% endfor %}
+          </ul>
         </div>
 
         <div style="display: flex;">
@@ -177,18 +189,8 @@
             <a id="endDateL" style="display:none;margin-left: 57px;">{{ form.endDate.label }}</a>
          </div>
         <div style="display: flex;">
-             <a id="day" style="display:none">{{ form.day }}</a>
-             <ul>
-                 {% for error in form.day.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
-             <a id="endDate" style="display:none">{{ form.endDate }}</a>
-             <ul>
-                 {% for error in form.endDate.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                 {% endfor %}
-             </ul>
+             <a id="day" style="display:none;height:30px;">{{ form.day }}</a>
+             <a id="endDate" style="display:none;height:30px;margin-left: 58px;">{{ form.endDate }}</a>
         </div>
 
         <button type="button" class="btn btn-link" onclick=form.submit()> {{ form.submit.label }} </button>
@@ -210,12 +212,12 @@
                     <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
                     <path d="M7.002 11a1 1 0 112 0 1 1 0 01-2 0zM7.1 4.995a.905.905 0 111.8 0l-.35 3.507a.552.552 0 01-1.1 0L7.1 4.995z"/>
                 </svg>
-                <button type="button"  class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button"  class="close" onclick="hideMessage()" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong>{{ message }}</strong> 
             </div>
         {% else %}
         <div class="alert alert-{{ category }} alert-dismissible" role="alert" style="background-color: green; width: 320px;">
-            <button type="button"  class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button"  class="close" onclick="hideMessage()" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>{{ message }}</strong> 
             </div>
         {% endif %}
@@ -228,7 +230,7 @@
 </div>
 
 {% endblock content %}
-
+{% block script%}
 <script>
     $('#enviarFiltros').click(function() {
       arrayValores = $('#filterAulas').serialize();
@@ -260,7 +262,6 @@
             
             }
             $('#radioTipos').css('display', 'block');
-            $('#enviarFiltros').prop('disabled', true);
             $('#errorMsg').css('display', 'none');
         },
         error: function(response){
@@ -269,6 +270,10 @@
     });
 
     });
+
+    function hideMessage(){
+      $('.flashes').css('display', 'none');
+    }
 
     function showFormReservar() {
         $('#form-hidden').css('display', 'block');
@@ -335,7 +340,12 @@
         });
     };
 </script>
+{% endblock%}
 <style>
+
+    #errorMsg{
+      height: 50px;
+    }
 
     .dropbtn {
       background-color: #f8f9fa;

@@ -1,4 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link type="text/css"  href="/static/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 <link href="/static/css/navBar.css" rel="stylesheet">
 <link href="/static/css/buttons.css" rel="stylesheet">
@@ -9,14 +10,20 @@
       <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
         <ul class="navbar-nav mr-auto">
           <li class="homeImg">
+            {% if session['invitado'] == False%}
             <a class="navbar-brand" href="{{ url_for('inicio') }}">
               <img src="/static/img/home.jpg" width="30" height="30" alt="">
             </a>
+            {% else %}
+            <a class="navbar-brand" href="{{ url_for('invitado') }}">
+              <img src="/static/img/home.jpg" width="30" height="30" alt="">
+            </a>
+            {% endif %}
           </li>
           <li class="nav-item"><a type="button" class="nav-link" onclick="window.location.href='{{ url_for('events') }}'">Consultar ocupación de aulas</a></li>
 
           <li class="nav-item">
-            {% if session['user_email'] in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
+            {% if session['user_email'].strip() in session['listaUsuariosPropietarios'] or session['user_email'] in ADMIN_USERS %}   
               <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
             {% else %}
               <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('reservar') }}'">Realizar reserva</a>
@@ -24,7 +31,11 @@
           </li>
             
           <li>
+            {% if session['user_email'] in ADMIN_USERS %}  
             <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver/Modificar aulas</a>          
+            {% else %}
+            <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verAulas') }}'">Ver aulas</a>          
+            {% endif %}
           </li>
 
           <li>
@@ -66,7 +77,8 @@
 
     {% block content %}
     {% endblock %}
-
+    {% block script%}
+    {% endblock %}
 
       <style>
 
@@ -104,4 +116,5 @@
         .dropdown:hover .dropdown-content {display: block;}
         
         .dropdown:hover .dropbtn {color: lightblue;}
+
         </style>

@@ -20,6 +20,26 @@
 
 <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
-<flexbox style="display:flex;justify-content:center;margin-top: 30px;">Se ha creado/modificado/borrado el propietario correctamente, porfavor modifique los calendarios necesarios manualmente.</flexbox>
-<flexbox style="display:flex;justify-content:center;margin-top: 30px;"><button onclick="window.location.href='javascript:history.back()'">Aceptar</button></flexbox>
+<flexbox style="display:flex;justify-content:center;margin-top: 30px;">Se ha creado/modificado/borrado el propietario correctamente, porfavor modifique los permisos de los calendarios afectados manualmente.</flexbox>
+<flexbox style="display:flex;justify-content:center;margin-top: 30px;"><button onclick="window.location.href='{{ url_for('verPropietarios') }}'">Aceptar</button></flexbox>
+<flexbox style="display:flex;justify-content:center;padding:15px;"> 
+  <a id="ayuda" style="color:blue;text-decoration:underline">¿Cómo puedo compartir un calendario?</a>
+</flexbox>
+<flexbox id="ayudaExtra" style="display:none;justify-content:center"> 
+  <div>
+    <p>1.- Acceda a la cuenta administrador de Outlook.</p>
+    <p>2.- Acceda a la sección de calendarios.</p>
+    <p>3.- Click sobre los tres puntos del calendario a compartir.</p>
+    <p>4.- Seleccionar uso compartido y permisos.</p>
+    <p>5.- Escribir la dirección del propietario a añadir o borrar la del propietario existente.</p>
+  </div>
+</flexbox>
+{% endblock %}
+{% block script %}
+<script>
+  $('#ayuda').click(function(){
+    $('#ayudaExtra').css('display','flex');
+  });
+</script>
+
 {% endblock %}

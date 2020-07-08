@@ -15,7 +15,7 @@
     </div>
     {% if session['user_email'] %}
     <flexbox style="display: flex; justify-content:right;">
-      <a id="cerrarSesion" class="cerrarSesion"  href="https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://localhost:5000/cerrarSesion">
+      <a id="cerrarSesion" class="cerrarSesion"  onclick="window.location.href='{{ url_for('cerrarSesion') }}'">
         <img src="/static/img/cerrar-sesion.png" width="30" height="30" alt="">
       </a> 
     </flexbox>

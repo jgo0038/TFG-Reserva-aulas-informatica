@@ -5,6 +5,8 @@
 <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 <link href="/static/css/navBar.css" rel="stylesheet">
 <link href="/static/css/buttons.css" rel="stylesheet">
+
+
 {% block title%}
 <title>Ver/Modificar aulas</title>
 <div background="/static/img/fondoCalendarios.jpg" class="jumbotron" style="margin-bottom: 0;padding:2rem 2rem;" >
@@ -24,8 +26,8 @@
 
   <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
 
+    
     <div class="container">
-
 
       <form name="seeAulas" id="seeAulas" method="POST">
           {{ form.csrf_token }}
@@ -54,7 +56,7 @@
           {{ form2.propietario }}</div>
           <meta name="csrf-token" content="{{ csrf_token() }}">
         </div>
-        <div class="col-3" style="padding:5px;"><a type='button' id ='guardarAula' onclick=form2.submit()>{{ form2.submit }}</a></div>
+        <div class="col-3" style="padding:5px;"><a type='button' class='guardarAula' id ='guardarAula' onclick=form2.submit()>{{ form2.submit }}</a></div>
 
       </form>
 
@@ -68,7 +70,7 @@
       <!-- Si se elige un edificio de que mostrar aulas-->
       {% if aulas %}
         <table id="tablaAulas" class="table table-striped table-bordered table-sm" cellspacing="40" overflow="auto">
-            <thead>
+          <thead>
             <tr>
               <th>Nombre</th>
               <th>Edificio</th>
@@ -76,6 +78,9 @@
               <th>Capacidad</th>
               <th>Nº ordenadores</th>
               <th>Propietario</th>
+              {% if session['user_email'] in ADMIN_USERS %}
+              <th>Acciones</th>
+              {% endif %}
             </tr>
           </thead>
 
@@ -115,7 +120,21 @@
 
 </body>
 {% endblock content%}
+{% block script%}
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.dataTables.min.js"></script>
 <script>
+  $(document).ready(function() {
+  $('#tablaAulas').dataTable({
+    paging: false,
+    ordering: true,
+    language: {
+      search: "Buscar:",
+      info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+    }
+  });
+  });
 //Funcion boton editar
  $('.editbtn').click(function() {
  item = $(this).closest("tr").text();
@@ -132,9 +151,23 @@
   var propietario=currentRow.find("td:eq(5)").text(); 
  
   document.getElementById("nombreAula").value = aula;
-  console.log(edif);
-  console.log(document.getElementById("edificio").options.value)
-  document.getElementById("tipo").value = tipo;  
+
+  if(edif=="Humanidades"){
+    document.getElementById("edificio").value = "HUMA";  
+  }else if(edif=="Politecnica Rio Vena"){
+    document.getElementById("edificio").value = "PVENA";  
+  }else if(edif=="Politecnica Milanera"){
+    document.getElementById("edificio").value = "PMILA";   
+  }
+  console.log(tipo.localeCompare("Ordinaria"));
+  console.log(tipo.trim());
+  if(tipo.trim().localeCompare("Laboratorio")==0){
+    document.getElementById("tipo").value = "LAB"; 
+  }else if(tipo.trim().localeCompare("Ordinaria")==0){
+    document.getElementById("tipo").value = "INF"; 
+  }else if(tipo.trim().localeCompare("Sala de ordenadores")==0){
+    document.getElementById("tipo").value = "ORD"; 
+  }
   if(capacidad == "None"){
     document.getElementById("capacidad").value = 0;
   }else{
@@ -142,7 +175,8 @@
   }
     
   document.getElementById("n_ordenadores").value = ordenadores;
-  document.getElementById("propietario").value = propietario;
+  console.log(propietario);
+  document.getElementById("propietario").value = propietario.trim();
 
 
 
@@ -205,6 +239,6 @@ $('.deletebtn').click(function() {
   });
 
 </script>
-
+{% endblock %}
 
 </html>

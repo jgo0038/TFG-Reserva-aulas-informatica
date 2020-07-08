@@ -31,8 +31,10 @@
     {{ modEventForm.user }}</div>
     <div class="col-3">{{ modEventForm.fechaIni.label }}
     {{ modEventForm.fechaIni }}</div>
-    <div class="col-3">{{ modEventForm.fechaFin.label }}
-    {{ modEventForm.fechaFin }}</div>
+    <div class="col-3">{{ modEventForm.horaIni.label }}
+    {{ modEventForm.horaIni }}</div>
+    <div class="col-3">{{ modEventForm.horaFin.label }}
+    {{ modEventForm.horaFin }}</div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </div>
   <div class="col-3" style="padding:5px;"><a type='button' id ='guardarAula' onclick=modEventForm.submit()>{{ modEventForm.submit }}</a></div>
@@ -50,43 +52,45 @@
         <th>Tema</th>
         <th>Usuario</th>
         <th>Fecha inicio</th>
-        <th>Fecha fin</th>
-        {% if listaPropietarios %}
+        <th>Hora inicio</th>
+        <th>Hora fin</th>
+        {% if listaPropietarios or session['user_email'] in ADMIN_USERS %}
         <th>Acciones</th>
         {% endif %}
       </tr>
     </thead>
-    <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" style="border-block-color: lightblue;"/>
     {% if dictEvents %}
     <tbody>
       {% set contador = 0%}
       {% for event in dictEvents %}
         {% if event[4] < fechaActual %}
-          <tr row_id={{contador + loop.index }}>
-            <td style="color : red"><div class="row_data" col_name="n_reserva">{{ event[0] }}</div></td>
-            <td style="color : red"><div class="row_data" col_name="aula">{{ event[1] }}</div></td>
-            <td style="color : red"><div class="row_data" col_name="tema">{{ event[2] }}</div></td>
-            <td style="color : red"><div class="row_data" col_name="user">{{ event[7] }}</div> </td>
-            <td style="color : red"><div class="row_data" col_name="fechaI">{{ event[4] }}</div> </td>
-            <td style="color : red"><div class="row_data" col_name="fechaF">{{ event[5] }} </div></td>
-            {% if event[3] == session['user_email'] or session['user_email'] in ADMIN_USERS %}
-                <td>
-               </td>
-            {% endif %} 
+          <tr class="evPasados" style="display:none" row_id={{contador + loop.index }}>
+            <td style="color : red;"><div class="row_data" col_name="n_reserva">{{ event[0] }}</div></td>
+            <td style="color : red;"><div class="row_data" col_name="aula">{{ event[1] }}</div></td>
+            <td style="color : red;"><div class="row_data" col_name="tema">{{ event[2] }}</div></td>
+            <td style="color : red;"><div class="row_data" col_name="user">{{ event[7] }}</div> </td>
+            <td style="color : red;"><div class="row_data" col_name="fechaI">{{ event[4].strftime('%Y-%m-%d') }}</div> </td>
+            <td style="color : red;"><div class="row_data" col_name="horaI">{{ event[4].strftime('%H:%M') }}</div> </td>
+            <td style="color : red;"><div class="row_data" col_name="horaF">{{ event[5].strftime('%H:%M') }} </div></td> 
+            <td ><div class="row_data"> --- </div></td>
           </tr>
         {% else %}
           <tr row_id={{contador + loop.index }}>
-            <td style="color : red"><div class="row_data" col_name="n_reserva">{{ event[0] }}</div></td>
+            <td style="color : green"><div class="row_data" col_name="n_reserva">{{ event[0] }}</div></td>
             <td style="color : green"><div class="row_data" col_name="aula">{{ event[1] }}</div></td>
             <td style="color : green"><div class="row_data" col_name="tema">{{ event[2] }}</div></td>
             <td style="color : green"><div class="row_data" col_name="user">{{ event[7] }}</div></td>
-            <td style="color : green"><div class="row_data" col_name="fechaI">{{ event[4] }}</div></td>
-            <td style="color : green"><div class="row_data" col_name="fechaF">{{ event[5] }}</div></td>
-            {% if session['user_email'] == propietario[0][0] or session['user_email'] in ADMIN_USERS %}
-              <td>
-                <button class="editbtn" id="editBtn" style="display:flex;" row_id={{contador + loop.index }}>Modificar</button>
-                <button class="deletebtn" id="eliminarBtn" style="display:flex;" row_id={{contador + loop.index }}>Borrar</button>
-              </td>
+            <td style="color : green;"><div class="row_data" col_name="fechaI">{{ event[4].strftime('%Y-%m-%d') }}</div> </td>
+            <td style="color : green"><div class="row_data" col_name="horaI">{{ event[4].strftime('%H:%M') }}</div></td>
+            <td style="color : green"><div class="row_data" col_name="horaF">{{ event[5].strftime('%H:%M') }}</div></td>
+
+            {% if event[1] in aulasProp or session['user_email'] in ADMIN_USERS %}
+                <td>
+                  <button class="editbtn" id="editbtn" style="display:flex;" row_id={{contador + loop.index }}>Modificar</button>
+                  <button class="deletebtn" id="eliminarBtn" style="display:flex;" row_id={{contador + loop.index }}>Seleccione para borrar</button>
+                </td>
+            {% else %}
+                <td ><div class="row_data"> --- </div></td>
             {% endif %}
           </tr>
         {% endif %}
@@ -105,47 +109,74 @@
     <rect x="5" y="2" rx="2" ry="2" width="10" height="10"
     style="fill:green;" />
   </svg>   Eventos futuros<br>
+  <button type='button' id="mostrarPasados" class="mostrarPasados" >Mostrar eventos pasados</button>
+  <button type='button' style="display:none" id="ocultarPasados" class="ocultarPasados" >Ocultar eventos pasados</button>
+  <button type='button' id="borrarSeleccionados" class="borrarSeleccionados" >Borrar eventos seleccionados</button>
+  <button type='button' id="seleccionarTodos" class="seleccionarTodos" >Seleccionar todos</button>
+  <div>
+      <button type='button' id="volver" class="volver" >Volver</button>
+  </div>
 </div>
 
 
-{% endblock %}
 
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.dataTables.min.js"></script>
 <script>
-document.getElementById("buscar").onkeyup = function() {
-      var buscar_= this.value.toLowerCase() ;
-      document.querySelectorAll('.table tbody tr').forEach(function(e){
-        var encontro_ =false;
-        e.querySelectorAll('td').forEach(function(e){
-          if (e.innerHTML.toLowerCase().indexOf(buscar_)>=0){
-            encontro_=true;
-          }
-        }); 
-        if (encontro_){
-          e.style.display = '';
-        }else{
-          e.style.display = 'none';
-        }
-      });              
-}
+  $(document).ready(function() {
+  $('#tablaEventos').dataTable({
+    paging: false,
+    ordering: true,
+    language: {
+        search: "Buscar:",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+    }
+  });
+  });
+$('.volver').click(function() {
+  history.back();
+});
+
+var listaBorrar = [];
+ $('.seleccionarTodos').click(function() {
+   var tab = document.getElementById("tablaEventos");
+   var n = tab.rows.length;
+   var s = null;
+   for (i = 1; i < n; i++) {
+        tr = tab.rows[i];
+        var currentRow=$(tr).closest("tr"); 
+        currentRow.toggleClass('seleccionada');
+        console.log(currentRow);
+        if (tr.cells.length > 0) { // Check that cell exists before you try
+            td = tr.cells[0];      // to access it.
+            listaBorrar.push(td.innerText);
+            console.log(td.innerText);
+        } // Here you could say else { return null; } if you want it to fail
+          // when requested column is out of bounds. It depends.
+    }
+
+ });
+
 
 
  $('.editbtn').click(function() {
-  console.log("Primera linea");
   item = $(this).closest("tr").text();
   console.log($(this).closest("tr"));
   var currentRow=$(this).closest("tr"); 
-  console.log(currentRow);
   //Habra que enviar el nombreAula y las fechas para saber que evento actualizar
   var nombreAula=currentRow.find("td:eq(1)").text(); // get current row 1st TD value
   var tema = currentRow.find("td:eq(2)").text();
   var user = currentRow.find("td:eq(3)").text();
   var fechaInicio=currentRow.find("td:eq(4)").text(); 
-  var fechaFin=currentRow.find("td:eq(5)").text(); 
+  var horaIni=currentRow.find("td:eq(5)").text(); 
+  var horaFin=currentRow.find("td:eq(6)").text(); 
 
   document.getElementById("tema").value = tema;
   document.getElementById("user").value = user;
   document.getElementById("fechaIni").value = fechaInicio;
-  document.getElementById("fechaFin").value = fechaFin;
+  document.getElementById("horaIni").value = horaIni;
+  document.getElementById("horaFin").value = horaFin;
 
   var csrftoken = "{{ csrf_token() }}";
     $.ajaxSetup({
@@ -160,18 +191,19 @@ document.getElementById("buscar").onkeyup = function() {
       url: "/modificarEvento",
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify({aula: nombreAula, fechaIni: fechaInicio, fechaF: fechaFin}),
+      data: JSON.stringify({aula: nombreAula, fechaIni: fechaInicio, horaIni: horaIni, horaFin:horaFin}),
       success: function(response) {
-        console.log("Se consigue ");
         $('#modEvent').css('display', 'block');
       }
     });
 });
+
 $('.deletebtn').click(function() {
   item = $(this).closest("tr").text();
   console.log($(this).closest("tr"));
   var currentRow=$(this).closest("tr"); 
-  console.log(currentRow);
+  currentRow.toggleClass('seleccionada');
+  var selec = false;
   //Hay que enviar el nombreAula y las fechas para saber que evento actualizar
   var idEvento = currentRow.find("td:eq(0)").text();
   var nombreAula=currentRow.find("td:eq(1)").text(); // get current row 1st TD value
@@ -179,9 +211,29 @@ $('.deletebtn').click(function() {
   var user = currentRow.find("td:eq(3)").text();
   var fechaInicio=currentRow.find("td:eq(4)").text(); 
   var fechaFin=currentRow.find("td:eq(5)").text(); 
-  var opcion = confirm("¿Esta seguro que quiere borrar el evento "+tema+" ?");
+  for (var ev = 0; ev < listaBorrar.length; ev++) {
+    if(listaBorrar[ev] == idEvento){
+      if(ev == 0){
+        listaBorrar.shift();
+      }else{
+        listaBorrar.splice(ev,ev);
+      }
+      selec = true;
+    }
+  }
+  if(selec == false){
+      listaBorrar.push(idEvento);
+  }
+  console.log(listaBorrar);
+});
+
+
+
+$('.borrarSeleccionados').click(function() {
+  var opcion = confirm("¿Esta seguro que quiere borrar los eventos seleccionados? ");
   if (opcion == true) {
-    var csrftoken = "{{ csrf_token() }}";
+  
+  var csrftoken = "{{ csrf_token() }}";
       $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -194,19 +246,37 @@ $('.deletebtn').click(function() {
         url: "/borrarEvento",
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({aula: nombreAula, fechaIni: fechaInicio, fechaF: fechaFin,idEvento:idEvento}),
+        data: JSON.stringify({listaBorrar:listaBorrar}),
         success: function(response) {
           console.log(response);
           if(response['success']==true){
-          window.alert("Se ha borrado correctamente el evento");
-          window.location = window.location.href;          
+          window.alert("Se han borrado correctamente los eventos");
+          location.reload();
           }else{
             window.alert("No se borra");
           }
         }
       });
   }
-
 });
 
+$('.mostrarPasados').click(function() {
+  $('.evPasados').css('display', 'table-row');
+  $('.mostrarPasados').css('display', 'none');
+  $('.ocultarPasados').css('display', 'block');
+});
+
+$('.ocultarPasados').click(function() {
+  console.log("PASADOS");
+  $('.evPasados').css('display', 'none');
+  $('.mostrarPasados').css('display', 'block');
+  $('.ocultarPasados').css('display', 'none');
+});
 </script>
+
+<style>
+.seleccionada{
+  background-color:#eb6060 !important;
+}
+</style>
+{% endblock %}

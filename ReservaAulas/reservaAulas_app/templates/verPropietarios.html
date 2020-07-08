@@ -19,6 +19,7 @@
 <script src="https://ajax.googleapis.com//ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark"></nav>
+<input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" style="border-block-color: lightblue;"/>
 
 <form name="modProp" id="modProp" class="border" method="POST" action="{{url_for('verPropietarios')}}" style="display:none;padding:5px" >
     {{ form.csrf_token }}
@@ -34,6 +35,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
     </div>
     <div class="col-3" style="padding:5px;"><a type='button' id ='guardarAula' onclick=form.submit()>{{ form.submit }}</a></div>
+    <div class="col-3" style="padding:5px;"><a type='button' id ='cancelar'>Cancelar</a></div>
   </form>
 
 <div class="container">
@@ -42,7 +44,7 @@
     <tr>
       <th>Id</th>
       <th>Descripción</th>
-      <th>Responsable</th>
+      <th>Nombre propietario</th>
       <th>Email</th>
     </tr>
   </thead>
@@ -57,17 +59,22 @@
           <td><div class="row_data" col_name="capacidad">{{ prop[3] }} </div></td>
           <td>
             <button class="editbtn" id="editarBtn" style="display:flex;" row_id={{contador + loop.index }}>Editar</button>
-            <!-- <button class="deletebtn" id="borrarBtn" style="display:flex;" row_id={{contador + loop.index }}>Borrar</button> -->
+            <button class="deletebtn" id="borrarBtn" style="display:flex;" row_id={{contador + loop.index }}>Borrar</button>
           </td>
         </tr>
     {% endfor %}
   </tbody>
 
 </table>
+
+<div class="alert alert-success col-md-6" role="alert" id="propElim" style="display:none">
+  <h4 class="alert-heading">Propietario eliminado</h4>
+  <p> El propietario se ha eliminado correctamente.</p>
+</div>
 </div>
 {% endblock %}
 
-
+{% block script%}
 <script>
     //Funcion boton editar
      $('.editbtn').click(function() {
@@ -110,4 +117,58 @@
       
       });
 
+      $('#cancelar').click(function() {
+        $('#modProp').css('display','none');
+      });
+
+      $('.deletebtn').click(function() {
+        var fila = $(this).closest('tr');
+        var id_fila = fila.attr('row_id');
+    
+        var idProp = fila.find("td:eq(0)").text();
+        var mensaje;
+        var opcion = confirm("¿Esta seguro que quiere borrar el propietario "+idProp+" ?");
+        if (opcion == true) {
+          console.log("Aceptado")
+          var csrftoken = $('meta[name=csrf-token]').attr('content')
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                  }
+              }
+            })
+          $.ajax({
+              type: "POST",
+              url: "/eliminarPropietario",
+              dataType: 'json',
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify({idProp: idProp}),
+              success: function(response) {
+                 window.location.href = '{{ url_for('mensajePropietario') }}';        
+              }
+          });
+        } else {
+          mensaje = "Has clickado Cancelar";
+        }
+    
+      });
+
+      document.getElementById("buscar").onkeyup = function() {
+        var buscar_= this.value.toLowerCase() ;
+        document.querySelectorAll('.table tbody tr').forEach(function(e){
+          var encontro_ =false;
+          e.querySelectorAll('td').forEach(function(e){
+            if (e.innerHTML.toLowerCase().indexOf(buscar_)>=0){
+              encontro_=true;
+            }
+          }); 
+          if (encontro_){
+            e.style.display = '';
+          }else{
+            e.style.display = 'none';
+          }
+        });              
+    }
     </script>
+    {% endblock %}

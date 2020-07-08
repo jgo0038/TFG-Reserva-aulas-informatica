@@ -32,19 +32,11 @@
   </form>
 
   {% if edificioId %}
-  <!-- Formulario para elegir el calendario del que ver los eventos -->
-  <!-- <div id="form2" style="visibility: hidden;"> -->
-  <form name="selectAula" id="selectAula" method="POST">
-    <div>{{ formAula.select.label }}</div>
-    <div>{{ formAula.select }}</div>
-    <input type="submit" name="submitAula" id="submitAula" value="Mostrar eventos" class="btn btn-link" onclick=formAula.submit()>
-    {{ formAula.csrf_token }}
-  </form>
-  <div id="radioFiltro" style="padding:5px;">
-    <input type="radio" name="filtros" value="Filtrar" style="padding:5px;" onclick="showFilterForm()">Filtros
-  </div>
 
-  <form name="filterAulas" id="filterAulas" method="POST" style="display:none;">
+
+  <form name="filterAulas" id="filterAulas" method="POST" style="display:block;">
+    <div>{{ filterForm.select.label }}</div>
+    <div>{{ filterForm.select }}</div>
     <div>{{ filterForm.capacidad.label }}</div>
     <div>{{ filterForm.capacidad }}</div>
       <ul>
@@ -73,6 +65,14 @@
             <li style="color: red;">{{ error }}</li>
         {% endfor %}
       </ul>
+
+      <div>{{ filterForm.endDate.label }}</div>
+      <div>{{ filterForm.endDate }}</div>
+        <ul>
+          {% for error in filterForm.endDate.errors %}
+              <li style="color: red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
     
     <div>{{ filterForm.startTime.label }}</div>
     <div>{{ filterForm.startTime }}</div>
@@ -88,7 +88,7 @@
               <li style="color: red;">{{ error }}</li>
           {% endfor %}
         </ul>
-    <input id="submitFilters" type="submit" class="btn btn-success" onclick=filterForm.submit()>
+    <input id="submitFilters" type="submit" class="btn btn-link" onclick=filterForm.submit()>
     {{ filterForm.csrf_token }}
 
   </form>
@@ -100,8 +100,8 @@
 
 
 </div>
-
-
+{% endblock %}
+{% block script%}
   <script type="text/javascript">
 
     function showFilterForm() {
