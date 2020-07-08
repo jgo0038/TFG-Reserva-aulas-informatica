@@ -65,3 +65,15 @@ def getPropietarios():
     for prop in varPropietarios:
         listaPropietarios.append((prop[0], prop[1]))
     return listaPropietarios
+
+def getPropietariosEmail():
+    cursor = cnxn.cursor()
+    cursor.execute('''
+        SELECT propietarios.email
+        FROM propietarios''')
+    varPropietarios = cursor.fetchall()
+    cursor.close()
+    listaPropietarios = []
+    for prop in varPropietarios:
+        listaPropietarios.append(prop[0])
+    return listaPropietarios

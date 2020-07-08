@@ -91,8 +91,6 @@ def make_api_call(method, url, token, payload = None, parameters = None):
 
 
     if (method.upper() == 'GET'):
-      print("URL")
-      print(url)
       response = requests.get(url, headers = headers, params = parameters)
     elif (method.upper() == 'DELETE'):
       response = requests.delete(url, headers = headers, params = parameters)
@@ -283,7 +281,7 @@ def delete_event(access_token, aulaId, eventId):
     else:
         return "{0}: {1}".format(r.status_code, r.text)
 
-def send_email(access_token, email, aula):
+def send_email(access_token, email, aula, tema, inicio, fin):
      
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     send_email_url = graph_endpoint.format('/me/sendMail')  #Ruta para obtener informacion sobre el usuario   
@@ -293,7 +291,7 @@ def send_email(access_token, email, aula):
             "subject": "Reserva de aula",
             "body": {
                 "contentType": "Text",
-                "content": "Se ha realizado una reserva sobre el aula " + aula
+                "content": "Se ha realizado una reserva sobre el aula " + aula + " con la descripción '"+tema+"', el día "+str(inicio)+" hasta "+str(fin)
             },
             "toRecipients": [
             {
@@ -325,6 +323,9 @@ def share_calendar(access_token):
         return "{0}: {1}".format(r.status_code, r.text)
 
 def modificar_evento(access_token, evento_id, calendario_id, tema, fechaIni, fechaFin):
+    print("FECHIT")
+    print(fechaIni)
+    print(fechaFin)
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     modificar_evento_url = graph_endpoint.format('/me/calendars/'+ calendario_id+'/events/'+evento_id)  #Ruta para obtener informacion sobre el usuario   
     

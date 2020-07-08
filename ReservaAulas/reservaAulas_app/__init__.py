@@ -10,7 +10,6 @@ import logging
 app = flask.Flask(__name__)
 
 app.config['SECRET_KEY'] = 'hard to guess string'
-# app.secret_key = os.environ.get('SECRET_KEY')
 app.jinja_env.globals['ADMIN_USERS'] = ('gestCalendar@outlook.com')
 
 try:
@@ -23,19 +22,14 @@ try:
     logging.info('Inicio de la aplicacion')
 except Exception as ex:
     logging.warning('Fallo en la conexion: ' + ex)
-# BASEDIR = os.path.abspath(os.path.dirname(__file__))
-# SQLALCHEMY_DATABASE_URI = 'mysql://root:password@localhost/outlook'
-# app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 csrf = CSRFProtect(app)
 csrf.init_app(app)
-# app.config.from_object(Config)
 Bootstrap(app)
-# engine = create_engine('mysql://root:password@localhost/outlook')
-# connection = engine.raw_connection()
+
 db = SQLAlchemy(app)
 db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# app.run(port=8115)
