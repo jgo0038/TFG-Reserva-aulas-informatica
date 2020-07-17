@@ -43,8 +43,6 @@ def get_oauth_token(code):
         'client_secret': O365_APP_KEY
     }
 
-    print(token_params.values())
-
     r = requests.post(O365_TOKEN_URL, data=token_params)
 
     return r.json()
@@ -104,13 +102,8 @@ def make_api_call(method, url, token, payload = None, parameters = None):
     return response
 
 def get_events(access_token, calendarioId, grupoCalId):
-    #graph_endpoint = 'https://outlook.office.com/api/v2.0{}'
-    #graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar eventos del calendario predeterminado
-    #graph_endpoint = 'https://graph.microsoft.com/v1.0/me/calendarGroup/calendars/{}'.format(calendarioId)
-    #graph_endpoint = 'https://outlook.office.com/api/v2.0/me/calendars/'+calendarioId+'/calendarview?startDateTime=2019-12-31T15:54:42.915204&endDateTime=2020-12-31T15:54:42.915204'
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'
     get_events_url = graph_endpoint.format('/me/calendarGroups/'+grupoCalId+'/calendars/'+calendarioId+'/events') 
-    #get_events_url = graph_endpoint.format('/me/events')    #Ruta para obtener info de los eventos
     parameters = {'$top': '50',
                       '$select': 'subject,start,end',
                       '$orderby': 'start/dateTime ASC'
@@ -126,7 +119,6 @@ def get_events(access_token, calendarioId, grupoCalId):
 def get_events_from_calendar(access_token, calendarId):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'
     get_events_url = graph_endpoint.format('/me/calendars/'+calendarId+'/events') 
-    #get_events_url = graph_endpoint.format('/me/events')    #Ruta para obtener info de los eventos
     parameters = {'$top': '50',
                       '$select': 'subject,start,end',
                       '$orderby': 'start/dateTime ASC'
@@ -234,7 +226,6 @@ def create_aulas(access_token, edificio, nombre):
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     create_calendar_url = graph_endpoint.format('/me/calendarGroups/')+edificio+'/calendars'   #Ruta para obtener informacion sobre el usuario   
 
-    # headers = {'Content-type': 'application/json'}
     payload = {"name": nombre }
 
     r = make_api_call('POST', create_calendar_url, access_token, payload = payload)
@@ -323,9 +314,7 @@ def share_calendar(access_token):
         return "{0}: {1}".format(r.status_code, r.text)
 
 def modificar_evento(access_token, evento_id, calendario_id, tema, fechaIni, fechaFin):
-    print("FECHIT")
-    print(fechaIni)
-    print(fechaFin)
+
     graph_endpoint = 'https://graph.microsoft.com/v1.0{}'   #Ruta para solicitar info a la API
     modificar_evento_url = graph_endpoint.format('/me/calendars/'+ calendario_id+'/events/'+evento_id)  #Ruta para obtener informacion sobre el usuario   
     

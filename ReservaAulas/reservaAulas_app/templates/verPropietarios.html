@@ -57,10 +57,12 @@
           <td><div class="row_data" col_name="edificio">{{ prop[1] }}</div></td>
           <td><div class="row_data" col_name="tipo">{{ prop[2] }}</div> </td>
           <td><div class="row_data" col_name="capacidad">{{ prop[3] }} </div></td>
+          {% if session['user_email'] in ADMIN_USERS  %}
           <td>
             <button class="editbtn" id="editarBtn" style="display:flex;" row_id={{contador + loop.index }}>Editar</button>
             <button class="deletebtn" id="borrarBtn" style="display:flex;" row_id={{contador + loop.index }}>Borrar</button>
           </td>
+          {% endif %}
         </tr>
     {% endfor %}
   </tbody>

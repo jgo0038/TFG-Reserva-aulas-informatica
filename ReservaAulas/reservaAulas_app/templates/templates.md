@@ -1,2 +1,2 @@
 Carpeta que contendrá los templates.
-Vistas mejoradas, prototipo final.
+Mejoras visuales, barra de navegación añadida, estilos aplicados.

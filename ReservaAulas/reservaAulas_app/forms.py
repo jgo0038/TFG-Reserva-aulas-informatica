@@ -65,8 +65,8 @@ class modificarEvent(FlaskForm):
     tema = StringField('Tema')
     user = StringField('Usuario')
     fechaIni = DateTimeField('Fecha inicio',format='%Y-%m-%d %H:%M:%S')
-    horaIni = TimeField('Hora inicio',format='%H:%M')
-    horaFin = TimeField('Hora fin',format='%H:%M')
+    horaIni = TimeField('Hora inicio (HH:MM)',format='%H:%M')
+    horaFin = TimeField('Hora fin (HH:MM)',format='%H:%M')
     submit = SubmitField('Modificar')
 
 class modificarPropietarioForm(FlaskForm):
@@ -84,8 +84,8 @@ class anadirPropietarioForm(FlaskForm):
     submit = SubmitField('Crear')
 
 class filtrarHoras(FlaskForm):
-    fechaInicio = DateField('Fecha inicio')
-    fechaFin = DateField('Fecha fin')
+    fechaInicio = DateField('Fecha inicio *', validators = [InputRequired(message='Introduce una fecha inicial')])
+    fechaFin = DateField('Fecha fin *', validators = [InputRequired(message='Introduce una fecha final')])
     submit = SubmitField('Filtrar')
 
 class filtrarAulas(FlaskForm):

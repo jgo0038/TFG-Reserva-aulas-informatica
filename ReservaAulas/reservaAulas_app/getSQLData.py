@@ -75,5 +75,5 @@ def getPropietariosEmail():
     cursor.close()
     listaPropietarios = []
     for prop in varPropietarios:
-        listaPropietarios.append(prop[0])
+        listaPropietarios.append(prop[0].strip())
     return listaPropietarios

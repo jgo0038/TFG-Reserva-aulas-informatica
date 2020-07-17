@@ -26,10 +26,26 @@
     <form name="filtrarHoras" method='POST'>
       {{ form.csrf_token }}
       <div style="display:flex;justify-content:center;">
-      {{ form.fechaInicio.label }}{{ form.fechaInicio }}
-      {{ form.fechaFin.label }}
+      <div>{{ form.fechaInicio.label }}<br>{{ form.fechaInicio }}
+      <ul>
+        {% for error in form.fechaInicio.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      </div>
+      <div>
+      {{ form.fechaFin.label }}<br>
       {{ form.fechaFin }}
-      <button type="button" onclick=form.submit()> {{ form.submit.label }} </button>
+      <ul>
+        {% for error in form.fechaFin.errors %}
+            <li style="color: red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div></div>
+    <div>
+      <button type="button" onclick=form.submit() style="margin-top: 25px;"> {{ form.submit.label }} </button>
+    </div>
       </div>
       
     </form>

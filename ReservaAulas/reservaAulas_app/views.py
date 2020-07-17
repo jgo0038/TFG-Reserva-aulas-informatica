@@ -72,9 +72,9 @@ def connect_o365_token():
     except Exception as ex:
         logging.warning('Fallo en la conexion: ' + ex)
     code = flask.request.args.get('code')
-    print('code: '+code)
+
     if not code:
-        logging.error("NO 'code' VALUE RECEIVED")
+        logging.error("NO SE HA RECIBIDO EL 'code'")
         return flask.Response(status=400)
 
     token = get_oauth_token(code)
@@ -95,12 +95,7 @@ def connect_o365_token():
     logging.info(oauth_token)   
     if not oauth_token:
         logging.info('CREATING new O365OAuthToken for {}'.format(jwt['email']))
-        # oauth_token = User(
-        #     access_token = token['access_token'],
-        #     refresh_token = token['refresh_token'],
-        #     email = jwt['email'],
-        #     expires_on = datetime_from_timestamp(token['expires_in']),
-        # )
+
         expires_on = datetime_from_timestamp(token['expires_in'])
         cursor = cnxn.cursor()
         cursor.execute('''
@@ -128,13 +123,10 @@ def connect_o365_token():
 
 @app.route('/events', methods=['GET', 'POST'])
 def events():
-    # acc_token = flask.session['access_token']
 
-    selectEdificioForm = selectGroupCalendar() #Crear primer desplegable
-    # selectForm = selectCalendar()   #Crear segundo desplegable
+    selectEdificioForm = selectGroupCalendar() 
     filterForm = filterAulasForm2()
     modificarEventForm = modificarEvent()
-    # CAMBIO DE CONEXION BD AZURE
     filterForm.tipo.choices = getTipos()
     cursor = cnxn.cursor()
 
@@ -146,20 +138,19 @@ def events():
     varEdif = cursor.fetchall()
     cursor.close()
     listaGruposCalendarios = []
-    # for cal in valoresGrupos:
-    #     listaGruposCalendarios.append((cal['id'],cal['name']))
     for cal in varEdif:
         listaGruposCalendarios.append(cal[0])
     selectEdificioForm.select.choices = listaGruposCalendarios
 
     #sacamos los propietarios para pasarlos al cliente
     propietarios = getPropietariosEmail()
+    print(propietarios)
     varPropEventos = ['notienepropietario@a.es']
     listaAulasProp = ['aulaquenopertenece']
-    # selectForm.select.choices = listaCalendarios
+
     eventosExistentes = {}
     fechaActual = datetime.now()
-    # fechaActual = fechaActual.strftime('%Y-%m-%dT%H:%M')
+    
     #Variables para mostrar el resultado de la modificación
     error_solapamiento = False
     modif = False
@@ -180,10 +171,15 @@ def events():
                 WHERE eventos.aula = ?
                 AND eventos.inicio < ?
                 AND eventos.fin > ?
-                ''',flask.session['aulaEventMod'],fechaFinNuevaFinal, fechaIniNuevaFinal)
+                EXCEPT SELECT count(*)
+                FROM eventos
+                WHERE eventos.aula = ?
+                AND eventos.inicio = ?
+                ''',flask.session['aulaEventMod'],fechaFinNuevaFinal, fechaIniNuevaFinal,flask.session['aulaEventMod'],flask.session['fechaIniEventMod'])
                 varAulas = cursor.fetchall()
+                print(varAulas)
                 #Si no hay solapamientos
-                if varAulas[0][0] == 0:
+                if varAulas == [] or varAulas[0][0] == 0:
                     modificar_evento(flask.session['access_token'],flask.session['id_evento_modificar'],flask.session['id_aula_modificar'],temaNuevo, horaIniNueva, horaFinNueva)
                     modif = True
                     cursor = cnxn.cursor()
@@ -333,50 +329,24 @@ def events():
     #Filtros
 
             cursor = cnxn.cursor()
-            # cursor.execute('''
-            # SELECT * from eventos 
-            # JOIN aulas ON eventos.aula = aulas.nombre
-            # WHERE aulas.nombre = ?
-            # AND eventos.inicio >= ? 
-            # AND (eventos.fin <= ? OR eventos.fin >= ?);''', calendarioId,fechaInicio, fechaFin, fechaFin)
+
             if fechaIni != "":
+                fechaF = datetime.strptime(fechaF ,'%Y-%m-%d')
+                fechaF = fechaF + timedelta(days=1)
                 cursor.execute('''
-                SELECT * from eventos 
-                JOIN aulas ON eventos.aula = aulas.nombre
-                WHERE aulas.nombre = ?
-                AND eventos.inicio >= ?
-                AND eventos.fin <= ?
-                AND (convert(char(5), inicio, 108) >= ?
-                AND convert(char(5), inicio, 108) <= ?
-                AND (convert(char(5), fin, 108) <= ?
-                OR convert(char(5), fin, 108) >= ?
-                )) OR (
-                convert(char(5), inicio, 108) <= ?
-                AND convert(char(5), inicio, 108) <= ?
-                AND ( (convert(char(5), fin, 108) <= ?
-                AND convert(char(5), fin, 108) >= ?)
-                OR convert(char(5), fin, 108) >= ?)
-                );''', calendarioId, fechaIni,fechaF,horaInicio[0], horaFinal[0], horaFinal[0],horaFinal[0],horaInicio[0],horaFinal[0],horaFinal[0],horaInicio[0],horaFinal[0])
+                SELECT * from eventos
+                WHERE eventos.aula = ?
+                AND cast(eventos.inicio as time) < ? AND ? < cast(eventos.fin as time)
+                AND eventos.inicio BETWEEN ? AND  ?;
+                ''', calendarioId, horaFin ,horaIni,fechaIni, fechaF)
 
                 varEventos = cursor.fetchall()
                 cursor.close() 
-            else:
-                cursor.execute('''
-                SELECT * from eventos 
-                JOIN aulas ON eventos.aula = aulas.nombre
-                WHERE aulas.nombre = ?
-                AND ( ( DATEPART(hh, eventos.inicio) >= ?
-                AND DATEPART(hh, eventos.fin) <=? )
-                OR ( DATEPART(hh, eventos.inicio) <= ?
-                AND  DATEPART(hh, eventos.fin) >= ? )  );''', calendarioId, horaInicio[0], horaFinal[0], horaInicio[0],horaFinal[0])
 
-                varEventos = cursor.fetchall()
-                cursor.close() 
-            varEventos = tuple(sorted(varEventos, key=lambda item: item[4]))
+                varEventos = tuple(sorted(varEventos, key=lambda item: item[4]))
             return flask.render_template('eventsTable.html',target="_blank",listaProp = propietarios, propietario = varPropEventos,aulasProp = listaAulasProp, dictEvents = varEventos,formEdificio = selectEdificioForm, fechaActual = fechaActual, filterForm=filterForm, modEventForm= modificarEventForm )
         elif calendarioId == "Cualquiera":
-            print(flask.session['edifEventos'])
-            print(horaInicio[0])
+
             cursor = cnxn.cursor()
             cursor.execute('''
             SELECT aulas.nombre
@@ -393,37 +363,23 @@ def events():
                 print(tipo)
                 fechaInicio = datetime.strptime(fechaIni + " "  + horaIni ,'%Y-%m-%d %H:%M') #Convertirlo la fecha y hora en datetime
                 fechaFin = datetime.strptime(fechaIni + " "  + horaFin ,'%Y-%m-%d %H:%M')
+                fechaF = datetime.strptime(fechaF ,'%Y-%m-%d')
+                fechaF = fechaF + timedelta(days=1)
                 cursor = cnxn.cursor()
                 cursor.execute('''
                 SELECT * from eventos 
                 JOIN aulas ON eventos.aula = aulas.nombre
                 where aulas.capacidad >= ?
-                AND aulas.nombre LIKE ?
+                
                 AND aulas.edificio = ?
                 AND aulas.n_ordenadores >= ?
                 AND aulas.tipo = ?
-                AND eventos.inicio >= ?
-                AND eventos.fin <= ?
-
-                AND ( ( DATEPART(hh, eventos.inicio) >= ?
-                AND DATEPART(hh, eventos.fin) <=? )
-                OR ( DATEPART(hh, eventos.inicio) <= ?
-                AND  DATEPART(hh, eventos.fin) >= ? )  );''',capacidad,edificioIdQuery,flask.session['edifEventos'], n_ord, tipo,fechaIni,fechaF, horaInicio[0], horaFinal[0], horaInicio[0], horaFinal[0])
+                AND cast(eventos.inicio as time) < ? AND ? < cast(eventos.fin as time)
+                AND eventos.inicio BETWEEN ? AND  ?;''',capacidad,flask.session['edifEventos'], n_ord, tipo,horaFin ,horaIni,fechaIni, fechaF)
                 varEventos = cursor.fetchall()
                 cursor.close() 
-            else:
-                cursor = cnxn.cursor()
-                cursor.execute('''
-                SELECT * from eventos 
-                JOIN aulas ON eventos.aula = aulas.nombre
-                WHERE aulas.nombre LIKE ?
-                AND ( ( DATEPART(hh, eventos.inicio) >= ?
-                AND DATEPART(hh, eventos.fin) <=? )
-                OR ( DATEPART(hh, eventos.inicio) <= ?
-                AND  DATEPART(hh, eventos.fin) >= ? )  );''',edificioIdQuery, horaInicio[0], horaFinal[0], horaInicio[0],horaFinal[0])
-                varEventos = cursor.fetchall()
-                cursor.close()
-            varEventos = tuple(sorted(varEventos, key=lambda item: item[4]))
+            
+                varEventos = tuple(sorted(varEventos, key=lambda item: item[4]))
             return flask.render_template('eventsTable.html',target="_blank", listaProp = propietarios,propietario = varPropEventos,aulasProp = listaAulasProp, dictEvents = varEventos,formEdificio = selectEdificioForm, fechaActual = fechaActual, filterForm=filterForm, modEventForm= modificarEventForm )
 
     if error_solapamiento == True:
@@ -728,19 +684,6 @@ def reservar():
                 varBloqueo = cursor.fetchall()
                 cursor.close()
                 
-                # Consulta para comprobar solapamiento
-                # CAMBIO DE CONEXION BD AZURE
-
-                # cursor = connection.cursor()
-                # querySolapamiento = '''
-                # SELECT count(*)
-                # FROM outlook.eventos 
-                # WHERE aula = %s
-                # AND ( inicio < %s )
-                # AND ( fin > %s );
-                # '''
-                # paramsSolapamiento = [aula, fechaFin, fechaInicio]
-                # cursor.execute(querySolapamiento, paramsSolapamiento)
                 cursor = cnxn.cursor()
                 cursor.execute('''
                 SELECT count(*)
@@ -806,7 +749,6 @@ def reservar():
                     db.session.close()
                     # engine.dispose()
                     flash(u'No se ha podido crear el evento', 'error')
-                    print("dddASDAS")
                     return flask.render_template('reservar.html', form = eventForm, form1 = filterForm)
             #Reserva multiple
             elif aulaId != "Cualquiera" and tema!= None and profesor!= None and fechaIni!= None and horaIni!= None and horaFin!= None and request.form["endDate"] != "" and diaSemana == "None":
@@ -823,8 +765,21 @@ def reservar():
                 cursor.close()
                 flag = True
                 listaFechasReserva = []
+                horasFin = horaFin.split(':')
+                horaF = int(horasFin[0])
+                minF = int(horasFin[1])
+                print("DATOS HORAS")
+                print(horaFin)
+                print(horasFin)
+                print(horaF)
+                print(minF)
                 fechaInicioMultiple = fechaInicio
+                fechaFinMultiple = fechaInicio.replace(hour=horaF,minute=minF)
+                print(fechaFinMultiple)
                 while fechaInicioMultiple <= fechaFin and flag == True:
+                    print("MULTIPLE")
+                    print(fechaFinMultiple)
+                    print(fechaInicioMultiple)
                     #Consulta de solapamiento de horas para todos los dias
                     cursor = cnxn.cursor()
                     cursor.execute('''
@@ -833,13 +788,15 @@ def reservar():
                     WHERE aula = ?
                     AND ( inicio < ? )
                     AND ( fin > ? );
-                    ''', aula, fechaFin, fechaInicioMultiple)
+                    ''', aula, fechaFinMultiple, fechaInicioMultiple)
                     varSolapamiento = cursor.fetchall()
+                    print(varSolapamiento)
                     cursor.close()
                     #Si devuelve 0 es que esta libre la hora
                     if(varSolapamiento[0][0] == 0):
                         listaFechasReserva.append(fechaInicioMultiple)
                         fechaInicioMultiple = fechaInicioMultiple + timedelta(days=1)
+                        fechaFinMultiple = fechaFinMultiple + timedelta(days=1)
                     else:#Si no esta libre, la bandera se pone a false y no se ejecuta la reserva
                         flag = False
 
@@ -886,7 +843,7 @@ def reservar():
                             db.session.commit()
                             db.session.close()
                             #Enviar mensaje
-                            em = send_email(flask.session['access_token'], email_prof, aula, tema, fechaInicio, fechaFin )
+                            em = send_email(flask.session['access_token'], email_prof, aula, tema, fechaIniReserva, fechaFinReserva )
 
 
                         except OperationalError:

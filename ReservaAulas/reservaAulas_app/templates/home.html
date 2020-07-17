@@ -99,7 +99,7 @@
                     <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
                     <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
                     {% else %}
-                    <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
+                    <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
                     <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
                     {% endif %}
                   </div>
@@ -129,6 +129,10 @@
               <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
               <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver/Modificar aulas</p>
             </a>
+            <a onclick="window.location.href='{{ url_for('verPropietarios') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
+              <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
+              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver/Modificar propietarios</p>
+            </a>
             {% if session['user_email'] in ADMIN_USERS %} 
             <a onclick="window.location.href='{{ url_for('anadirAulas') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
               <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
@@ -138,10 +142,7 @@
               <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
               <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver tabla de auditorías</p>
             </a>
-            <a onclick="window.location.href='{{ url_for('verPropietarios') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
-              <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
-              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver/Modificar propietarios</p>
-            </a>
+            
             <a onclick="window.location.href='{{ url_for('anadirPropietarios') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
               <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
               <p style="padding: 15px;font-family: Stencil Std, fantasy">Añadir nuevos propietarios</p>

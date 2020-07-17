@@ -25,15 +25,15 @@
 
 {{ modEventForm.csrf_token }}
   <div class="row" style="width=100%;" >
-    <div class="col-3">{{ modEventForm.tema.label }}
+    <div class="col-3">{{ modEventForm.tema.label }}<br>
     {{ modEventForm.tema }}</div>
-    <div class="col-3">{{ modEventForm.user.label }}
+    <div class="col-3">{{ modEventForm.user.label }}<br>
     {{ modEventForm.user }}</div>
-    <div class="col-3">{{ modEventForm.fechaIni.label }}
+    <div class="col-3">{{ modEventForm.fechaIni.label }}<br>
     {{ modEventForm.fechaIni }}</div>
-    <div class="col-3">{{ modEventForm.horaIni.label }}
+    <div class="col-3">{{ modEventForm.horaIni.label }}<br>
     {{ modEventForm.horaIni }}</div>
-    <div class="col-3">{{ modEventForm.horaFin.label }}
+    <div class="col-3">{{ modEventForm.horaFin.label }}<br>
     {{ modEventForm.horaFin }}</div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </div>
@@ -54,9 +54,8 @@
         <th>Fecha inicio</th>
         <th>Hora inicio</th>
         <th>Hora fin</th>
-        {% if listaPropietarios or session['user_email'] in ADMIN_USERS %}
         <th>Acciones</th>
-        {% endif %}
+        
       </tr>
     </thead>
     {% if dictEvents %}
@@ -111,8 +110,10 @@
   </svg>   Eventos futuros<br>
   <button type='button' id="mostrarPasados" class="mostrarPasados" >Mostrar eventos pasados</button>
   <button type='button' style="display:none" id="ocultarPasados" class="ocultarPasados" >Ocultar eventos pasados</button>
+  {% if session['user_email'] in ADMIN_USERS or session['user_email'] in listaProp %}
   <button type='button' id="borrarSeleccionados" class="borrarSeleccionados" >Borrar eventos seleccionados</button>
   <button type='button' id="seleccionarTodos" class="seleccionarTodos" >Seleccionar todos</button>
+  {% endif %}
   <div>
       <button type='button' id="volver" class="volver" >Volver</button>
   </div>
@@ -148,12 +149,11 @@ var listaBorrar = [];
         var currentRow=$(tr).closest("tr"); 
         currentRow.toggleClass('seleccionada');
         console.log(currentRow);
-        if (tr.cells.length > 0) { // Check that cell exists before you try
-            td = tr.cells[0];      // to access it.
+        if (tr.cells.length > 0) { 
+            td = tr.cells[0];      
             listaBorrar.push(td.innerText);
             console.log(td.innerText);
-        } // Here you could say else { return null; } if you want it to fail
-          // when requested column is out of bounds. It depends.
+        } 
     }
 
  });

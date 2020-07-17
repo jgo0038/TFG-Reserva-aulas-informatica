@@ -59,7 +59,7 @@
                 <div class="dropdown">
                   <button class="dropbtn">Propietarios</button>
                   <div class="dropdown-content">
-                    <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
+                    <a type="button" style="margin-top: 7px;" class="nav-link" onclick="window.location.href='{{ url_for('verPropietarios') }}'">Ver propietarios</a>
                     <a type="button" style="margin-top: 7px;" class="nav-link disabled" onclick="window.location.href='{{ url_for('anadirPropietarios') }}'">Añadir propietarios</a>
                   </div>
                 </div>
@@ -83,9 +83,12 @@
 
             <a onclick="window.location.href='{{ url_for('verAulas') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
               <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
-              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver/Modificar aulas</p>
+              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver aulas</p>
             </a>
-            
+            <a onclick="window.location.href='{{ url_for('verPropietarios') }}'" id="delay1" style="justify-content:left;display:flex;flex-direction:row;padding: 5px;">
+              <div style="width:50px;height:50px;border-radius:50px;background-color:grey;padding: 10px;margin-left: 10px;margin-top: 3px;"></div>
+              <p style="padding: 15px;font-family: Stencil Std, fantasy">Ver propietarios</p>
+            </a>
 
           </flexbox>
 
