@@ -4,8 +4,8 @@
 Un plan de proyecto recoge la planificación temporal donde se resumen las divisiones de trabajo en periodos de tiempo y un estudio de viabilidad teniendo en cuenta las repercusiones tanto legales como económicas de dicho proyecto.
 
 \section{Planificación temporal}
-Para la planificación temporal he usado la plataforma GitHub en la que he intentado simular una metodología \textit{Scrum}, en la que las divisiones de tiempo para realizar una determinada función se conocen como \textit{Sprints}. La duración de los Sprints en este caso no era especificada, ya que no tenía unos plazos obligatorios y algunos sprints duraban más de lo planeado y otros menos. Los primeros Sprints están resumidos en unas \textit{issues} de mayor tamaño ya que se centraban en realizar pruebas y generación del comienzo del proyecto.\newline
-Dentro de la plataforma de GitHub utilicé tablero de Zen-hub para controlar mejor la inicialización y finalización de las \textit{issues}.\newline
+Para la planificación temporal se ha usado la plataforma GitHub en la que se ha intentado simular una metodología \textit{Scrum}, en la que las divisiones de tiempo para realizar una determinada función se conocen como \textit{Sprints}. La duración de los Sprints en este caso no era especificada, ya que no se tenían unos plazos obligatorios y algunos sprints duraban más de lo planeado y otros menos. Los primeros Sprints están resumidos en unas \textit{issues} de mayor tamaño ya que se centraban en realizar pruebas y generación del comienzo del proyecto.\newline
+Dentro de la plataforma de GitHub se utilizó el tablero de Zen-hub para controlar mejor la inicialización y finalización de las \textit{issues}.\newline
 El enlace GitHub del repositorio del presente trabajo puede encontrarse en:\newline \url{https://github.com/jgo0038/TFG-Reserva-aulas-informatica} \newline
 
 \subsection{Sprint 0 - 24/02/2020 - 27/02/2020}
@@ -20,10 +20,10 @@ Primer sprint en el que se inicia el proyecto, realmente comienza antes el proye
 	\item Investigar sobre el uso de la API de Outlook para Flask.
 \end{itemize}
 Una vez se registró la app en Azure, el objetivo principal era poder iniciar sesión en Outlook con los códigos recibidos, utilizando un repositorio de GitHub como \href{https://github.com/brysontyrrell/Office-365-Flask-App}{ayuda}\cite{loginO365}.
-Resaltar que aquí creo la primera rama donde subo estos primeros pasos del proyecto.
+Resaltar que aquí creo la primera rama donde se subieron estos primeros pasos del proyecto.
 \subsection{Sprint 1 - 27/02/2020 - 08/03/2020}
-En este sprint solamente hubo especificada una tarea, que engloba trabajar con la API y empezar a enviar y recibir datos para conocer su funcionamiento. Ya conociendo la forma en la que iba a trabajar y los requisitos que había que conseguir, comencé a hacer pruebas sobre la API solucionando los primeros errores y consiguiendo los primeros avances.\newline
-Una vez estaba iniciada la sesión de Outlook el objetivo de este Sprint era leer y modificar eventos del calendario de la sesión. Se sube esto a nueva nueva rama, en la que tenemos entonces a parte del inicio de sesión ya comentado en el Sprint 0, la funcionalidad de poder recoger eventos del calendario principal del usuario que ha iniciado sesión en la web app.
+En este sprint solamente hubo especificada una tarea, que engloba trabajar con la API y empezar a enviar y recibir datos para conocer su funcionamiento. Ya conociendo la forma en la que iba a trabajar y los requisitos que había que conseguir, se comenzó a hacer pruebas sobre la API solucionando los primeros errores y consiguiendo los primeros avances.\newline
+Una vez estaba iniciada la sesión de Outlook el objetivo de este Sprint era leer y modificar eventos del calendario de la sesión. Se sube esto a nueva nueva rama, que permite, a parte del inicio de sesión ya comentado en el Sprint 0, la funcionalidad de poder recoger eventos del calendario principal del usuario que ha iniciado sesión en la web app.
 
 \subsection{Sprint 2 - 08/03/2020 - 05/04/2020}
 Los objetivos principales en este sprint fueron los siguientes:
@@ -39,23 +39,23 @@ Los objetivos que abordamos en este Sprint se centrar en añadir funcionalidades
 \begin{itemize}
     \item Controlar el solapamiento de horas de los eventos en los calendarios ya que no lo realiza Outlook.
     \item Añadir una página en la que se puedan ver los eventos que hay creados en un determinado calendario.
-    \item Estudiar las posibilidades que hay para desplegar la web app. En mi caso quedándome con Azure.
+    \item Estudiar las posibilidades que hay para desplegar la web app. Se opta por utilizar Azure.
 \end{itemize}
 Este Sprint se fue compaginando con el anterior, ya que la tarea de investigar sobre la seguridad de la aplicación había quedado pendiente.
 \subsection{Sprint 4 - 05/04/2020 - 27/04/2020}
 Este Sprint tenía como objetivos principales:
 \begin{itemize}
     \item Controlar que funcione en un entorno multiusuario, que no se pueda reservar a la vez el mismo aula.
-    \item Crear el primer modelo de las tablas y relaciones en la base de datos loca.
-    \item Comprobar que las fechas sean la misma de inicio y fin en una reserva simple.
-    \item Ofrecer al cliente una opción para elegir de que calendario quiere ver las horas reservadas y si es para reservar dependiendo de si es responsable o no.
+    \item Crear el primer modelo de las tablas y relaciones en la base de datos local.
+    \item Comprobar que las fechas de inicio y fin coincidan en una reserva simple.
+    \item Ofrecer al cliente una opción para elegir de qué calendario quiere ver las horas reservadas de entre aquellos de los que es responsable.
 \end{itemize}
-Este Sprint se da por cerrado pese a haber quedado una tarea abierta (sincronizar la web app con la base de datos, de modo que que borre los eventos de la base de datos local y los vuelva a guardar recuperándolos directamente desde Outlook, como solución a algún problema o corrupción de los datos de la base de datos), esta tarea fue desestimada en una reunión posterior.
+Este Sprint se da por cerrado pese a haber quedado una tarea abierta (sincronizar la web app con la base de datos, de modo que borre los eventos de la base de datos local y los vuelva a guardar recuperándolos directamente desde Outlook, como solución a algún problema o corrupción de los datos de la base de datos), esta tarea fue desestimada en una reunión posterior. La base de datos y los calendarios de Outlook siempre tienen que estar sincronizados, compartiendo los mismos datos en ambos sitios, de forma que si se borra un evento del calendario, también se borre el correspondiente en la base de datos. Si esto fallara, más adelante no se podrían realizar reservas en fechas que en realidad deberían de estar libres.
 \subsection{Sprint 5 - 17/04/2020 - 07/05/2020}
 Los objetivos que voy a abordar en este Sprint son los siguientes:
 \begin{itemize}
     \item Realizar un cambio en una relación de la base de datos, permite albergar mas de un propietario a un aula.
-    \item Crear el servidor de Azure database, se crea en lenguaje SQL y sin servidor, para reducir el coste a lo mínimos.
+    \item Crear el servidor de Azure database, se crea en lenguaje SQL y sin servidor, para reducir el coste al mínimo.
     \item Subir la base de datos local al servidor de Azure database creado y adaptar el lenguaje al SQL server.
     \item Conectar la base de datos subida a Azure con nuestra web app, se realiza mediante pyodbc.
     \item Organizar el proyecto según el estandar establecido por Microsoft y VSCode para poder subir facilmente a Azure.
@@ -74,13 +74,13 @@ Este Sprint se centra en mejorar partes del código ya existentes y facilitar la
     \item Restringir los datos que se pueden introducir al modificar aulas en campos como propietario, edificio o tipo de aula.
     \item En la página de la información, permitir una opción para borrar las aulas.
     \item Añadir las opciones de reserva múltiple (reservar más de un día seguido a la misma hora) y de reserva periódica (reservar un día a la semana a la misma hora durante el tiempo que se quiera ).
-    \item Crear una pagina de auditoría para los usuarios administrador, desde la que puedan ver las altas, bajas y modificaciones que se realizan sobre los eventos.
+    \item Crear una pagina de auditoría para el usuario administrador, desde la que puedan ver las altas, bajas y modificaciones que se realizan sobre los eventos.
 \end{itemize}
 Comentar que se actualiza también la base de datos, aplicando la actualización y borrado en cascada.
 La fecha de finalización se alargó tanto ya que la tarea de la tabla de auditorías quedó pospuesta, de forma que si quedaba tiempo al final para realizarla se haría, por ello fue terminada el 15/06.
 
 \subsection{Sprint 7 - 20/05/2020 - 17/06/2020}
-El Sprint 7 se centra en volver a introducir el código con el que he estado trabajando en Azure e ir añadiendo la documentación al proyecto, para ello se fijan estos objetivos:
+El Sprint 7 se centra en volver a introducir el código con el que se ha estado trabajando en Azure e ir añadiendo la documentación al proyecto, para ello se fijan estos objetivos:
 \begin{itemize}
     \item Actualizar el repositorio, añadiendo todo tal cual está con los cambios subidos a Azure.
     \item Añadir la carpeta de documentación siguiendo la plantilla proporcionada.
@@ -93,7 +93,7 @@ Este Sprint se centra en tareas más cortas y más visibles, dando estilos a la 
 \begin{itemize}
     \item Añadir botón que permita ver las horas ocupadas del aula a reservar.
     \item Añadir cabeceras a las páginas.
-    \item Añadir un campo nuevo de "nº de ordenadores" a las aulas, si no tiene ordenadores se indicará con un 0. Establecer este campo como filtro al reservar aula también.
+    \item Añadir un campo nuevo de 'nº de ordenadores' a las aulas, si no tiene ordenadores se indicará con un 0. Establecer este campo como filtro al reservar aula también.
     \item Añadir campo de correo electrónico del nombre del profesor al que se reserva el aula y enviarle un mensaje cuando la reserva se realice.
     \item Representar los privilegios de cada usuario en los botones, de forma que se bloquee si no tiene permiso para esa función.
     \item Mostrar mensaje al modificar el campo propietario recordando al administrador que tiene que darle los permisos al nuevo propietario manualmente desde el calendario de Outlook.
@@ -104,12 +104,12 @@ Este Sprint se centra en tareas más cortas y más visibles, dando estilos a la 
     \item Diseñar la página principal al iniciar sesión.
     \item Crear la barra de navegación en un fichero aparte del que puedan heredar dicho código.
 \end{itemize}
-Entre estas tareas quiero resaltar que los filtros de búsqueda de capacidad y nº de ordenadores en la página de realizar reserva se atienen al mínimo buscado, no es un búsqueda exacta de esas características, sino se limitaría demasiado.
+Anótese que los filtros de búsqueda de capacidad y nº de ordenadores en la página de realizar reserva se atienen al mínimo buscado, no es un búsqueda exacta de esas características, sino se limitaría demasiado.
 
-\subsection{Sprint 9 - 08/06/2020 - 27/06/2020}
+\subsection{Sprint 9 - 08/06/2020 - 26/06/2020}
 Este sprint se crea después de una corrección completa del proyecto por el tutor. Anotando los fallos encontrados, las mejoras a realizar y funcionalidades pendientes:
 \begin{itemize}
-    \item Mejorar la página de eventos, dejando más claro s funcionamiento y eliminando el apartado de los filtros, convirtiéndolo en un mismo formulario.
+    \item Mejorar la página de eventos, dejando más claro su funcionamiento y eliminando el apartado de los filtros, convirtiéndolo en un mismo formulario.
     \item Añadir función de modificar eventos.
     \item Añadir función de borrar eventos.
     \item Arreglar el envío de mensaje al realizar una reserva.
@@ -126,13 +126,25 @@ Este sprint se crea después de una corrección completa del proyecto por el tut
 \subsection{Sprint 10 - 18/06/2020 - 26/06/2020 }
 Realizar los últimos archivos de documentación que quedan por rellenar y completar o modificar algunos ya realizados.
 \begin{itemize}
-    \item Realizar la viabilidad económica y legal.
     \item Realizar el apartado de trabajos relacionados.
     \item Realizar el manual del programador.
     \item Realizar el manual del usuario.
     \item Mejoras sobre la documentación tras revisión del tutor.
 \end{itemize}
-
+\subsection{Sprint 11 - 01/07/2020 - 16/07/2020 }
+Completar la aplicación con mejoras visuales y de funcionalidad.
+\begin{itemize}
+    \item Añadir una opción de seleccionar todos los eventos de la tabla para borrarlos a la vez.
+    \item Añadir un filtro de fechas para la búsqueda en la tabla de auditorías.
+    \item Permitir acceder a la aplicación como un usuario sin registrar y poder realizar la consulta de aulas y de eventos.
+    \item Mejorar la pantalla de ayuda del mensaje al realizar acciones sobre el propietario.
+    \item Permitir una búsqueda de un rango de fechas en la visualización de los eventos.
+    \item Añadir más información al email que se envía al crear una reserva.
+    \item Arreglar la reserva periódica que fallaba en algunos casos concretos.
+    \item Actualizar la suscripción de Azure al haberse finalizado la de estudiante.
+    \item Arreglar la consultas para ver las horas reservadas.
+    \item Arreglar la modificación de la reserva al cambiar la hora a una que coincide con esta misma reserva.
+\end{itemize}
 \section{Estudio de viabilidad}
 En esta sección trataré la viabilidad del proyecto, tanto en el ámbito económico como legal.
 \subsection{Viabilidad económica}
@@ -149,11 +161,12 @@ Desarrollador: Suponiendo que acaba de comenzar su carrera como desarrollador we
   \multicolumn{1}{p{4.5cm}}{\textbf{Concepto}} & \textbf{Coste mensual{}}\\
  }
  {
-  Salario mensual neto  & \multicolumn{1}{r}{1366}\\\hline
-  Retencion IRPF & \multicolumn{1}{r}{197}\\\hline
-  Costes seguridad social & \multicolumn{1}{r}{105}\\\hline
-  Coste mensual bruto & \multicolumn{1}{r}{1668}\\\hline
-  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{6672}\\\hline
+  Salario mensual  & \multicolumn{1}{r}{1667}\\\hline
+  Retención IRPF (10\%) & \multicolumn{1}{r}{166}\\\hline
+  Costes seguridad social (23,60\%) & \multicolumn{1}{r}{393}\\\hline
+  Cotización por formación profesional (0'6\%) &
+  \multicolumn{1}{r}{10}\\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{7237}\\\hline
   }
 
 
@@ -161,25 +174,61 @@ Desarrollador: Suponiendo que acaba de comenzar su carrera como desarrollador we
 \subsubsection{Coste hardware}
 El coste del hardware utilizado se reduce al coste del portátil usado para desarrollar el proyecto. El precio del ordenador portátil (Asus X541U) con IVA fue de 600 y se supone una amortización de este mismo de 4 años. Por lo que el precio usado del portátil sería:\newline
 \begin{equation}
-    (600 \div 4)\div 3 = 50
+    (600 \div(12 * 4))* 4 = 50
 \end{equation}
 
 \subsubsection{Coste despliegue}
-El despliegue se ha realizado en Azure, donde se han ido realizando llamadas a la base de datos y ejecutando la aplicación subida. Esto se realizó con una suscripción a la cuenta de estudiante de Azure en la que se proporciona 100USD gratuitos, el uso de esta aplicación web para pruebas y mejoras ha supuesto un gasto de 45USD de los 100 disponibles. Por lo que el gasto en mi caso ha sido nulo. Pero este coste se aplicaría a una empresa durante este período de desarrollo. Si se quisiera mantener después aumentaría dependiendo del uso que se hiciera de esta aplicación y del plan de pago que se eligiera.
+El despliegue se ha realizado en Azure, donde se han ido realizando llamadas a la base de datos y ejecutando la aplicación subida. Esto se realizó con una suscripción a la cuenta de estudiante de Azure en la que se proporciona 100USD gratuitos, el uso de esta aplicación web para pruebas y mejoras ha supuesto un gasto de 100USD de los 100 disponibles, por lo que se agotó la suscripción de estudiante y hubo que mejorarla a una suscripción de pago por uso. Por lo que el gasto en este caso ha sido 110, teniendo en cuenta que ha sido durante 4 meses, el coste mensual se estima en 27.5. Pero este coste se aplicaría a una empresa durante este período de desarrollo. Si se quisiera mantener después aumentaría dependiendo del uso que se hiciera de esta aplicación y del plan de pago que se eligiera.
 
 \subsubsection{Coste total}
 \tablaSmallSinColores{Coste Total}{p{6.4cm} p{2.15cm} p{8cm}}{costetotal}{
   \multicolumn{1}{p{4.5cm}}{\textbf{Concepto}} & \textbf{Coste{}}\\
  }
  {
-  Coste desarrollador  & \multicolumn{1}{r}{6672}\\
+  Coste desarrollador  & \multicolumn{1}{r}{8944}\\
   Hardware & \multicolumn{1}{r}{50}\\\hline
-  Despliegue & \multicolumn{1}{r}{45}\\\hline
-  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{6767}\\\hline
+  Despliegue & \multicolumn{1}{r}{110}\\\hline
+  Internet & \multicolumn{1}{r}{26*4} \\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{9208}\\\hline
   }
 
 
 \subsection{Viabilidad legal}
+
 En cuanto al código, todo lo utilizado en este proyecto es de libre distribución y dominio público. Se ha utilizado Flask y librerías de Python públicas.\newline
 En cuanto a los programas utilizados, todos son públicos también.
 
+\tablaSmallSinColores{Dependencias del proyecto.}{l c}{dependencias}
+{ \multicolumn{1}{l}{\textbf{Dependencia}} & \textbf{Licencia}\\}{ 
+astroid & LGPL\\\hline
+click & BSD\\\hline
+colorama & BSD\\\hline
+distlib & Python Software Foundation License\\\hline
+dominate  & LGPLv3\\\hline
+filelock  & Public Domain\\\hline
+Flask  & BSD\\\hline
+Flask-Bootstrap & BSD\\\hline
+Flask-SQLAlchemy  & BSD\\\hline
+Flask-WTF  & BSD\\\hline
+importlib-metadata  & Apache Software License\\\hline
+importlib-resources  & Apache Software License\\\hline
+isort   & MIT\\\hline
+itsdangerous   & BSD\\\hline
+Jinja2   & BSD\\\hline
+MarkupSafe   & BSD\\\hline
+mysqlclient   & GPL\\\hline
+pylint   & GPL\\\hline
+pyodbc  & MIT\\\hline
+requests   & Apache\\\hline
+six   & MIT\\\hline
+SQLAlchemy  & MIT\\\hline
+virtualenv   & MIT\\\hline
+visitor  & MIT\\\hline
+Werkzeug  & BSD\\\hline
+wrapt  & BSD\\\hline
+WTForms   & BSD\\\hline
+zipp   & MIT\\\hline
+
+}
+
+Una vez se han visto las licencias a las que están sometidas las dependencias del proyecto, se ha seguido las recomendaciones de \cite{licencias} para determinar que este proyecto está bajo la licencia GPL-3.0, ya que es la última versión de la licencia GPL sobre software libre con \textit{copyleft}, lo que permite que todas las versiones sean libres.
