@@ -150,9 +150,9 @@ En esta sección trataré la viabilidad del proyecto, tanto en el ámbito econó
 \subsection{Viabilidad económica}
 En este apartado trataré de alcanzar el precio total del proyecto si fuera desarrollado en una empresa o comprado por alguien.\newline
 \subsubsection{Coste de personal}
-Para realizar este proyecto desde una vista de cliente, se ha necesitado un desarrollador de aplicaciones web para lograrlo. Por lo tanto el coste del personal se estima en lo siguiente:\newline
+Para realizar este proyecto, se ha necesitado un desarrollador de aplicaciones web para lograrlo. Por lo tanto, el coste del personal se estima en lo siguiente:\newline
 \subsubsection{Desarrollador}
-Desarrollador: Suponiendo que acaba de comenzar su carrera como desarrollador web, el sueldo medio está entre 17.000 y 22.000. Suponemos un término medio de 20.000 para realizar los cálculos. Lo que supone a la empresa: 
+Suponiendo que acaba de comenzar su carrera como desarrollador web, el sueldo medio está entre 17.000 y 22.000. Suponemos un término medio de 20.000 para realizar los cálculos. Lo que supone a la empresa: 
     \begin{equation}
         20.000 \div 12 = 1667 bruto
     \end{equation}
@@ -162,34 +162,33 @@ Desarrollador: Suponiendo que acaba de comenzar su carrera como desarrollador we
  }
  {
   Salario mensual  & \multicolumn{1}{r}{1667}\\\hline
-  Retención IRPF (10\%) & \multicolumn{1}{r}{166}\\\hline
   Costes seguridad social (23,60\%) & \multicolumn{1}{r}{393}\\\hline
   Cotización por formación profesional (0'6\%) &
   \multicolumn{1}{r}{10}\\\hline
-  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{7237}\\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{7071}\\\hline
   }
 
 
 
 \subsubsection{Coste hardware}
-El coste del hardware utilizado se reduce al coste del portátil usado para desarrollar el proyecto. El precio del ordenador portátil (Asus X541U) con IVA fue de 600 y se supone una amortización de este mismo de 4 años. Por lo que el precio usado del portátil sería:\newline
+El coste del hardware utilizado se reduce al coste del portátil usado para desarrollar el proyecto. El precio del ordenador portátil (Asus X541U) con IVA fuese de 600, el desarrollo se estima que durará 4 meses, y se supone una amortización de este mismo de 4 años. Por lo que el precio usado del portátil sería:\newline
 \begin{equation}
     (600 \div(12 * 4))* 4 = 50
 \end{equation}
 
-\subsubsection{Coste despliegue}
-El despliegue se ha realizado en Azure, donde se han ido realizando llamadas a la base de datos y ejecutando la aplicación subida. Esto se realizó con una suscripción a la cuenta de estudiante de Azure en la que se proporciona 100USD gratuitos, el uso de esta aplicación web para pruebas y mejoras ha supuesto un gasto de 100USD de los 100 disponibles, por lo que se agotó la suscripción de estudiante y hubo que mejorarla a una suscripción de pago por uso. Por lo que el gasto en este caso ha sido 110, teniendo en cuenta que ha sido durante 4 meses, el coste mensual se estima en 27.5. Pero este coste se aplicaría a una empresa durante este período de desarrollo. Si se quisiera mantener después aumentaría dependiendo del uso que se hiciera de esta aplicación y del plan de pago que se eligiera.
+\subsubsection{Coste del despliegue}
+El despliegue se ha realizado en Azure, donde se han ido realizando llamadas a la base de datos y ejecutando la aplicación subida. Esto se realizó con una suscripción a la cuenta de estudiante de Azure en la que se proporciona 100USD gratuitos. El uso de esta aplicación web para pruebas y mejoras ha supuesto un gasto de 100USD de los 100 disponibles, por lo que se agotó la suscripción de estudiante y hubo que mejorarla a una suscripción de pago por uso. Por esta razón el gasto en este caso ha sido 110USD, teniendo en cuenta que ha sido durante 4 meses, el coste mensual se estima en 27.5USD. Pero este coste se aplicaría a una empresa durante este período de desarrollo. Si se quisiera mantener después aumentaría dependiendo del uso que se hiciera de esta aplicación y del plan de pago que se eligiera. Esta cantidad de 110USD pasado a euros a fecha de 17/07/2020 hace un total de 96.28 euros.
 
 \subsubsection{Coste total}
 \tablaSmallSinColores{Coste Total}{p{6.4cm} p{2.15cm} p{8cm}}{costetotal}{
   \multicolumn{1}{p{4.5cm}}{\textbf{Concepto}} & \textbf{Coste{}}\\
  }
  {
-  Coste desarrollador  & \multicolumn{1}{r}{8944}\\
+  Coste desarrollador  & \multicolumn{1}{r}{7071}\\
   Hardware & \multicolumn{1}{r}{50}\\\hline
-  Despliegue & \multicolumn{1}{r}{110}\\\hline
+  Despliegue & \multicolumn{1}{r}{96.28}\\\hline
   Internet & \multicolumn{1}{r}{26*4} \\\hline
-  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{9208}\\\hline
+  \textbf{Coste total (4 meses)}  & \multicolumn{1}{r}{7321.28}\\\hline
   }
 
 
@@ -219,7 +218,7 @@ MarkupSafe   & BSD\\\hline
 mysqlclient   & GPL\\\hline
 pylint   & GPL\\\hline
 pyodbc  & MIT\\\hline
-requests   & Apache\\\hline
+requests   & Apache 2\\\hline
 six   & MIT\\\hline
 SQLAlchemy  & MIT\\\hline
 virtualenv   & MIT\\\hline
